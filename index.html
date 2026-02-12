@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeachMeMate - Learn & Teach Together</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .cta-section {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    .feature-card {
+      background: var(--tertiary-black);
+      border: 1px solid var(--accent-black);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="navbar">
+      <div class="navbar-brand">TeachMeMate</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home">Home</a></li>
+        <li class="nav-item"><a href="#features">Features</a></li>
+        <li class="nav-item"><a href="#signin.html">Sign In</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>TeachMeMate</h1>
+      <p class="hero-subtitle">Learn & Teach Together</p>
+      <p style="font-size: 1.1rem; color: var(--medium-gray); margin: 2rem 0;">
+        Connect with others who share your interests and learn from each other. 
+        Grow together in a community of passionate learners and teachers.
+      </p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="location.href='signup.html'">Get Started</button>
+        <button class="btn btn-outline" onclick="location.href='signin.html'">Sign In</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="container cta-section" id="features">
+    <h2>Why TeachMeMate?</h2>
+    <p style="color: var(--medium-gray); margin-bottom: 3rem; font-size: 1.1rem;">
+      Join a platform designed for collaborative learning
+    </p>
+
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <h3>Learn from Experts</h3>
+        <p>Connect with experienced learners and teachers in your field of interest.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Build Community</h3>
+        <p>Find peers with similar interests and create meaningful learning connections.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Share Knowledge</h3>
+        <p>Teach others what you know and solidify your own understanding.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast & Easy</h3>
+        <p>Simple, intuitive interface makes learning effortless and enjoyable.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Safe & Secure</h3>
+        <p>Your data is protected with industry-leading security standards.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>Global Network</h3>
+        <p>Connect with learners and teachers from around the world.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background: var(--secondary-black); border-top: 1px solid var(--accent-black); padding: 2rem; text-align: center; margin-top: 4rem;">
+    <p style="color: var(--medium-gray);">© 2026 TeachMeMate. All rights reserved.</p>
+  </footer>
+</body>
+</html>

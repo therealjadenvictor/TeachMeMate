@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - TeachMeMate</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .auth-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      gap: 2rem;
+    }
+
+    .auth-left {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(183, 75, 255, 0.1));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .auth-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .auth-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .auth-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .auth-subtitle {
+      color: var(--medium-gray);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .form-divider::before,
+    .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--accent-black);
+    }
+
+    .form-divider span {
+      color: var(--medium-gray);
+      font-size: 0.9rem;
+    }
+
+    .social-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .btn-social {
+      padding: 12px;
+      background: var(--accent-black);
+      border: 1px solid var(--tertiary-black);
+      color: var(--light-gray);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .btn-social:hover {
+      border-color: var(--neon-cyan);
+      background: rgba(0, 212, 255, 0.05);
+    }
+
+    .form-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .form-link a {
+      color: var(--neon-cyan);
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-left {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="navbar">
+      <div class="navbar-brand">TeachMeMate</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Back to Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="auth-container">
+    <!-- Left Section -->
+    <div class="auth-left">
+      <div style="max-width: 300px; text-align: center;">
+        <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Join TeachMeMate</h2>
+        <p style="font-size: 1.1rem; color: var(--medium-gray); margin-bottom: 2rem;">
+          Start your learning journey with a community of passionate learners and teachers.
+        </p>
+        <div style="font-size: 3rem;">📚 🎓 👥</div>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="auth-right">
+      <div class="auth-form">
+        <h3 class="auth-title">Create Account</h3>
+        <p class="auth-subtitle">Sign up to get started</p>
+
+        <form>
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="your@email.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Create a strong password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="interests">Areas of Interest</label>
+            <input type="text" id="interests" placeholder="e.g., Web Development, Data Science">
+          </div>
+
+          <div style="display: flex; align-items: center; margin-bottom: 1.5rem; gap: 0.5rem;">
+            <input type="checkbox" id="terms" required>
+            <label for="terms" style="margin: 0;">I agree to the Terms of Service</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+            Create Account
+          </button>
+        </form>
+
+        <div class="form-divider">
+          <span>OR</span>
+        </div>
+
+        <div class="social-buttons">
+          <button class="btn-social">Google</button>
+          <button class="btn-social">GitHub</button>
+        </div>
+
+        <div class="form-link">
+          Already have an account? <a href="signin.html">Sign In</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - TeachMeMate</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: var(--secondary-black);
+      border-right: 1px solid var(--accent-black);
+      padding: 2rem 0;
+      position: fixed;
+      width: 250px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin: 0;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      color: var(--medium-gray);
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .sidebar-menu a:hover,
+    .sidebar-menu a.active {
+      color: var(--neon-cyan);
+      background: rgba(0, 212, 255, 0.05);
+      border-left-color: var(--neon-cyan);
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: var(--accent-black);
+      border: 1px solid var(--tertiary-black);
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      max-width: 400px;
+      flex: 1;
+    }
+
+    .search-bar input {
+      background: transparent;
+      border: none;
+      color: var(--light-gray);
+      width: 100%;
+      padding: 0;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--dark-gray);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--tertiary-black), var(--accent-black));
+      border: 1px solid var(--accent-black);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 2rem;
+      color: var(--neon-cyan);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+      color: var(--medium-gray);
+      margin: 0;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      color: var(--neon-cyan);
+      margin-bottom: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .session-card {
+      background: var(--tertiary-black);
+      border: 1px solid var(--accent-black);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .session-card:hover {
+      border-color: var(--neon-cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    }
+
+    .session-header {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(183, 75, 255, 0.2));
+      padding: 1rem;
+      border-bottom: 1px solid var(--accent-black);
+    }
+
+    .session-content {
+      padding: 1.5rem;
+    }
+
+    .session-title {
+      font-size: 1.1rem;
+      color: var(--light-gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .session-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--medium-gray);
+      margin-bottom: 1rem;
+    }
+
+    .session-description {
+      color: var(--medium-gray);
+      margin-bottom: 1rem;
+    }
+
+    .session-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--accent-black);
+    }
+
+    .avatar-group {
+      display: flex;
+      gap: -0.5rem;
+    }
+
+    .avatar-small {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-black);
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 2px solid var(--secondary-black);
+    }
+
+    .badge-small {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid var(--accent-black);
+        margin-bottom: 1rem;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div style="padding: 0 1.5rem; margin-bottom: 2rem;">
+        <div class="navbar-brand" style="font-size: 1.25rem; text-align: center;">TMate</div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li><a href="#dashboard" class="active">📊 Dashboard</a></li>
+        <li><a href="#sessions">🎓 My Sessions</a></li>
+        <li><a href="#teaching">👨‍🏫 Teaching</a></li>
+        <li><a href="#learning">📚 Learning</a></li>
+        <li><a href="#messages">💬 Messages</a></li>
+        <li><a href="#profile">👤 Profile</a></li>
+        <li><a href="#settings">⚙️ Settings</a></li>
+      </ul>
+
+      <div style="position: absolute; bottom: 2rem; width: 100%; padding: 0 1rem;">
+        <button class="btn btn-secondary" style="width: 100%; padding: 10px;">Logout</button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <div class="dashboard-header">
+        <div>
+          <h2>Welcome back, Alex! 👋</h2>
+          <p style="color: var(--medium-gray);">Here's your learning dashboard</p>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <div class="search-bar">
+            <input type="text" placeholder="Search sessions...">
+          </div>
+          <div class="avatar" style="margin: 0;">A</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>12</h3>
+          <p>Sessions Completed</p>
+        </div>
+        <div class="stat-card">
+          <h3>8</h3>
+          <p>People Learning from You</p>
+        </div>
+        <div class="stat-card">
+          <h3>5</h3>
+          <p>Active Learning Goals</p>
+        </div>
+        <div class="stat-card">
+          <h3>⭐ 4.8</h3>
+          <p>Your Rating</p>
+        </div>
+      </div>
+
+      <!-- My Learning Sessions -->
+      <div style="margin-top: 3rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 class="section-title">My Learning Sessions</h3>
+          <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">+ New Session</button>
+        </div>
+
+        <div class="card-grid">
+          <!-- Session Card 1 -->
+          <div class="session-card">
+            <div class="session-header">
+              <span class="badge badge-success" style="margin-right: 0.5rem;">Active</span>
+              <span class="badge badge-primary">Web Dev</span>
+            </div>
+            <div class="session-content">
+              <div class="session-title">Advanced React Hooks</div>
+              <div class="session-meta">
+                <span>👨‍🏫 Michael Chen</span>
+                <span>⏱️ 2h per week</span>
+              </div>
+              <div class="session-description">Deep dive into React hooks and state management patterns.</div>
+              <div class="session-footer">
+                <div class="avatar-group">
+                  <div class="avatar-small">M</div>
+                  <div class="avatar-small">Y</div>
+                </div>
+                <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Join Session</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Session Card 2 -->
+          <div class="session-card">
+            <div class="session-header">
+              <span class="badge badge-success">Active</span>
+              <span class="badge badge-primary">Data Science</span>
+            </div>
+            <div class="session-content">
+              <div class="session-title">Machine Learning Fundamentals</div>
+              <div class="session-meta">
+                <span>👩‍🏫 Sarah Williams</span>
+                <span>⏱️ 3h per week</span>
+              </div>
+              <div class="session-description">Learn the basics of ML algorithms and data preprocessing.</div>
+              <div class="session-footer">
+                <div class="avatar-group">
+                  <div class="avatar-small">S</div>
+                  <div class="avatar-small">A</div>
+                  <div class="avatar-small">J</div>
+                </div>
+                <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Join Session</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Session Card 3 -->
+          <div class="session-card">
+            <div class="session-header">
+              <span class="badge badge-danger">Starting Soon</span>
+              <span class="badge badge-primary">Design</span>
+            </div>
+            <div class="session-content">
+              <div class="session-title">UI/UX Design Principles</div>
+              <div class="session-meta">
+                <span>👩‍🏫 Emma Rodriguez</span>
+                <span>⏱️ Feb 15</span>
+              </div>
+              <div class="session-description">Master the fundamentals of modern UI/UX design.</div>
+              <div class="session-footer">
+                <div class="avatar-group">
+                  <div class="avatar-small">E</div>
+                </div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.9rem;">Register</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teaching Sessions -->
+      <div style="margin-top: 3rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 class="section-title">Sessions I'm Teaching</h3>
+          <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">+ Create Session</button>
+        </div>
+
+        <div class="card-grid">
+          <!-- Teaching Session Card -->
+          <div class="session-card">
+            <div class="session-header">
+              <span class="badge badge-success">Active</span>
+              <span class="badge badge-primary">JavaScript</span>
+            </div>
+            <div class="session-content">
+              <div class="session-title">JavaScript Essentials</div>
+              <div class="session-meta">
+                <span>👥 12 Students</span>
+                <span>⏱️ Every Tuesday</span>
+              </div>
+              <div class="session-description">Comprehensive guide to JavaScript fundamentals for beginners.</div>
+              <div class="session-footer">
+                <div class="avatar-group">
+                  <div class="avatar-small">J</div>
+                  <div class="avatar-small">K</div>
+                  <div class="avatar-small">L</div>
+                </div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.9rem;">Manage</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
