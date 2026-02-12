@@ -1,2 +1,2 @@
 # TeachMeMate
-Hackathon project: a project that enables users with intrests that serve each others learnign needs
+A hackathon project focused on building a platform that connects people with complementary interests and skills so they can support each other’s learning goals. The idea is to match users based on what they want to learn and what they can offer, creating mutually beneficial learning partnerships. This could include collaborative study, skill exchange, mentorship, or peer guidance, helping users learn more efficiently through shared knowledge, accountability, and community interaction.
