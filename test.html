@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SkillSwap - Test Call Setup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .test-container {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .test-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+      font-size: 28px;
+    }
+
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #1565c0;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s;
+      background: #4CAF50;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .button-group button {
+      margin-bottom: 0;
+    }
+
+    .user-id {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 5px;
+      word-break: break-all;
+      font-size: 12px;
+      font-family: monospace;
+      margin-top: 5px;
+      color: #333;
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+      display: block;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding-bottom: 30px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .preset-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .preset-btn {
+      padding: 10px;
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.3s;
+    }
+
+    .preset-btn:hover {
+      background: #e0e0e0;
+      border-color: #4CAF50;
+    }
+
+    .instructions {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 5px;
+      margin-top: 30px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .instructions h3 {
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+      line-height: 1.8;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .logged-in-info {
+      background: #e8f5e9;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      border-left: 4px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="test-container">
+    <h1>🎥 Test SkillSwap Call</h1>
+
+    <div class="info-box">
+      ℹ️ This page allows you to test the video call feature. Create test accounts and make calls between them.
+    </div>
+
+    <!-- LOGIN SECTION -->
+    <div class="section" id="loginSection">
+      <h2>👤 Login / Create Account</h2>
+      
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="email" id="email" placeholder="test@example.com">
+      </div>
+
+      <div class="form-group">
+        <label>Password:</label>
+        <input type="password" id="password" placeholder="password123">
+      </div>
+
+      <button id="loginBtn">Login</button>
+      <button id="signupBtn" style="background: #2196F3;">Create Account</button>
+    </div>
+
+    <!-- LOGGED IN SECTION -->
+    <div class="section hidden" id="loggedInSection">
+      <div class="logged-in-info">
+        ✅ Logged in as: <strong id="userEmail"></strong>
+      </div>
+
+      <div class="form-group">
+        <label>Your User ID:</label>
+        <div class="user-id" id="userId">Loading...</div>
+      </div>
+
+      <button onclick="copyToClipboard('userId')" style="background: #2196F3;">Copy Your ID</button>
+      <button onclick="logout()" style="background: #f44336;">Logout</button>
+    </div>
+
+    <!-- OTHER USER SECTION -->
+    <div class="section">
+      <h2>👥 Other User's ID</h2>
+      
+      <div class="form-group">
+        <label>Paste Other User's ID:</label>
+        <input type="text" id="otherUserId" placeholder="Paste the other user's ID here">
+      </div>
+
+      <button onclick="pasteFromClipboard()" style="background: #2196F3;">Paste from Clipboard</button>
+    </div>
+
+    <!-- TEST PARAMETERS -->
+    <div class="section">
+      <h2>⚙️ Test Parameters</h2>
+      
+      <div class="form-group">
+        <label>Match ID (for testing):</label>
+        <input type="text" id="matchId" placeholder="Enter any match ID" value="test-match-001">
+      </div>
+
+      <div class="preset-buttons">
+        <button class="preset-btn" onclick="setMatchId('test-match-001')">Demo Match</button>
+        <button class="preset-btn" onclick="setMatchId('skill-swap-' + Date.now())">Random ID</button>
+      </div>
+    </div>
+
+    <!-- START CALL -->
+    <button id="startCallBtn" onclick="startTestCall()" style="width: 100%; background: #4CAF50; font-size: 16px; padding: 15px; margin-top: 20px;">🚀 Start Video Call</button>
+
+    <!-- STATUS -->
+    <div id="status" class="status"></div>
+
+    <!-- INSTRUCTIONS -->
+    <div class="instructions">
+      <h3>📋 How to Test:</h3>
+      <ol>
+        <li><strong>Create 2 accounts</strong> (or use existing ones)</li>
+        <li><strong>Login with Account 1</strong> in Window 1</li>
+        <li><strong>Copy your User ID</strong></li>
+        <li><strong>Open Window 2</strong> and Login with Account 2</li>
+        <li><strong>Paste Account 1's ID</strong> in Window 2</li>
+        <li><strong>Make sure both have same Match ID</strong></li>
+        <li><strong>Click "Start Video Call"</strong> in BOTH windows</li>
+        <li><strong>Allow camera/microphone permissions</strong></li>
+        <li><strong>See both videos and use chat!</strong></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { 
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    updateProfile,
+    setPersistence,
+    browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { 
+    getFirestore
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+    apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
+    authDomain: "teachmemate-347ab.firebaseapp.com",
+    projectId: "teachmemate-347ab",
+    storageBucket: "teachmemate-347ab.firebasestorage.app",
+    messagingSenderId: "739144710255",
+    appId: "1:739144710255:web:91de287fdbf35a8db4b59a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    await setPersistence(auth, browserSessionPersistence);
+    const db = getFirestore(app);
+
+    // ============================================
+    // UI ELEMENTS
+    // ============================================
+
+    const loginSection = document.getElementById('loginSection');
+    const loggedInSection = document.getElementById('loggedInSection');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const userIdEl = document.getElementById('userId');
+    const userEmailEl = document.getElementById('userEmail');
+
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+
+    function showStatus(message, type = 'info') {
+    const statusEl = document.getElementById('status');
+    statusEl.textContent = message;
+    statusEl.className = `status ${type}`;
+    console.log(`[${type.toUpperCase()}]`, message);
+    }
+
+    function copyToClipboard(elementId) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent;
+    
+    if (text === 'Loading...' || text === 'Not logged in') {
+        showStatus('❌ Please login first', 'error');
+        return;
+    }
+
+    navigator.clipboard.writeText(text).then(() => {
+        showStatus('✅ User ID copied to clipboard!', 'success');
+    }).catch(err => {
+        showStatus('❌ Failed to copy: ' + err.message, 'error');
+    });
+    }
+
+    function pasteFromClipboard() {
+    navigator.clipboard.readText().then(text => {
+        document.getElementById('otherUserId').value = text;
+        showStatus('✅ User ID pasted!', 'success');
+    }).catch(err => {
+        showStatus('❌ Failed to paste: ' + err.message, 'error');
+    });
+    }
+
+    function setMatchId(id) {
+    document.getElementById('matchId').value = id;
+    }
+
+    function updateUI(user) {
+    if (user) {
+        loginSection.classList.add('hidden');
+        loggedInSection.classList.remove('hidden');
+        userEmailEl.textContent = user.email;
+        userIdEl.textContent = user.uid;
+    } else {
+        loginSection.classList.remove('hidden');
+        loggedInSection.classList.add('hidden');
+        userIdEl.textContent = 'Not logged in';
+    }
+    }
+
+    // ============================================
+    // AUTH FUNCTIONS
+    // ============================================
+
+    loginBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+        showStatus('❌ Please enter email and password', 'error');
+        return;
+    }
+
+    try {
+        showStatus('🔐 Logging in...', 'info');
+        loginBtn.disabled = true;
+
+        await signInWithEmailAndPassword(auth, email, password);
+        
+        showStatus('✅ Logged in successfully!', 'success');
+        emailInput.value = '';
+        passwordInput.value = '';
+    } catch (error) {
+        showStatus('❌ Login error: ' + error.message, 'error');
+    } finally {
+        loginBtn.disabled = false;
+    }
+    });
+
+    signupBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+        showStatus('❌ Please enter email and password', 'error');
+        return;
+    }
+
+    if (password.length < 6) {
+        showStatus('❌ Password must be at least 6 characters', 'error');
+        return;
+    }
+
+    try {
+        showStatus('📝 Creating account...', 'info');
+        signupBtn.disabled = true;
+
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        
+        await updateProfile(userCredential.user, {
+        displayName: email.split('@')[0]
+        });
+
+        showStatus('✅ Account created successfully!', 'success');
+        emailInput.value = '';
+        passwordInput.value = '';
+    } catch (error) {
+        showStatus('❌ Signup error: ' + error.message, 'error');
+    } finally {
+        signupBtn.disabled = false;
+    }
+    });
+
+    function logout() {
+    signOut(auth).then(() => {
+        showStatus('✅ Logged out', 'success');
+    }).catch(error => {
+        showStatus('❌ Logout error: ' + error.message, 'error');
+    });
+    }
+
+    // ============================================
+    // START CALL
+    // ============================================
+
+    function startTestCall() {
+    const otherUserId = document.getElementById('otherUserId').value.trim();
+    const matchId = document.getElementById('matchId').value.trim();
+
+    if (!auth.currentUser) {
+        showStatus('❌ Please login first', 'error');
+        return;
+    }
+
+    if (!otherUserId) {
+        showStatus('❌ Please paste the other user\'s ID', 'error');
+        return;
+    }
+
+    if (!matchId) {
+        showStatus('❌ Please enter a Match ID', 'error');
+        return;
+    }
+
+    if (otherUserId === auth.currentUser.uid) {
+        showStatus('❌ Cannot call yourself! Use a different account/window', 'error');
+        return;
+    }
+
+    const url = `session.html?matchId=${encodeURIComponent(matchId)}&otherUserId=${encodeURIComponent(otherUserId)}`;
+    
+    showStatus('🚀 Opening video call...', 'success');
+    
+    setTimeout(() => {
+        window.location.href = url;
+    }, 500);
+    }
+
+    // ============================================
+    // AUTH STATE LISTENER
+    // ============================================
+
+    onAuthStateChanged(auth, (user) => {
+    updateUI(user);
+    if (user) {
+        showStatus(`✅ Logged in as ${user.email}`, 'success');
+    }
+    });
+
+    window.startTestCall = startTestCall;
+    window.logout = logout;
+    window.copyToClipboard = copyToClipboard;
+    window.pasteFromClipboard = pasteFromClipboard;
+    window.setMatchId = setMatchId;
+
+    </script>
+</body>
+</html>
