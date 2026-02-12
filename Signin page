@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign In - SkillSwap</title>
+</head>
+<body>
+
+<h2>Sign In</h2>
+
+<input type="email" id="loginEmail" placeholder="Enter Email">
+<br><br>
+
+<input type="password" id="loginPassword" placeholder="Enter Password">
+<br><br>
+
+<button id="loginBtn">Sign In</button>
+
+<br><br>
+<a href="signup.html">Don't have an account? Sign Up</a>
+
+<script type="module">
+
+import { initializeApp } from 
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+
+import { 
+  getAuth, 
+  signInWithEmailAndPassword 
+} from 
+"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
+  authDomain: "teachmemate-347ab.firebaseapp.com",
+  projectId: "teachmemate-347ab",
+  storageBucket: "teachmemate-347ab.firebasestorage.app",
+  messagingSenderId: "739144710255",
+  appId: "1:739144710255:web:91de287fdbf35a8db4b59a"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+document.getElementById("loginBtn").addEventListener("click", () => {
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login Successful");
+      window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+
+});
+
+</script>
+
+</body>
+</html>
