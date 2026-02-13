@@ -249,6 +249,7 @@
     let currentUser = null;
     let activeRoomId = null;
     let activeOtherUserId = null;
+    const userNameCache = new Map();
 
     function renderMessage(docData, isMe) {
       const div = document.createElement('div');
@@ -335,9 +336,94 @@
     }
 
     async function loadConversationList(user) {
-      // Simple implementation: conversations are only created when coming from a user profile.
-      // Here we just show a message; extending to full list is easy later.
-      conversationEmpty.style.display = 'block';
+      // Show all conversations where the current user is a participant
+      const convQuery = query(
+        collection(db, "conversations"),
+        where("participants", "array-contains", user.uid)
+      );
+
+      onSnapshot(convQuery, async (snap) => {
+        const items = [];
+        snap.forEach(docSnap => {
+          items.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        // Sort newest first based on lastUpdated
+        items.sort((a, b) => {
+          const ta = a.lastUpdated?.seconds || 0;
+          const tb = b.lastUpdated?.seconds || 0;
+          return tb - ta;
+        });
+
+        conversationList.innerHTML = '';
+
+        if (!items.length) {
+          conversationEmpty.style.display = 'block';
+          return;
+        }
+
+        conversationEmpty.style.display = 'none';
+
+        for (const conv of items) {
+          const otherId =
+            Array.isArray(conv.participants) && conv.participants.length === 2
+              ? (conv.participants[0] === user.uid
+                  ? conv.participants[1]
+                  : conv.participants[0])
+              : null;
+
+          let otherName = 'User';
+          if (otherId) {
+            if (userNameCache.has(otherId)) {
+              otherName = userNameCache.get(otherId);
+            } else {
+              try {
+                const otherRef = doc(db, "users", otherId);
+                const otherSnap = await getDoc(otherRef);
+                if (otherSnap.exists()) {
+                  const d = otherSnap.data();
+                  otherName = d.name || (d.email || '').split('@')[0] || 'User';
+                  userNameCache.set(otherId, otherName);
+                }
+              } catch (e) {
+                console.error("Failed to load other user for conversation list", e);
+              }
+            }
+          }
+
+          const item = document.createElement('div');
+          item.className = 'chat-conversation-item' + (conv.id === activeRoomId ? ' active' : '');
+
+          const nameEl = document.createElement('div');
+          nameEl.className = 'chat-conversation-name';
+          nameEl.textContent = otherName;
+
+          const lastEl = document.createElement('div');
+          lastEl.className = 'chat-conversation-last';
+          lastEl.textContent = conv.lastMessage || 'No messages yet';
+
+          item.appendChild(nameEl);
+          item.appendChild(lastEl);
+
+          item.addEventListener('click', () => {
+            openConversation(conv.id, otherId, otherName);
+            // Remember current conversation for dashboard chat preview
+            localStorage.setItem('currentRoomId', conv.id);
+            if (otherId) {
+              localStorage.setItem('currentRoomOtherUserId', otherId);
+            }
+            if (otherName) {
+              localStorage.setItem('currentRoomName', otherName);
+            }
+            // Update URL without reloading
+            const url = new URL(window.location.href);
+            url.searchParams.set('room', conv.id);
+            window.history.replaceState(null, '', url.toString());
+          });
+
+          conversationList.appendChild(item);
+        }
+      });
     }
 
     onAuthStateChanged(auth, async (user) => {
