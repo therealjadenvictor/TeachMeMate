@@ -122,6 +122,43 @@
       color: #ccc;
       cursor: pointer;
     }
+
+    .brand-logo {
+      position: absolute;
+      top: 30px;
+      left: 40px;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #00d4ff, #b74bff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+    }
+
+    @media (max-width: 768px) {
+      .brand-logo {
+        left: 50%;
+        transform: translateX(-50%);
+        top: 20px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .brand-logo:hover {
+        transform: translateX(-50%) scale(1.05);
+      }
+    }
   </style>
 </head>
 
