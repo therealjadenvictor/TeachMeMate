@@ -1,286 +1,391 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign Up - TeachMeMate</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - TeachMeMate</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-<link rel="stylesheet" href="bootstrap-theme.css">
-<link rel="stylesheet" href="styles.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="bootstrap-theme.css">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;500&display=swap"
+    rel="stylesheet">
 
-<style>
-body{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  font-family:'Inter',sans-serif;
-  opacity:0;
-  transition:opacity 0.4s ease;
-}
-body.fade-in{opacity:1;}
-body.fade-out{opacity:0;}
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      font-family: 'Inter', sans-serif;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
 
-.auth-left{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:2rem;
-}
+    body.fade-in {
+      opacity: 1;
+    }
 
-.auth-text h2{
-  font-size:3.5rem;
-  font-weight:800;
-  font-family:'Poppins',sans-serif;
-  text-shadow:0 0 25px rgba(255,255,255,0.4);
-  margin-bottom:1rem;
-}
+    body.fade-out {
+      opacity: 0;
+    }
 
-.auth-text p{
-  font-size:1.4rem;
-  opacity:0.85;
-}
+    .auth-left {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
 
-.auth-form{
-  max-width:420px;
-  backdrop-filter:blur(15px);
-  background:rgba(255,255,255,0.05);
-  border-radius:20px;
-  padding:2.5rem;
-  box-shadow:0 8px 32px rgba(0,0,0,0.4);
-}
+    .auth-text h2 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      font-family: 'Poppins', sans-serif;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+      margin-bottom: 1rem;
+    }
 
-.form-control{
-  background:rgba(255,255,255,0.08);
-  border:none;
-  color:white;
-  border-radius:12px;
-  transition:all 0.2s ease;
-}
+    .auth-text p {
+      font-size: 1.4rem;
+      opacity: 0.85;
+    }
 
-.form-control:focus{
-  box-shadow:0 0 0 2px rgba(0,212,255,0.5);
-  background:rgba(255,255,255,0.12);
-  color:white;
-}
+    .auth-form {
+      max-width: 420px;
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
 
-.btn-primary{
-  background:linear-gradient(90deg,#00d4ff,#b74bff);
-  border:none;
-  border-radius:12px;
-  font-weight:600;
-  padding:0.75rem;
-  transition:all 0.3s ease;
-}
+    .form-control {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: white;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
 
-.btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 5px 20px rgba(0,212,255,0.5);
-}
+    .form-control:focus {
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.5);
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
 
-.input-group-text{
-  background:rgba(255,255,255,0.08);
-  border:none;
-  color:#ccc;
-  cursor:pointer;
-}
+    .btn-primary {
+      background: linear-gradient(90deg, #00d4ff, #b74bff);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      padding: 0.75rem;
+      transition: all 0.3s ease;
+    }
 
-.strength-bar{
-  height:6px;
-  border-radius:10px;
-  transition:all 0.3s ease;
-}
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.5);
+    }
 
-.shake{
-  animation:shake 0.3s;
-}
-@keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-5px);}
-  50%{transform:translateX(5px);}
-  75%{transform:translateX(-5px);}
-  100%{transform:translateX(0);}
-}
+    .input-group-text {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #ccc;
+      cursor: pointer;
+    }
 
-@media(max-width:991px){
-  .auth-left{display:none;}
-}
-</style>
+    .strength-bar {
+      height: 6px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .shake {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      50% {
+        transform: translateX(5px);
+      }
+
+      75% {
+        transform: translateX(-5px);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 991px) {
+      .auth-left {
+        display: none;
+      }
+    }
+
+    /* Hover Heading Effect - parkHJ11 Style */
+    h2.hover-effect {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      position: relative;
+      /* Kept relative to stay in document flow */
+      font-size: 4.5rem;
+      /* Adapted size */
+      color: transparent;
+      text-transform: uppercase;
+      font-family: consolas, monospace;
+      white-space: nowrap;
+      /* Prevent wrapping for the effect */
+    }
+
+    h2.hover-effect span:nth-child(1) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #fff;
+      /* White for dark theme */
+      transition: 0.5s;
+      clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+      overflow: hidden;
+      width: 100%;
+    }
+
+    h2.hover-effect:hover span:nth-child(1) {
+      transform: translateY(-18px);
+    }
+
+    h2.hover-effect span:nth-child(2) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #fff;
+      /* White for dark theme */
+      transition: 0.5s;
+      clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+      overflow: hidden;
+      width: 100%;
+    }
+
+    h2.hover-effect:hover span:nth-child(2) {
+      transform: translateY(18px);
+    }
+
+    h2.hover-effect span:nth-child(3) {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scaleY(0);
+      width: auto;
+      min-width: 100%;
+      color: #000;
+      background: #00d4ff;
+      font-size: 0.25em;
+      font-weight: 500;
+      letter-spacing: 0.7em;
+      text-align: center;
+      transition: 0.5s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 30px;
+      padding: 0 10px;
+      white-space: nowrap;
+    }
+
+    h2.hover-effect:hover span:nth-child(3) {
+      transform: translate(-50%, -50%) scaleY(1);
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="container-fluid">
-<div class="row g-0 vh-100">
+  <div class="container-fluid">
+    <div class="row g-0 vh-100">
 
-<!-- LEFT SIDE -->
-<div class="col-lg-6 auth-left">
-  <div class="auth-text">
-    <h2>Join TeachMeMate</h2>
-    <p>Create your account and start your journey.</p>
+      <!-- LEFT SIDE -->
+      <div class="col-lg-6 auth-left">
+        <div class="auth-text">
+          <h2 class="hover-effect">
+            Join
+            <span>Join</span>
+            <span>Join</span>
+            <span>TeachMeMate</span>
+          </h2>
+          <p>Create your account and start your journey.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center p-4">
+        <div class="auth-form w-100">
+
+          <h3 class="text-center mb-4">Sign Up</h3>
+
+          <form id="signupForm">
+
+            <div class="mb-3">
+              <label>Email</label>
+              <input type="email" id="email" class="form-control" required>
+              <div class="invalid-feedback">Enter a valid email.</div>
+            </div>
+
+            <div class="mb-2">
+              <label>Password</label>
+              <div class="input-group">
+                <input type="password" id="password" class="form-control" required>
+                <span class="input-group-text" id="togglePassword">
+                  <i class="bi bi-eye"></i>
+                </span>
+              </div>
+            </div>
+
+            <!-- Strength -->
+            <div class="mb-3">
+              <div class="progress">
+                <div id="strengthBar" class="progress-bar strength-bar"></div>
+              </div>
+              <small id="strengthText" class="text-muted"></small>
+            </div>
+
+            <div class="mb-4">
+              <label>Confirm Password</label>
+              <input type="password" id="confirmPassword" class="form-control" required>
+              <div class="invalid-feedback">Passwords do not match.</div>
+            </div>
+
+            <button type="submit" id="signupBtn" class="btn btn-primary w-100 mb-3">
+              <span id="btnText">Create Account</span>
+              <span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none"></span>
+            </button>
+
+          </form>
+
+          <div class="text-center text-muted">
+            Already have an account?
+            <a href="signin.html" class="text-info nav-link-custom">Sign In</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 
-<!-- RIGHT SIDE -->
-<div class="col-lg-6 d-flex align-items-center justify-content-center p-4">
-<div class="auth-form w-100">
+  <!-- Toast -->
+  <div class="position-fixed top-0 end-0 p-3">
+    <div id="toast" class="toast align-items-center text-bg-danger border-0">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
 
-<h3 class="text-center mb-4">Sign Up</h3>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<form id="signupForm">
+  <script type="module">
+    import { auth } from "./firebase-config.js";
+    import { createUserWithEmailAndPassword }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<div class="mb-3">
-<label>Email</label>
-<input type="email" id="email" class="form-control" required>
-<div class="invalid-feedback">Enter a valid email.</div>
-</div>
+    document.body.classList.add("fade-in");
 
-<div class="mb-2">
-<label>Password</label>
-<div class="input-group">
-<input type="password" id="password" class="form-control" required>
-<span class="input-group-text" id="togglePassword">
-<i class="bi bi-eye"></i>
-</span>
-</div>
-</div>
+    function smoothRedirect(url) {
+      document.body.classList.add("fade-out");
+      setTimeout(() => window.location.href = url, 300);
+    }
 
-<!-- Strength -->
-<div class="mb-3">
-<div class="progress">
-<div id="strengthBar" class="progress-bar strength-bar"></div>
-</div>
-<small id="strengthText" class="text-muted"></small>
-</div>
+    document.querySelectorAll(".nav-link-custom").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        smoothRedirect(link.href);
+      });
+    });
 
-<div class="mb-4">
-<label>Confirm Password</label>
-<input type="password" id="confirmPassword" class="form-control" required>
-<div class="invalid-feedback">Passwords do not match.</div>
-</div>
+    function showToast(message, type = "danger") {
+      const toastEl = document.getElementById("toast");
+      document.getElementById("toastMessage").textContent = message;
+      toastEl.className = `toast align-items-center text-bg-${type} border-0`;
+      new bootstrap.Toast(toastEl).show();
+    }
 
-<button type="submit" id="signupBtn" class="btn btn-primary w-100 mb-3">
-<span id="btnText">Create Account</span>
-<span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none"></span>
-</button>
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
 
-</form>
+    password.addEventListener("input", () => {
+      const val = password.value;
+      let strength = 0;
+      if (val.length > 6) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
 
-<div class="text-center text-muted">
-Already have an account?
-<a href="signin.html" class="text-info nav-link-custom">Sign In</a>
-</div>
+      const percent = (strength / 4) * 100;
+      strengthBar.style.width = percent + "%";
 
-</div>
-</div>
+      if (strength <= 1) {
+        strengthBar.className = "progress-bar bg-danger strength-bar";
+        strengthText.textContent = "Weak";
+      } else if (strength <= 3) {
+        strengthBar.className = "progress-bar bg-warning strength-bar";
+        strengthText.textContent = "Medium";
+      } else {
+        strengthBar.className = "progress-bar bg-success strength-bar";
+        strengthText.textContent = "Strong";
+      }
+    });
 
-</div>
-</div>
+    confirmPassword.addEventListener("input", () => {
+      if (confirmPassword.value !== password.value) {
+        confirmPassword.classList.add("is-invalid");
+      } else {
+        confirmPassword.classList.remove("is-invalid");
+        confirmPassword.classList.add("is-valid");
+      }
+    });
 
-<!-- Toast -->
-<div class="position-fixed top-0 end-0 p-3">
-<div id="toast" class="toast align-items-center text-bg-danger border-0">
-<div class="d-flex">
-<div class="toast-body" id="toastMessage"></div>
-<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-</div>
-</div>
-</div>
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+      if (confirmPassword.value !== password.value) {
+        signupForm.classList.add("shake");
+        setTimeout(() => signupForm.classList.remove("shake"), 300);
+        showToast("Passwords do not match");
+        return;
+      }
 
-<script type="module">
-import { auth } from "./firebase-config.js";
-import { createUserWithEmailAndPassword }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+      signupBtn.disabled = true;
+      btnSpinner.classList.remove("d-none");
+      btnText.textContent = "Creating Account...";
 
-document.body.classList.add("fade-in");
-
-function smoothRedirect(url){
-  document.body.classList.add("fade-out");
-  setTimeout(()=>window.location.href=url,300);
-}
-
-document.querySelectorAll(".nav-link-custom").forEach(link=>{
-  link.addEventListener("click",e=>{
-    e.preventDefault();
-    smoothRedirect(link.href);
-  });
-});
-
-function showToast(message,type="danger"){
-  const toastEl=document.getElementById("toast");
-  document.getElementById("toastMessage").textContent=message;
-  toastEl.className=`toast align-items-center text-bg-${type} border-0`;
-  new bootstrap.Toast(toastEl).show();
-}
-
-const password=document.getElementById("password");
-const confirmPassword=document.getElementById("confirmPassword");
-const strengthBar=document.getElementById("strengthBar");
-const strengthText=document.getElementById("strengthText");
-
-password.addEventListener("input",()=>{
-  const val=password.value;
-  let strength=0;
-  if(val.length>6) strength++;
-  if(/[A-Z]/.test(val)) strength++;
-  if(/[0-9]/.test(val)) strength++;
-  if(/[^A-Za-z0-9]/.test(val)) strength++;
-
-  const percent=(strength/4)*100;
-  strengthBar.style.width=percent+"%";
-
-  if(strength<=1){
-    strengthBar.className="progress-bar bg-danger strength-bar";
-    strengthText.textContent="Weak";
-  }else if(strength<=3){
-    strengthBar.className="progress-bar bg-warning strength-bar";
-    strengthText.textContent="Medium";
-  }else{
-    strengthBar.className="progress-bar bg-success strength-bar";
-    strengthText.textContent="Strong";
-  }
-});
-
-confirmPassword.addEventListener("input",()=>{
-  if(confirmPassword.value!==password.value){
-    confirmPassword.classList.add("is-invalid");
-  }else{
-    confirmPassword.classList.remove("is-invalid");
-    confirmPassword.classList.add("is-valid");
-  }
-});
-
-signupForm.addEventListener("submit",async(e)=>{
-  e.preventDefault();
-
-  if(confirmPassword.value!==password.value){
-    signupForm.classList.add("shake");
-    setTimeout(()=>signupForm.classList.remove("shake"),300);
-    showToast("Passwords do not match");
-    return;
-  }
-
-  signupBtn.disabled=true;
-  btnSpinner.classList.remove("d-none");
-  btnText.textContent="Creating Account...";
-
-  try{
-    await createUserWithEmailAndPassword(auth,email.value,password.value);
-    showToast("Account created successfully!","success");
-    setTimeout(()=>smoothRedirect("Profile.html"),1000);
-  }catch(error){
-    showToast(error.message);
-    signupBtn.disabled=false;
-    btnSpinner.classList.add("d-none");
-    btnText.textContent="Create Account";
-  }
-});
-</script>
+      try {
+        await createUserWithEmailAndPassword(auth, email.value, password.value);
+        showToast("Account created successfully!", "success");
+        setTimeout(() => smoothRedirect("Profile.html"), 1000);
+      } catch (error) {
+        showToast(error.message);
+        signupBtn.disabled = false;
+        btnSpinner.classList.add("d-none");
+        btnText.textContent = "Create Account";
+      }
+    });
+  </script>
 
 </body>
+
 </html>
