@@ -58,20 +58,6 @@
       align-items: flex-start;
     }
 
-    /* CHATBOX CARD (right column) */
-    .chatbox-panel {
-      width: 100%;
-      background: linear-gradient(135deg, var(--tertiary-black), var(--accent-black));
-      border: 1px solid var(--accent-black);
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-md);
-      height: 420px;
-      margin: 0;
-    }
-
     .dashboard-main {
       grid-column: 2;
       min-width: 0;
@@ -294,10 +280,10 @@
       </div>
 
       <ul class="sidebar-menu">
-        <li><a href="#" class="active">📊 Dashboard</a></li>
-        <li><a href="chat.html" id="openChatsBtn">💬 All Chats</a></li>
+        <li><a href="#" id="dashboardBtn" class="active">📊 Dashboard</a></li>
+        <li><a href="chat.html">💬 All Chats</a></li>
         <li><a href="#">🎓 My Sessions</a></li>
-        <li><a href="#">👨‍🏫 Teaching</a></li>
+        <li><a href="#" id="teachingBtn">👨‍🏫 Teaching</a></li>
       </ul>
 
       <div style="position:absolute;bottom:2rem;width:100%;padding:0 1rem;">
@@ -306,7 +292,7 @@
     </div>
 
     <div class="main-content">
-      <div class="dashboard-main">
+      <div id="dashboardSection" class="dashboard-main">
         <div class="dashboard-header">
           <div>
             <h2>Welcome back, Alex! 👋</h2>
@@ -381,18 +367,23 @@
         </div>
 
       </div>
+      <div id="teachingSection" style="display:none;">
+        <h2 style="margin-bottom:1rem;">Sessions I'm Teaching</h2>
 
-      <aside class="chatbox-panel">
-        <div class="chatbox-header" id="dashboardChatHeader">Chat</div>
-        <div class="chatbox-messages" id="dashboardChatMessages">
-          <div class="msg bot">Open a chat with someone to see messages here.</div>
+        <div class="card-grid">
+          <div class="session-card">
+            <div class="session-header">JavaScript</div>
+            <div class="session-content">
+              JavaScript Essentials
+              <div class="teaching-actions" style="margin-top:1rem;">
+                <button class="btn btn-primary" onclick="window.location.href = `test.html`">
+                  Start Live Session
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="chatbox-input-wrap">
-          <input type="text" id="dashboardChatInput" placeholder="Type a message..." autocomplete="off">
-          <button type="button" id="dashboardChatSend">Send</button>
-        </div>
-      </aside>
-
+      </div>
     </div>
   </div>
 
@@ -628,9 +619,44 @@
         }
       });
     }
+    const dashboardBtn = document.getElementById("dashboardBtn");
+    const teachingBtn = document.getElementById("teachingBtn");
+
+    const dashboardSection = document.getElementById("dashboardSection");
+    const teachingSection = document.getElementById("teachingSection");
+
+    const sidebarLinks = document.querySelectorAll(".sidebar-menu a");
+
+    function setActive(link) {
+      sidebarLinks.forEach(a => a.classList.remove("active"));
+      link.classList.add("active");
+    }
+
+    // Teaching tab click
+    teachingBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      dashboardSection.style.display = "none";
+      teachingSection.style.display = "block";
+
+      setActive(teachingBtn);
+    });
+
+    // Dashboard tab click
+    dashboardBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      teachingSection.style.display = "none";
+      dashboardSection.style.display = "grid"; // IMPORTANT (grid, not block)
+
+      setActive(dashboardBtn);
+    });
+
+
+    function startTeachingSession() {
+      window.location.href = `test.html`;
+    }
   </script>
 
 </body>
-
 </html>
-
