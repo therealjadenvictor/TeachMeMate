@@ -1,363 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Session - TeachMeMate</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>SkillSwap Call</title>
+
+  <!-- Agora SDK -->
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N.js"></script>
+
   <style>
-    .session-layout {
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+    }
+
+    #videoArea {
+      flex: 3;
       display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 1rem;
-      min-height: 100vh;
-      padding: 1rem;
-      background: var(--primary-black);
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 10px;
+      padding: 10px;
     }
 
-    .main-video {
-      background: var(--secondary-black);
-      border: 2px solid var(--accent-black);
-      border-radius: 12px;
-      padding: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 60vh;
-      position: relative;
+    .videoBox {
+      background: black;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 280px;
     }
 
-    .video-placeholder {
-      text-align: center;
-    }
-
-    .video-placeholder-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-
-    .video-placeholder h2 {
-      margin-bottom: 0.5rem;
-    }
-
-    .video-controls {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-top: 1.5rem;
-    }
-
-    .control-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 2px solid var(--accent-black);
-      background: var(--tertiary-black);
-      color: var(--light-gray);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-    }
-
-    .control-btn:hover {
-      border-color: var(--neon-cyan);
-      background: rgba(0, 212, 255, 0.1);
-      color: var(--neon-cyan);
-    }
-
-    .control-btn.active {
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
-      border-color: var(--neon-cyan);
-      color: var(--primary-black);
-    }
-
-    .session-info {
-      background: var(--tertiary-black);
-      border: 1px solid var(--accent-black);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .session-info h3 {
-      margin-bottom: 1rem;
-      color: var(--neon-cyan);
-    }
-
-    .info-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--accent-black);
-      font-size: 0.9rem;
-    }
-
-    .info-item:last-child {
-      border-bottom: none;
-    }
-
-    .info-label {
-      color: var(--medium-gray);
-    }
-
-    .info-value {
-      color: var(--neon-cyan);
-      font-weight: 600;
-    }
-
-    .participants {
-      background: var(--tertiary-black);
-      border: 1px solid var(--accent-black);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .participants h4 {
-      margin-bottom: 1rem;
-      color: var(--neon-cyan);
-    }
-
-    .participant {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 0;
-    }
-
-    .participant-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-black);
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .participant-name {
-      font-size: 0.9rem;
+    #chatArea {
       flex: 1;
-    }
-
-    .participant-status {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--neon-green);
-    }
-
-    .chat-area {
-      background: var(--tertiary-black);
-      border: 1px solid var(--accent-black);
-      border-radius: 12px;
       display: flex;
       flex-direction: column;
-      height: 250px;
+      background: #1e1e1e;
+      border-left: 2px solid #333;
     }
 
-    .chat-header {
-      border-bottom: 1px solid var(--accent-black);
-      padding: 1rem;
-      color: var(--neon-cyan);
-      font-weight: 600;
-    }
-
-    .chat-messages {
+    #messages {
       flex: 1;
+      padding: 10px;
       overflow-y: auto;
-      padding: 1rem;
     }
 
-    .chat-message {
-      margin-bottom: 1rem;
-      font-size: 0.85rem;
-    }
-
-    .chat-message-name {
-      color: var(--neon-cyan);
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .chat-message-text {
-      color: var(--medium-gray);
-      background: var(--accent-black);
-      padding: 0.5rem 0.75rem;
-      border-radius: 4px;
-    }
-
-    .chat-input {
-      border-top: 1px solid var(--accent-black);
-      padding: 0.75rem;
+    #controls {
       display: flex;
-      gap: 0.5rem;
+      gap: 10px;
+      padding: 10px;
+      background: #000;
     }
 
-    .chat-input input {
-      flex: 1;
-      background: var(--accent-black);
-      border: none;
+    button {
       padding: 8px 12px;
-      border-radius: 4px;
-      color: var(--light-gray);
-      font-size: 0.85rem;
-    }
-
-    .chat-input button {
-      background: var(--neon-cyan);
-      color: var(--primary-black);
       border: none;
-      padding: 8px 12px;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-weight: bold;
     }
 
-    .chat-input button:hover {
-      background: var(--neon-purple);
-    }
+    .danger { background: #e53935; color: white; }
+    .primary { background: #4caf50; color: white; }
+    .secondary { background: #555; color: white; }
 
-    @media (max-width: 1024px) {
-      .session-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .main-video {
-        min-height: 40vh;
-      }
-
-      .video-controls {
-        gap: 0.5rem;
-      }
-
-      .control-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-      }
+    input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
     }
   </style>
 </head>
+
 <body>
-  <!-- Top Navigation -->
-  <nav style="position: sticky; top: 0; z-index: 100;">
-    <div class="navbar">
-      <div class="navbar-brand">TeachMeMate Live</div>
-      <ul class="nav-menu">
-        <li class="nav-item"><a href="dashboard.html">← Back to Dashboard</a></li>
-      </ul>
-    </div>
-  </nav>
 
-  <div class="session-layout">
-    <!-- Main Video Area -->
-    <div>
-      <div class="main-video">
-        <div class="video-placeholder">
-          <div class="video-placeholder-icon">🎥</div>
-          <h2>Video Stream Active</h2>
-          <p style="color: var(--medium-gray);">Advanced React Hooks - Live Session</p>
-        </div>
-      </div>
+  <div id="videoArea"></div>
 
-      <!-- Video Controls -->
-      <div class="video-controls" style="margin-top: 1.5rem;">
-        <button class="control-btn active" title="Microphone">🎤</button>
-        <button class="control-btn" title="Camera">📹</button>
-        <button class="control-btn" title="Screen Share">🖥️</button>
-        <button class="control-btn" title="Reactions">👍</button>
-        <button class="control-btn" title="Hand Raise">✋</button>
-      </div>
+  <div id="chatArea">
+    <div id="messages"></div>
 
-      <!-- Session Notes -->
-      <div style="background: var(--tertiary-black); border: 1px solid var(--accent-black); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;">
-        <h3 style="color: var(--neon-cyan); margin-bottom: 1rem;">Session Notes</h3>
-        <textarea style="width: 100%; background: var(--accent-black); border: none; color: var(--light-gray); padding: 1rem; border-radius: 6px; min-height: 120px;" placeholder="Take notes here..."></textarea>
-      </div>
+    <div style="display:flex; gap:5px; padding:10px;">
+      <input id="chatInput" placeholder="Message..." />
+      <button class="primary" onclick="sendMessage()">Send</button>
     </div>
 
-    <!-- Right Panel -->
-    <div>
-      <!-- Session Info -->
-      <div class="session-info">
-        <h3>Session Info</h3>
-        <div class="info-item">
-          <span class="info-label">Instructor</span>
-          <span class="info-value">Michael Chen</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Duration</span>
-          <span class="info-value">45 min</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Time Left</span>
-          <span class="info-value" style="color: var(--neon-green);">32 min</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">Level</span>
-          <span class="info-value">Intermediate</span>
-        </div>
-      </div>
-
-      <!-- Participants -->
-      <div class="participants">
-        <h4>Participants (12)</h4>
-        <div class="participant">
-          <div class="participant-avatar">MC</div>
-          <div class="participant-name">Michael Chen (Host)</div>
-          <div class="participant-status"></div>
-        </div>
-        <div class="participant">
-          <div class="participant-avatar">A</div>
-          <div class="participant-name">You</div>
-          <div class="participant-status"></div>
-        </div>
-        <div class="participant">
-          <div class="participant-avatar">J</div>
-          <div class="participant-name">John Smith</div>
-          <div class="participant-status"></div>
-        </div>
-        <div class="participant">
-          <div class="participant-avatar">S</div>
-          <div class="participant-name">Sarah Lee</div>
-          <div class="participant-status"></div>
-        </div>
-      </div>
-
-      <!-- Chat -->
-      <div class="chat-area">
-        <div class="chat-header">Chat</div>
-        <div class="chat-messages">
-          <div class="chat-message">
-            <div class="chat-message-name">Michael Chen</div>
-            <div class="chat-message-text">Welcome everyone! Let's dive into React Hooks.</div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-message-name">John Smith</div>
-            <div class="chat-message-text">Excited to learn! 🚀</div>
-          </div>
-          <div class="chat-message">
-            <div class="chat-message-name">Sarah Lee</div>
-            <div class="chat-message-text">Great session so far!</div>
-          </div>
-        </div>
-        <div class="chat-input">
-          <input type="text" placeholder="Type a message...">
-          <button>Send</button>
-        </div>
-      </div>
+    <div id="controls">
+      <button class="secondary" onclick="toggleMic()">Mute</button>
+      <button class="secondary" onclick="toggleCamera()">Camera Off</button>
+      <button class="secondary" onclick="shareScreen()">Share Screen</button>
+      <button class="danger" onclick="endCall()">End</button>
     </div>
   </div>
+
+<script type="module">
+  // ================= FIREBASE =================
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    onSnapshot,
+    query,
+    where,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
+    authDomain: "teachmemate-347ab.firebaseapp.com",
+    projectId: "teachmemate-347ab",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ================= AGORA =================
+  const APP_ID = "ENTER APP ID";
+  const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+
+  let localTracks = [];
+  let micOn = true;
+  let camOn = true;
+  let screenTrack = null;
+
+  const params = new URLSearchParams(window.location.search);
+  const room = params.get("room");
+
+  await client.join(APP_ID, room, null, null);
+
+  localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
+
+  const localDiv = document.createElement("div");
+  localDiv.className = "videoBox";
+  localDiv.id = "local";
+  document.getElementById("videoArea").appendChild(localDiv);
+  localTracks[1].play("local");
+
+  await client.publish(localTracks);
+
+  client.on("user-published", async (user, mediaType) => {
+    await client.subscribe(user, mediaType);
+    if (mediaType === "video") {
+      const div = document.createElement("div");
+      div.className = "videoBox";
+      div.id = user.uid;
+      document.getElementById("videoArea").appendChild(div);
+      user.videoTrack.play(div);
+    }
+    if (mediaType === "audio") {
+      user.audioTrack.play();
+    }
+  });
+
+  client.on("user-unpublished", user => {
+    document.getElementById(user.uid)?.remove();
+  });
+
+  // ================= CHAT =================
+  const q = query(collection(db, "chats"), where("room", "==", room));
+
+  onSnapshot(q, snap => {
+    const messages = document.getElementById("messages");
+    messages.innerHTML = "";
+    snap.forEach(doc => {
+      const p = document.createElement("p");
+      p.textContent = doc.data().text;
+      messages.appendChild(p);
+    });
+    messages.scrollTop = messages.scrollHeight;
+  });
+
+  window.sendMessage = async () => {
+    const input = document.getElementById("chatInput");
+    if (!input.value) return;
+
+    await addDoc(collection(db, "chats"), {
+      room,
+      text: input.value,
+      createdAt: serverTimestamp()
+    });
+
+    input.value = "";
+  };
+
+  // ================= CONTROLS =================
+  window.toggleMic = () => {
+    micOn = !micOn;
+    localTracks[0].setEnabled(micOn);
+  };
+
+  window.toggleCamera = () => {
+    camOn = !camOn;
+    localTracks[1].setEnabled(camOn);
+  };
+
+  window.shareScreen = async () => {
+    if (screenTrack) {
+      await client.unpublish(screenTrack);
+      screenTrack.close();
+      screenTrack = null;
+      await client.publish(localTracks[1]);
+    } else {
+      screenTrack = await AgoraRTC.createScreenVideoTrack();
+      await client.unpublish(localTracks[1]);
+      await client.publish(screenTrack);
+    }
+  };
+
+  window.endCall = async () => {
+    localTracks.forEach(t => t.close());
+    await client.leave();
+    window.location.href = "dashboard.html";
+  };
+</script>
+
 </body>
 </html>
