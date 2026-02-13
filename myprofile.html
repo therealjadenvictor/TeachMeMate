@@ -42,7 +42,11 @@ body{
   letter-spacing:2px;
 }
 
-.sidebar a{
+.sidebar-menu{
+  list-style:none;
+}
+
+.sidebar-menu a{
   display:flex;
   align-items:center;
   gap:10px;
@@ -52,8 +56,8 @@ body{
   border-left:4px solid transparent;
 }
 
-.sidebar a.active,
-.sidebar a:hover{
+.sidebar-menu a.active,
+.sidebar-menu a:hover{
   background:rgba(0,212,255,0.08);
   color:var(--accent);
   border-left-color:var(--accent);
@@ -133,12 +137,13 @@ button{
 <body>
 
 <div class="sidebar">
-<h2>TMATE</h2>
-<a href="dashboard.html">📊 Dashboard</a>
-<a href="session.html">🎓 My Sessions</a>
-<a href="#">👨‍🏫 Teaching</a>
-<a href="#">📚 Learning</a>
-<a href="#">⚙️ Settings</a>
+<h2>TMate</h2>
+<ul class="sidebar-menu">
+  <li><a href="dashboard.html">📊 Dashboard</a></li>
+  <li><a href="chat.html">💬 All Chats</a></li>
+  <li><a href="#">🎓 My Sessions</a></li>
+  <li><a href="#">👨‍🏫 Teaching</a></li>
+</ul>
 </div>
 
 <div class="main">
@@ -323,9 +328,8 @@ async function saveProfile(){
     
     // Get existing data to preserve stats
     const existingSnap = await getDoc(ref);
-    const existingData = existingSnap.exists() ? existingSnap.data() : {};
+    const existingData = existingSnap.exists() ? existingData : {};
     
-    // Preserve stats fields if they exist, otherwise use defaults
     const finalPayload = {
       ...payload,
       rating: existingData.rating != null ? existingData.rating : 0,
@@ -335,7 +339,6 @@ async function saveProfile(){
     
     await setDoc(ref, finalPayload, { merge: true });
 
-    // Reflect changes in the view mode
     vName.textContent = payload.name;
     vEmail.textContent = payload.email;
     vAge.textContent = payload.age != null ? payload.age : "-";
@@ -343,7 +346,6 @@ async function saveProfile(){
     vSkills.textContent = skillsArray.length ? skillsArray.join(", ") : "-";
     vTeachSkills.textContent = payload.learn || "-";
 
-    // Update stats display
     ratingDisplay.textContent = `⭐ ${finalPayload.rating.toFixed(1)}`;
     sessionsTakenDisplay.textContent = finalPayload.sessionsTaken;
     sessionsGivenDisplay.textContent = finalPayload.sessionsGiven;
@@ -360,7 +362,6 @@ function cancelEdit(){
   viewMode.classList.remove('hidden');
 }
 
-// Expose functions for inline onclick handlers
 window.editProfile = editProfile;
 window.saveProfile = saveProfile;
 window.cancelEdit = cancelEdit;
@@ -368,3 +369,4 @@ window.cancelEdit = cancelEdit;
 
 </body>
 </html>
+

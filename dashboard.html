@@ -50,7 +50,6 @@
 
     /* MAIN CONTENT */
     .main-content {
-      /* push content to the right of the fixed sidebar on desktop */
       margin-left: 250px;
       padding: 2rem;
       display: grid;
@@ -296,15 +295,10 @@
 
       <ul class="sidebar-menu">
         <li><a href="#" class="active">📊 Dashboard</a></li>
+        <li><a href="chat.html" id="openChatsBtn">💬 All Chats</a></li>
         <li><a href="#">🎓 My Sessions</a></li>
         <li><a href="#">👨‍🏫 Teaching</a></li>
-        <li><a href="#">📚 Learning</a></li>
-        <li><a href="#">⚙️ Settings</a></li>
       </ul>
-
-      <div style="padding:1.5rem 1.5rem 0 1.5rem;">
-        <button class="btn btn-secondary" id="openChatsBtn" type="button" style="width:100%;">All chats</button>
-      </div>
 
       <div style="position:absolute;bottom:2rem;width:100%;padding:0 1rem;">
         <button class="btn btn-secondary" id="logoutBtn" type="button" style="width:100%;">Logout</button>
@@ -448,7 +442,7 @@
       emptyState.style.display = 'none';
 
       users.forEach((user) => {
-        const data = user.data ? user.data() : user; // support doc snapshots or plain objects
+        const data = user.data ? user.data() : user;
         const uid = user.id || data.uid;
 
         const card = document.createElement('div');
@@ -501,7 +495,6 @@
       }
 
       try {
-        // Assumes each user document has a `skills_normalized` array of lowercase skill strings
         const q = query(
           collection(db, "users"),
           where("skills_normalized", "array-contains", term)
@@ -640,3 +633,4 @@
 </body>
 
 </html>
+
