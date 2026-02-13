@@ -146,9 +146,9 @@ button{
 <h1>My Profile</h1>
 
 <div class="cards">
-<div class="card"><h2>⭐ 4.8</h2>Rating</div>
-<div class="card"><h2>12</h2>Sessions Taken</div>
-<div class="card"><h2>9</h2>Sessions Given</div>
+<div class="card"><h2 id="ratingDisplay">⭐ 0.0</h2>Rating</div>
+<div class="card"><h2 id="sessionsTakenDisplay">0</h2>Sessions Taken</div>
+<div class="card"><h2 id="sessionsGivenDisplay">0</h2>Sessions Given</div>
 <div class="card"><h2>18 Feb</h2>Next Session</div>
 </div>
 
@@ -203,6 +203,10 @@ const vGender = document.getElementById('vGender');
 const vSkills = document.getElementById('vSkills');
 const vInterests = document.getElementById('vInterests');
 
+const ratingDisplay = document.getElementById('ratingDisplay');
+const sessionsTakenDisplay = document.getElementById('sessionsTakenDisplay');
+const sessionsGivenDisplay = document.getElementById('sessionsGivenDisplay');
+
 const nameInput = document.getElementById('name');
 const emailInput = document.getElementById('email');
 const ageInput = document.getElementById('age');
@@ -244,6 +248,15 @@ onAuthStateChanged(auth, async (user) => {
 
       vSkills.textContent = skillsText || "-";
       vInterests.textContent = data.interests || "-";
+
+      // Display stats with defaults
+      const rating = data.rating != null ? data.rating : 0;
+      const sessionsTaken = data.sessionsTaken != null ? data.sessionsTaken : 0;
+      const sessionsGiven = data.sessionsGiven != null ? data.sessionsGiven : 0;
+
+      ratingDisplay.textContent = `⭐ ${rating.toFixed(1)}`;
+      sessionsTakenDisplay.textContent = sessionsTaken;
+      sessionsGivenDisplay.textContent = sessionsGiven;
     } else {
       // No profile yet → basic defaults from auth
       vName.textContent = user.email.split("@")[0];
@@ -252,6 +265,11 @@ onAuthStateChanged(auth, async (user) => {
       vGender.textContent = "-";
       vSkills.textContent = "-";
       vInterests.textContent = "-";
+
+      // Default stats
+      ratingDisplay.textContent = "⭐ 0.0";
+      sessionsTakenDisplay.textContent = "0";
+      sessionsGivenDisplay.textContent = "0";
     }
   } catch (err) {
     console.error("Failed to load profile", err);
@@ -303,7 +321,20 @@ async function saveProfile(){
 
   try {
     const ref = doc(db, "users", currentUser.uid);
-    await setDoc(ref, payload, { merge: true });
+    
+    // Get existing data to preserve stats
+    const existingSnap = await getDoc(ref);
+    const existingData = existingSnap.exists() ? existingSnap.data() : {};
+    
+    // Preserve stats fields if they exist, otherwise use defaults
+    const finalPayload = {
+      ...payload,
+      rating: existingData.rating != null ? existingData.rating : 0,
+      sessionsTaken: existingData.sessionsTaken != null ? existingData.sessionsTaken : 0,
+      sessionsGiven: existingData.sessionsGiven != null ? existingData.sessionsGiven : 0
+    };
+    
+    await setDoc(ref, finalPayload, { merge: true });
 
     // Reflect changes in the view mode
     vName.textContent = payload.name;
@@ -312,6 +343,11 @@ async function saveProfile(){
     vGender.textContent = payload.gender || "-";
     vSkills.textContent = skillsArray.length ? skillsArray.join(", ") : "-";
     vInterests.textContent = payload.interests || "-";
+
+    // Update stats display
+    ratingDisplay.textContent = `⭐ ${finalPayload.rating.toFixed(1)}`;
+    sessionsTakenDisplay.textContent = finalPayload.sessionsTaken;
+    sessionsGivenDisplay.textContent = finalPayload.sessionsGiven;
 
     cancelEdit();
   } catch (err) {

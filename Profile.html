@@ -42,10 +42,24 @@
       const learnSkills = document.getElementById("learnSkills").value;
 
       try {
+        // Initialize profile with default stats
+        const skillsArray = teachSkills
+          .split(",")
+          .map(s => s.trim())
+          .filter(Boolean);
+        
+        const skillsNormalized = skillsArray.map(s => s.toLowerCase());
+
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
           teach: teachSkills,
-          learn: learnSkills
+          learn: learnSkills,
+          skills: skillsArray,
+          skills_normalized: skillsNormalized,
+          // Default stats for new users
+          rating: 0,
+          sessionsTaken: 0,
+          sessionsGiven: 0
         });
 
         window.location.href = "dashboard.html";
