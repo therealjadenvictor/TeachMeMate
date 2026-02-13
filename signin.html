@@ -90,9 +90,10 @@
 
           <br>
 
-          <button type="submit" style="width:100%; padding:10px;">
-            Sign In
-          </button>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+           Sign In
+         </button>
+
 
         </form>
 
@@ -107,42 +108,67 @@
 
 
   
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } 
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+ <script type="module">
 
-    
-    const firebaseConfig = {
-      apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
-      authDomain: "teachmemate-347ab.firebaseapp.com",
-      projectId: "teachmemate-347ab",
-      storageBucket: "teachmemate-347ab.firebasestorage.app",
-      messagingSenderId: "739144710255",
-      appId: "1:739144710255:web:91de287fdbf35a8db4b59a"
-    };
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+import { getAuth, signInWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const loginForm = document.getElementById("loginForm");
+import { getFirestore, doc, getDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    loginForm.addEventListener("submit", async (event) => {
-      event.preventDefault(); // Stop page reload
 
-      const userEmail = document.getElementById("email").value;
-      const userPassword = document.getElementById("password").value;
+const firebaseConfig = {
+  apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
+  authDomain: "teachmemate-347ab.firebaseapp.com",
+  projectId: "teachmemate-347ab",
+  storageBucket: "teachmemate-347ab.firebasestorage.app",
+  messagingSenderId: "739144710255",
+  appId: "1:739144710255:web:91de287fdbf35a8db4b59a"
+};
 
-      try {
-        await signInWithEmailAndPassword(auth, userEmail, userPassword);
-        
-        window.location.href = "dashboard.html";
-      } 
-      catch (error) {
-        alert(error.message);
-      }
-    });
-  </script>
+// INIT
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-</body>
-</html>
+// FORM
+const form = document.getElementById("loginForm");
+
+// 🔥 MAIN LOGIN LOGIC
+form.addEventListener("submit", async (e) => {
+
+  e.preventDefault(); 
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  try {
+
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+
+    console.log("Logged in:", user.uid);
+
+    // 🔥 CHECK IF PROFILE EXISTS
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      console.log("User already has profile → Dashboard");
+      window.location.href = "dashboard.html";
+    } else {
+      console.log("New user → Profile page");
+      window.location.href = "profile.html";
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  }
+
+});
+
+</script>
+
