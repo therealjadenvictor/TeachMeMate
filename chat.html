@@ -111,6 +111,36 @@
       align-self: flex-start;
     }
 
+    .chat-message.request-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1rem 1rem;
+      min-width: 260px;
+    }
+
+    .chat-message.request-card .request-text {
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .chat-message.request-card .request-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .chat-message.request-card .request-actions .btn {
+      cursor: pointer;
+      padding: 0.4rem 1rem;
+      font-weight: 500;
+    }
+
+    .chat-message.request-card .request-status {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
     @media (max-width: 900px) {
       .chat-layout {
         grid-template-columns: 1fr;
@@ -172,7 +202,8 @@
       serverTimestamp,
       doc,
       getDoc,
-      setDoc
+      setDoc,
+      updateDoc
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const params = new URLSearchParams(window.location.search);
@@ -192,11 +223,76 @@
     const userNameCache = new Map();
 
     function renderMessage(docData, isMe) {
-      const div = document.createElement('div');
-      div.className = 'chat-message ' + (isMe ? 'me' : 'them');
-      div.textContent = docData.text || '';
-      chatMessages.appendChild(div);
+  const div = document.createElement('div');
+  div.className = 'chat-message ' + (isMe ? 'me' : 'them');
+
+  if (docData.type === 'session_request') {
+    div.classList.add('request-card');
+
+    const textEl = document.createElement('div');
+    textEl.className = 'request-text';
+    textEl.textContent = docData.text || 'Session request';
+    div.appendChild(textEl);
+
+    const status = docData.status || 'pending';
+    const requestId = docData.id || docData.requestId;
+
+    // Receiver → Accept/Reject buttons
+    if (!isMe && status === 'pending') {
+      const actions = document.createElement('div');
+      actions.className = 'request-actions';
+
+      const acceptBtn = document.createElement('button');
+      acceptBtn.className = 'btn btn-success';
+      acceptBtn.textContent = 'Accept';
+
+      const rejectBtn = document.createElement('button');
+      rejectBtn.className = 'btn btn-outline-danger';
+      rejectBtn.textContent = 'Reject';
+
+      if (requestId) {
+        acceptBtn.onclick = () =>
+          updateDoc(doc(db, 'chats', requestId), { status: 'accepted' });
+
+        rejectBtn.onclick = () =>
+          updateDoc(doc(db, 'chats', requestId), { status: 'rejected' });
+      }
+
+      actions.appendChild(acceptBtn);
+      actions.appendChild(rejectBtn);
+      div.appendChild(actions);
     }
+
+    // Sender → Pending indicator
+    if (isMe && status === 'pending') {
+      const pendingEl = document.createElement('div');
+      pendingEl.className = 'request-status text-info fw-semibold';
+      pendingEl.textContent = '⏳ Pending request';
+      div.appendChild(pendingEl);
+    }
+
+    // Final status for both users
+    if (status === 'accepted') {
+      const statusEl = document.createElement('div');
+      statusEl.className = 'request-status text-success fw-semibold';
+      statusEl.textContent = '✓ Accepted';
+      div.appendChild(statusEl);
+    }
+
+    if (status === 'rejected') {
+      const statusEl = document.createElement('div');
+      statusEl.className = 'request-status text-danger fw-semibold';
+      statusEl.textContent = '✗ Rejected';
+      div.appendChild(statusEl);
+    }
+
+  } else {
+    div.textContent = docData.text || '';
+  }
+
+  chatMessages.appendChild(div);
+}
+
 
     function subscribeToMessages(roomId) {
       chatMessages.innerHTML = '';
