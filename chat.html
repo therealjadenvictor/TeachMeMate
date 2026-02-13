@@ -149,98 +149,7 @@
       }
     }
 
-    /* Cube Animation Styles */
-    @keyframes cubeAnimate {
-      0% {
-        filter: hue-rotate(0deg);
-      }
-
-      100% {
-        filter: hue-rotate(360deg);
-      }
-    }
-
-    .cube-wedge-container {
-      /* Centered in the placeholder */
-      transform: scale(1.2) skewY(-20deg);
-      animation: cubeAnimate 5s linear infinite;
-      pointer-events: none;
-    }
-
-    .cube-wedge-container * {
-      pointer-events: auto;
-      /* Re-enable pointer events for cubes */
-    }
-
-    .cube-wedge-container .cube {
-      position: relative;
-      z-index: 2;
-    }
-
-    .cube-wedge-container .cube:nth-child(2) {
-      z-index: 1;
-      translate: -60px -60px;
-    }
-
-    .cube-wedge-container .cube:nth-child(3) {
-      z-index: 3;
-      translate: 60px 60px;
-    }
-
-    .cube-wedge-container .cube div {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      translate: calc(-70px * var(--x)) calc(-60px * var(--y));
-    }
-
-    .cube-wedge-container .cube div span {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      background: #dcdcdc;
-      z-index: calc(1 * var(--i));
-      transition: 1.5s;
-    }
-
-    .cube-wedge-container .cube div span:hover {
-      transition: 0s;
-      background: #ef4149;
-      filter: drop-shadow(0 0 30px #ef4149);
-    }
-
-    .cube-wedge-container .cube div span:hover:before,
-    .cube-wedge-container .cube div span:hover:after {
-      transition: 0s;
-      background: #ef4149;
-    }
-
-    .cube-wedge-container .cube div span:before {
-      content: "";
-      position: absolute;
-      left: -40px;
-      width: 40px;
-      height: 100%;
-      background: #fff;
-      transform-origin: right;
-      transform: skewY(45deg);
-      transition: 1.5s;
-    }
-
-    .cube-wedge-container .cube div span:after {
-      content: "";
-      position: absolute;
-      top: -40px;
-      left: 0px;
-      width: 100%;
-      height: 40px;
-      background: #f2f2f2;
-      transform-origin: bottom;
-      transform: skewX(45deg);
-      transition: 1.5s;
-    }
+    /* Cube Animation Styles Removed */
   </style>
 </head>
 
@@ -275,61 +184,12 @@
 
       <div id="chatMessages" class="chat-messages"></div>
 
-      <!-- Centered Cube Placeholder (Default shown until chat opens) -->
-      <div id="noChatCube" class="d-none justify-content-center align-items-center flex-grow-1"
-        style="min-height: 400px;">
-        <div class="cube-wedge-container">
-          <div class="cube">
-            <div style="--x:-1; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-            <div style="--x:0; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-            <div style="--x:1; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-          </div>
-          <div class="cube">
-            <div style="--x:-1; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-            <div style="--x:0; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-            <div style="--x:1; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-          </div>
-          <div class="cube">
-            <div style="--x:-1; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-            <div style="--x:0; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-            <div style="--x:1; --y:0;">
-              <span style="--i:3;"></span>
-              <span style="--i:2;"></span>
-              <span style="--i:1;"></span>
-            </div>
-          </div>
+      <!-- Cube Removed -->
+      <div id="noChatPlaceholder" class="d-none justify-content-center pt-5 flex-grow-1"
+        style="min-height: 400px; align-items: start;">
+        <div class="text-center text-muted p-5">
+          <i class="bi bi-chat-square-text fs-1 mb-3 d-block opacity-50"></i>
+          <p>Select a conversation to start chatting</p>
         </div>
       </div>
 
@@ -371,7 +231,7 @@
     const chatSend = document.getElementById('chatSend');
     const chatTitle = document.getElementById('chatTitle');
     const chatSubtitle = document.getElementById('chatSubtitle');
-    const noChatCube = document.getElementById('noChatCube');
+    const noChatPlaceholder = document.getElementById('noChatPlaceholder');
 
     let currentUser = null;
     let activeRoomId = null;
@@ -563,8 +423,8 @@
       // UI State: Chat Open
       chatMessages.style.display = 'flex';
       chatMessages.classList.remove('d-none');
-      noChatCube.classList.remove('d-flex');
-      noChatCube.classList.add('d-none');
+      noChatPlaceholder.classList.remove('d-flex');
+      noChatPlaceholder.classList.add('d-none');
     }
 
     async function loadConversationList(user) {
@@ -704,8 +564,8 @@
         // UI State: No Chat
         chatMessages.style.display = 'none';
         chatMessages.classList.add('d-none');
-        noChatCube.classList.remove('d-none');
-        noChatCube.classList.add('d-flex');
+        noChatPlaceholder.classList.remove('d-none');
+        noChatPlaceholder.classList.add('d-flex');
       }
     });
   </script>
