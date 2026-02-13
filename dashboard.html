@@ -704,52 +704,56 @@
     }
 
     // Load and display dashboard classes (preview)
+    // accepted_request docs: { senderId, receiverId, code, createdAt }
     async function loadDashboardClasses(user) {
-      if (!user) return;
+      if (!user || !dashboardClassesContainer) return;
 
       try {
-        // Query for accepted requests involved by user
-        // Limiting to 3 for dashboard preview
-        const qClasses = query(
+        const qSender = query(
           collection(db, "accepted_request"),
-          where("users", "array-contains", user.uid),
+          where("senderId", "==", user.uid),
           limit(3)
         );
+        const qReceiver = query(
+          collection(db, "accepted_request"),
+          where("receiverId", "==", user.uid),
+          limit(3)
+        );
+        const [snapSender, snapReceiver] = await Promise.all([
+          getDocs(qSender),
+          getDocs(qReceiver)
+        ]);
 
-        const snapshot = await getDocs(qClasses);
+        const seenIds = new Set();
+        const docs = [];
+        snapSender.docs.forEach(d => { docs.push(d); seenIds.add(d.id); });
+        snapReceiver.docs.forEach(d => { if (!seenIds.has(d.id)) docs.push(d); });
+        const previewDocs = docs.slice(0, 3);
 
         dashboardClassesContainer.innerHTML = "";
 
-        if (snapshot.empty) {
-          dashboardClassesEmpty.style.display = "block";
+        if (previewDocs.length === 0) {
+          if (dashboardClassesEmpty) dashboardClassesEmpty.style.display = "block";
           return;
         }
 
-        dashboardClassesEmpty.style.display = "none";
+        if (dashboardClassesEmpty) dashboardClassesEmpty.style.display = "none";
 
-        // Process snapshots in parallel to fetch user details
-        const sessionPromises = snapshot.docs.map(async (docSnap) => {
+        const sessionPromises = previewDocs.map(async (docSnap) => {
           const data = docSnap.data() || {};
           const code = data.code || '';
           const createdAt = data.createdAt ? formatDate(data.createdAt) : 'Date not available';
-          const users = data.users || [];
-
-          // Find the other user ID
-          const otherUserId = users.find(uid => uid !== user.uid);
+          const otherUserId = data.senderId === user.uid ? data.receiverId : data.senderId;
           let otherUserName = 'Unknown User';
-
           if (otherUserId) {
             try {
               const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
               if (otherUserSnap.exists()) {
-                const otherUserData = otherUserSnap.data();
-                otherUserName = otherUserData.name || otherUserData.email?.split('@')[0] || 'User';
+                const od = otherUserSnap.data();
+                otherUserName = od.name || od.email?.split('@')[0] || 'User';
               }
-            } catch (err) {
-              console.error("Error fetching other user details:", err);
-            }
+            } catch (err) { console.error("Error fetching other user details:", err); }
           }
-
           return { code, createdAt, otherUserName };
         });
 
@@ -812,39 +816,60 @@
     }
 
     // Load and display accepted teaching sessions
+    // Documents in "accepted_request" are saved from chat as: { senderId, receiverId, code, createdAt }
     async function loadTeachingSessions(user) {
-      if (!user) return;
+      if (!teachingSessionsContainer || !teachingSessionsEmpty) return;
+      teachingSessionsContainer.innerHTML = "";
+      if (!user) {
+        teachingSessionsEmpty.textContent = "Sign in to see your classes.";
+        teachingSessionsEmpty.style.display = "block";
+        return;
+      }
+
+      teachingSessionsEmpty.textContent = "Loading your classes...";
+      teachingSessionsEmpty.style.display = "block";
 
       try {
-        // Query for documents where user is in the users array
-        // Assumes each document in "accepted_request" looks like:
-        // { code: string, createdAt: Timestamp, users: [user1Id, user2Id] }
-        const qTeaching = query(
+        const qSender = query(
           collection(db, "accepted_request"),
-          where("users", "array-contains", user.uid)
+          where("senderId", "==", user.uid)
         );
-        const snapshot = await getDocs(qTeaching);
+        const qReceiver = query(
+          collection(db, "accepted_request"),
+          where("receiverId", "==", user.uid)
+        );
 
-        // Clear container
+        const [snapSender, snapReceiver] = await Promise.all([
+          getDocs(qSender),
+          getDocs(qReceiver)
+        ]);
+
+        const seenIds = new Set();
+        const docs = [];
+        snapSender.docs.forEach(d => {
+          docs.push(d);
+          seenIds.add(d.id);
+        });
+        snapReceiver.docs.forEach(d => {
+          if (!seenIds.has(d.id)) docs.push(d);
+        });
+
         teachingSessionsContainer.innerHTML = "";
 
-        if (snapshot.empty) {
+        if (docs.length === 0) {
+          teachingSessionsEmpty.innerHTML = "<i class=\"bi bi-inbox display-4 mb-3 d-block\"></i><p>No accepted teaching sessions yet.</p>";
           teachingSessionsEmpty.style.display = "block";
           return;
         }
 
         teachingSessionsEmpty.style.display = "none";
 
-        // Render session cards
-        // Process snapshots in parallel to fetch user details
-        const sessionPromises = snapshot.docs.map(async (docSnap) => {
+        // Process each doc and fetch other user's name
+        const sessionPromises = docs.map(async (docSnap) => {
           const data = docSnap.data() || {};
           const code = data.code || '';
           const createdAt = data.createdAt ? formatDate(data.createdAt) : 'Date not available';
-          const users = data.users || [];
-
-          // Find the other user ID
-          const otherUserId = users.find(uid => uid !== user.uid);
+          const otherUserId = data.senderId === user.uid ? data.receiverId : data.senderId;
           let otherUserName = 'Unknown User';
 
           if (otherUserId) {
@@ -863,14 +888,6 @@
         });
 
         const sessions = await Promise.all(sessionPromises);
-
-        teachingSessionsContainer.innerHTML = "";
-
-        // Check emptiness again after processing (though snapshot.empty check should cover it)
-        if (sessions.length === 0) {
-          teachingSessionsEmpty.style.display = "block";
-          return;
-        }
 
         sessions.forEach((session) => {
           const { code, createdAt, otherUserName } = session;
@@ -932,11 +949,9 @@
       dashboardSection.style.display = "none";
       teachingSection.style.display = "block";
       setActive(teachingBtn);
-
-      // Load sessions when tab is opened
-      if (currentUser) {
-        loadTeachingSessions(currentUser);
-      }
+      // Always load (use currentUser or auth.currentUser in case of race)
+      const user = currentUser || auth.currentUser;
+      if (user) loadTeachingSessions(user);
     });
 
     // Dashboard tab click
