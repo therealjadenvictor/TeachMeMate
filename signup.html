@@ -1,137 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up - TeachMeMate</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - TeachMeMate</title>
+<link rel="stylesheet" href="styles.css">
 
-  <style>
-    .auth-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 100vh;
-      gap: 2rem;
-    }
+<style>
+.auth-container{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  min-height:100vh;
+  gap:2rem;
+}
 
-    .auth-left {
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(183, 75, 255, 0.1));
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+.auth-left{
+  background:linear-gradient(135deg, rgba(0,212,255,0.1), rgba(183,75,255,0.1));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+  text-align:center;
+}
 
-    .auth-right {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+.auth-right{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
 
-    .auth-form {
-      width: 100%;
-      max-width: 400px;
-    }
+.auth-form{
+  width:100%;
+  max-width:400px;
+}
 
-    .auth-title {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }
+.auth-form input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:1rem;
+  box-sizing:border-box;
+}
 
-    .auth-subtitle {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+.auth-title{
+  font-size:2rem;
+  margin-bottom:.5rem;
+  text-align:center;
+}
 
-    .form-link {
-      text-align: center;
-      margin-top: 1.5rem;
-    }
-  </style>
+.auth-subtitle{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.form-link{
+  text-align:center;
+  margin-top:1.5rem;
+}
+
+/* LEFT TEXT */
+.auth-text{
+  transform:translateX(-30px);
+}
+
+.auth-text h2{
+  font-size:4rem;
+  font-weight:800;
+  font-family:'Poppins','Segoe UI',sans-serif;
+  letter-spacing:-1px;
+  color:#fff;
+  text-shadow:0 0 25px rgba(255,255,255,0.35);
+  margin-bottom:1rem;
+}
+
+.auth-text p{
+  transform:translateX(-20px);
+  font-size:1.6rem;
+  font-weight:500;
+  font-family:'Inter','Segoe UI',sans-serif;
+  opacity:.85;
+  letter-spacing:.5px;
+}
+
+/* SAME STYLE AS SIGN-IN BUTTON */
+.auth-btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:1rem;
+  font-weight:600;
+  font-family:'Poppins','Segoe UI',sans-serif;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  cursor:pointer;
+
+  background:linear-gradient(90deg,#21d4fd,#00c6ff);
+  color:#001018;
+
+  box-shadow:0 0 18px rgba(0,214,255,0.7);
+  transition:0.3s ease;
+}
+
+.auth-btn:hover{
+  box-shadow:0 0 30px rgba(0,214,255,1);
+  transform:translateY(-1px);
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="auth-container">
+<div class="auth-container">
 
-    <!-- Left Section -->
-    <div class="auth-left">
-      <div style="text-align:center;">
-        <h2>Join TeachMeMate 🚀</h2>
-        <p>Create your account and start your journey.</p>
+<!-- LEFT -->
+<div class="auth-left">
+  <div class="auth-text">
+    <h2>Join TeachMeMate 🚀</h2>
+    <p>Create your account and start your journey.</p>
+  </div>
+</div>
+
+<!-- RIGHT -->
+<div class="auth-right">
+  <div class="auth-form">
+
+    <h3 class="auth-title">Sign Up</h3>
+    <p class="auth-subtitle">Create your new account</p>
+
+    <form id="signupForm">
+
+      <div>
+        <label>Email Address</label><br>
+        <input type="email" id="email" placeholder="your@email.com" required>
       </div>
-    </div>
 
-    <!-- Right Section -->
-    <div class="auth-right">
-      <div class="auth-form">
+      <br>
 
-        <h3 class="auth-title">Sign Up</h3>
-        <p class="auth-subtitle">Create your new account</p>
-
-        <!-- IMPORTANT: Form ID -->
-        <form id="signupForm">
-
-          <div>
-            <label>Email Address</label><br>
-            <input type="email" id="email" placeholder="your@email.com" required>
-          </div>
-
-          <br>
-
-          <div>
-            <label>Password</label><br>
-            <input type="password" id="password" placeholder="Create a password" required>
-          </div>
-
-          <br>
-
-          <button type="submit" style="width:100%; padding:10px;">
-            Create Account
-          </button>
-
-        </form>
-
-        <div class="form-link">
-          Already have an account? <a href="signin.html">Sign In</a>
-        </div>
-
+      <div>
+        <label>Password</label><br>
+        <input type="password" id="password" placeholder="Create a password" required>
       </div>
+
+      <br>
+
+      <button type="submit" class="auth-btn">
+        Create Account
+      </button>
+
+    </form>
+
+    <div class="form-link">
+      Already have an account?
+      <a href="signin.html">Sign In</a>
     </div>
 
   </div>
+</div>
 
+</div>
 
-  <!-- 🔥 FIREBASE (shared config) -->
-  <script type="module">
-    import { auth } from "./firebase-config.js";
-    import { createUserWithEmailAndPassword }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+<!-- FIREBASE -->
+<script type="module">
+import { auth } from "./firebase-config.js";
+import { createUserWithEmailAndPassword }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const signupForm = document.getElementById("signupForm");
+const signupForm=document.getElementById("signupForm");
 
-    signupForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
+signupForm.addEventListener("submit", async(event)=>{
+  event.preventDefault();
 
-      const userEmail = document.getElementById("email").value;
-      const userPassword = document.getElementById("password").value;
+  const userEmail=document.getElementById("email").value;
+  const userPassword=document.getElementById("password").value;
 
-      try {
-        await createUserWithEmailAndPassword(auth, userEmail, userPassword);
-        alert("Account Created Successfully 🎉");
-
-        // After signup → go to signin page
-        window.location.href = "signin.html";
-
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-  </script>
+  try{
+    await createUserWithEmailAndPassword(auth,userEmail,userPassword);
+    alert("Account Created Successfully 🎉");
+    window.location.href="signin.html";
+  }
+  catch(error){
+    alert(error.message);
+  }
+});
+</script>
 
 </body>
 </html>
