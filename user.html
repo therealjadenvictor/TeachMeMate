@@ -200,11 +200,6 @@
       </section>
 
       <section>
-        <div class="user-section-title">Interests</div>
-        <p id="userInterests" class="user-text-muted">No interests listed yet.</p>
-      </section>
-
-      <section>
         <div class="user-section-title">About</div>
         <p id="userBio" class="user-text-muted">This user hasn't added a bio yet.</p>
       </section>
@@ -238,7 +233,6 @@
 
     const userSkillsTags = document.getElementById('userSkillsTags');
     const userSkillsEmpty = document.getElementById('userSkillsEmpty');
-    const userInterests = document.getElementById('userInterests');
     const userBio = document.getElementById('userBio');
     const chatButton = document.getElementById('chatButton');
 
@@ -314,7 +308,6 @@
           userSkillsEmpty.style.display = 'block';
         }
 
-        userInterests.textContent = data.interests || "No interests listed yet.";
         userBio.textContent = data.bio || "This user hasn't added a bio yet.";
 
       } catch (err) {

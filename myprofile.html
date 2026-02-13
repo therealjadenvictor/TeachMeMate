@@ -158,8 +158,8 @@ button{
 <div class="detail"><span>Email</span><div class="value" id="vEmail">Loading...</div></div>
 <div class="detail"><span>Age</span><div class="value" id="vAge">-</div></div>
 <div class="detail"><span>Gender</span><div class="value" id="vGender">-</div></div>
-<div class="detail"><span>Skills</span><div class="value" id="vSkills">-</div></div>
-<div class="detail"><span>Interests</span><div class="value" id="vInterests">-</div></div>
+<div class="detail"><span>My Skills</span><div class="value" id="vSkills">-</div></div>
+<div class="detail"><span>Skills I Want to Learn</span><div class="value" id="vTeachSkills">-</div></div>
 </div>
 <button onclick="editProfile()">Edit Profile</button>
 </div>
@@ -179,8 +179,8 @@ button{
 <select id="gender"><option>Male</option><option>Female</option><option>Other</option></select>
 </div>
 
-<div class="detail"><span>Skills</span><textarea id="skills"></textarea></div>
-<div class="detail"><span>Interests</span><textarea id="interests"></textarea></div>
+<div class="detail"><span>My Skills</span><textarea id="skills"></textarea></div>
+<div class="detail"><span>Skills I Want to Learn</span><textarea id="teachSkills"></textarea></div>
 </div>
 <button onclick="saveProfile()">Save</button>
 <button onclick="cancelEdit()">Cancel</button>
@@ -200,7 +200,7 @@ const vEmail = document.getElementById('vEmail');
 const vAge = document.getElementById('vAge');
 const vGender = document.getElementById('vGender');
 const vSkills = document.getElementById('vSkills');
-const vInterests = document.getElementById('vInterests');
+const vTeachSkills = document.getElementById('vTeachSkills');
 
 const ratingDisplay = document.getElementById('ratingDisplay');
 const sessionsTakenDisplay = document.getElementById('sessionsTakenDisplay');
@@ -212,7 +212,7 @@ const ageInput = document.getElementById('age');
 const ageVal = document.getElementById('ageVal');
 const genderSelect = document.getElementById('gender');
 const skillsInput = document.getElementById('skills');
-const interestsInput = document.getElementById('interests');
+const teachSkillsInput = document.getElementById('teachSkills');
 
 let currentUser = null;
 
@@ -246,7 +246,7 @@ onAuthStateChanged(auth, async (user) => {
         .join(", ");
 
       vSkills.textContent = skillsText || "-";
-      vInterests.textContent = data.interests || "-";
+      vTeachSkills.textContent = data.learn || "-";
 
       // Display stats with defaults
       const rating = data.rating != null ? data.rating : 0;
@@ -263,7 +263,7 @@ onAuthStateChanged(auth, async (user) => {
       vAge.textContent = "-";
       vGender.textContent = "-";
       vSkills.textContent = "-";
-      vInterests.textContent = "-";
+      vTeachSkills.textContent = "-";
 
       // Default stats
       ratingDisplay.textContent = "⭐ 0.0";
@@ -285,7 +285,7 @@ function editProfile(){
   ageVal.textContent = ageInput.value;
   genderSelect.value = (vGender.textContent && vGender.textContent !== "-" ? vGender.textContent : "Male");
   skillsInput.value = vSkills.textContent === "-" ? "" : vSkills.textContent;
-  interestsInput.value = vInterests.textContent === "-" ? "" : vInterests.textContent;
+  teachSkillsInput.value = vTeachSkills.textContent === "-" ? "" : vTeachSkills.textContent;
 }
 
 async function saveProfile(){
@@ -299,7 +299,7 @@ async function saveProfile(){
   const ageValue = parseInt(ageInput.value, 10);
   const genderValue = genderSelect.value;
   const skillsRaw = skillsInput.value;
-  const interestsValue = interestsInput.value.trim();
+  const learnSkillsRaw = teachSkillsInput.value;
 
   const skillsArray = skillsRaw
     .split(",")
@@ -315,7 +315,7 @@ async function saveProfile(){
     gender: genderValue,
     skills: skillsArray,
     skills_normalized: skillsNormalized,
-    interests: interestsValue
+    learn: learnSkillsRaw
   };
 
   try {
@@ -341,7 +341,7 @@ async function saveProfile(){
     vAge.textContent = payload.age != null ? payload.age : "-";
     vGender.textContent = payload.gender || "-";
     vSkills.textContent = skillsArray.length ? skillsArray.join(", ") : "-";
-    vInterests.textContent = payload.interests || "-";
+    vTeachSkills.textContent = payload.learn || "-";
 
     // Update stats display
     ratingDisplay.textContent = `⭐ ${finalPayload.rating.toFixed(1)}`;
