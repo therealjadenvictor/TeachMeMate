@@ -1,431 +1,559 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Profile - TMate</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile - TMate</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-<link rel="stylesheet" href="bootstrap-theme.css">
-<link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="bootstrap-theme.css">
+  <link rel="stylesheet" href="styles.css">
 
-<style>
-body{
-  min-height:100vh;
-  opacity:0;
-  transition:opacity 0.4s ease;
-}
-body.fade-in{opacity:1;}
+  <style>
+    body {
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
 
-.sidebar{
-  position:fixed;
-  left:0;
-  top:0;
-  width:240px;
-  height:100vh;
-  backdrop-filter:blur(15px);
-  background:rgba(255,255,255,0.05);
-}
+    body.fade-in {
+      opacity: 1;
+    }
 
-.sidebar .nav-link{
-  color:#bbb;
-  border-radius:10px;
-  margin-bottom:6px;
-  transition:all 0.2s ease;
-}
-.sidebar .nav-link:hover{
-  background:rgba(0,212,255,0.1);
-  color:white;
-}
+    :root {
+      --neon-cyan: #00d4ff;
+      --neon-purple: #b74bff;
+      --medium-gray: #9ca3af;
+      --white: #ffffff;
+    }
 
-.main{
-  margin-left:240px;
-  min-height:100vh;
-}
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 1000;
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent),
+        #020617;
+      border-right: 1px solid rgba(148, 163, 184, 0.2);
+      backdrop-filter: blur(10px);
+    }
 
-@media(max-width:991px){
-  .sidebar{position:relative;width:100%;height:auto;}
-  .main{margin-left:0;}
-}
+    .sidebar-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      margin-bottom: 1rem;
+      display: block;
+      text-decoration: none;
+    }
 
-.glass-card{
-  backdrop-filter:blur(15px);
-  background:rgba(255,255,255,0.05);
-  border-radius:20px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.4);
-}
+    .sidebar .nav-link {
+      color: var(--medium-gray);
+      padding: 0.8rem 1.5rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.25rem;
+      border-radius: 0;
+    }
 
-.form-control, .form-select, textarea{
-  background:rgba(255,255,255,0.08);
-  border:none;
-  color:white;
-  border-radius:12px;
-}
+    .sidebar .nav-link:hover {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.03);
+    }
 
-.form-control:focus, .form-select:focus{
-  box-shadow:0 0 0 2px rgba(0,212,255,0.5);
-  background:rgba(255,255,255,0.12);
-  color:white;
-}
+    .sidebar .nav-link.active {
+      color: var(--neon-cyan);
+      background: rgba(0, 212, 255, 0.05);
+      border-left-color: var(--neon-cyan);
+    }
 
-.btn-primary{
-  background:linear-gradient(90deg,#00d4ff,#b74bff);
-  border:none;
-  border-radius:12px;
-  font-weight:600;
-}
-/* Fix white dropdown background */
-.form-select {
-  background-color: rgba(255,255,255,0.08) !important;
-  color: #fff !important;
-  border: none;
-  border-radius: 12px;
-}
+    .sidebar .nav-link i {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+      margin-right: 10px;
+    }
 
-/* Fix dropdown options background (browser dependent) */
-.form-select option {
-  background-color: #1e1e1e;
-  color: #fff;
-}
+    .main {
+      margin-left: 280px;
+      min-height: 100vh;
+    }
 
-/* Fix focus state */
-.form-select:focus {
-  background-color: rgba(255,255,255,0.12) !important;
-  color: #fff !important;
-  box-shadow: 0 0 0 2px rgba(0,212,255,0.5);
-}
+    @media(max-width:991px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
 
-/* Fix default arrow color in dark mode */
-.form-select {
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 6.344a.5.5 0 0 1 .708-.708L8 10.293l4.84-4.657a.5.5 0 0 1 .707.708l-4.796 4.796a.5.5 0 0 1-.708 0z'/%3E%3C/svg%3E");
-}
+      .main {
+        margin-left: 0;
+      }
+    }
 
-</style>
+    .glass-card {
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .form-control,
+    .form-select,
+    textarea {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: white;
+      border-radius: 12px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.5);
+      background: rgba(255, 255, 255, 0.12);
+      color: white;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #00d4ff, #b74bff);
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    /* Fix white dropdown background */
+    .form-select {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+      color: #fff !important;
+      border: none;
+      border-radius: 12px;
+    }
+
+    /* Fix dropdown options background (browser dependent) */
+    .form-select option {
+      background-color: #1e1e1e;
+      color: #fff;
+    }
+
+    /* Fix focus state */
+    .form-select:focus {
+      background-color: rgba(255, 255, 255, 0.12) !important;
+      color: #fff !important;
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.5);
+    }
+
+    /* Fix default arrow color in dark mode */
+    .form-select {
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 6.344a.5.5 0 0 1 .708-.708L8 10.293l4.84-4.657a.5.5 0 0 1 .707.708l-4.796 4.796a.5.5 0 0 1-.708 0z'/%3E%3C/svg%3E");
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="d-flex">
+  <div class="d-flex">
 
-<!-- Sidebar -->
-<aside class="sidebar p-3">
-  <h4 class="text-center text-primary mb-4">TMate</h4>
-  <nav class="nav flex-column">
-    <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
-    <a class="nav-link" href="chat.html"><i class="bi bi-chat-dots me-2"></i>All Chats</a>
-    <a class="nav-link" href="#"><i class="bi bi-book me-2"></i>My Sessions</a>
-    <a class="nav-link" href="#"><i class="bi bi-person-workspace me-2"></i>Teaching</a>
-  </nav>
-</aside>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="dashboard.html" class="sidebar-brand">
+        TeachMeMate
+      </a>
 
-<!-- Main -->
-<main class="main flex-grow-1 p-4">
-<div class="container-fluid">
+      <nav class="nav flex-column px-2 gap-1">
+        <a class="nav-link" href="dashboard.html">
+          <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a class="nav-link" href="chat.html">
+          <i class="bi bi-chat-dots"></i> Messages
+        </a>
+        <a class="nav-link" href="Reccomendations.html">
+          <i class="bi bi-book"></i> Recommendations
+        </a>
+        <a class="nav-link" href="dashboard.html#teachingSection">
+          <i class="bi bi-person-workspace"></i> Teaching
+        </a>
 
-<h1 class="text-primary mb-4">My Profile</h1>
+      </nav>
 
-<!-- Stats -->
-<div class="row g-3 mb-4">
-<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
-<h2 id="ratingDisplay">⭐ 0.0</h2><p class="text-muted mb-0">Rating</p>
-</div></div>
+      <div class="position-absolute bottom-0 start-0 end-0 p-4">
+        <button class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2"
+          id="logoutBtn" type="button">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+      </div>
+    </aside>
 
-<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
-<h2 id="sessionsTakenDisplay">0</h2><p class="text-muted mb-0">Sessions Taken</p>
-</div></div>
+    <!-- Main -->
+    <main class="main flex-grow-1 p-4">
+      <div class="container-fluid">
 
-<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
-<h2 id="sessionsGivenDisplay">0</h2><p class="text-muted mb-0">Sessions Given</p>
-</div></div>
+        <h1 class="text-primary mb-4">My Profile</h1>
 
-<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
-<h2>18 Feb</h2><p class="text-muted mb-0">Next Session</p>
-</div></div>
-</div>
+        <!-- Stats -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-3 col-sm-6">
+            <div class="glass-card p-3 text-center">
+              <h2 id="ratingDisplay">⭐ 0.0</h2>
+              <p class="text-muted mb-0">Rating</p>
+            </div>
+          </div>
 
-<!-- VIEW MODE -->
-<div id="viewMode">
-<div class="row g-3 mb-4">
+          <div class="col-md-3 col-sm-6">
+            <div class="glass-card p-3 text-center">
+              <h2 id="sessionsTakenDisplay">0</h2>
+              <p class="text-muted mb-0">Sessions Taken</p>
+            </div>
+          </div>
 
-<div class="col-md-4"><div class="glass-card p-3">
-<span class="text-muted small">Name</span>
-<div id="vName">Loading...</div>
-</div></div>
+          <div class="col-md-3 col-sm-6">
+            <div class="glass-card p-3 text-center">
+              <h2 id="sessionsGivenDisplay">0</h2>
+              <p class="text-muted mb-0">Sessions Given</p>
+            </div>
+          </div>
 
-<div class="col-md-4"><div class="glass-card p-3">
-<span class="text-muted small">Email</span>
-<div id="vEmail">Loading...</div>
-</div></div>
+          <div class="col-md-3 col-sm-6">
+            <div class="glass-card p-3 text-center">
+              <h2>18 Feb</h2>
+              <p class="text-muted mb-0">Next Session</p>
+            </div>
+          </div>
+        </div>
 
-<div class="col-md-4"><div class="glass-card p-3">
-<span class="text-muted small">Age</span>
-<div id="vAge">-</div>
-</div></div>
+        <!-- VIEW MODE -->
+        <div id="viewMode">
+          <div class="row g-3 mb-4">
 
-<div class="col-md-4"><div class="glass-card p-3">
-<span class="text-muted small">Gender</span>
-<div id="vGender">-</div>
-</div></div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <span class="text-muted small">Name</span>
+                <div id="vName">Loading...</div>
+              </div>
+            </div>
 
-<div class="col-md-6"><div class="glass-card p-3">
-<span class="text-muted small">My Skills</span>
-<div id="vSkills">-</div>
-</div></div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <span class="text-muted small">Email</span>
+                <div id="vEmail">Loading...</div>
+              </div>
+            </div>
 
-<div class="col-md-6"><div class="glass-card p-3">
-<span class="text-muted small">Skills I Want to Learn</span>
-<div id="vTeachSkills">-</div>
-</div></div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <span class="text-muted small">Age</span>
+                <div id="vAge">-</div>
+              </div>
+            </div>
 
-</div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <span class="text-muted small">Gender</span>
+                <div id="vGender">-</div>
+              </div>
+            </div>
 
-<button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
-</div>
+            <div class="col-md-6">
+              <div class="glass-card p-3">
+                <span class="text-muted small">My Skills</span>
+                <div id="vSkills">-</div>
+              </div>
+            </div>
 
-<!-- EDIT MODE -->
-<div id="editMode" class="d-none">
+            <div class="col-md-6">
+              <div class="glass-card p-3">
+                <span class="text-muted small">Skills I Want to Learn</span>
+                <div id="vTeachSkills">-</div>
+              </div>
+            </div>
 
-<div class="row g-3 mb-4">
+          </div>
 
-<div class="col-md-4"><div class="glass-card p-3">
-<label class="form-label small text-muted">Name</label>
-<input type="text" class="form-control" id="name">
-</div></div>
+          <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+        </div>
 
-<div class="col-md-4"><div class="glass-card p-3">
-<label class="form-label small text-muted">Email</label>
-<input type="email" class="form-control" id="email">
-</div></div>
+        <!-- EDIT MODE -->
+        <div id="editMode" class="d-none">
 
-<div class="col-md-4"><div class="glass-card p-3">
-<label class="form-label small text-muted">
-Age: <b id="ageVal">21</b>
-</label>
-<input type="range" class="form-range" min="18" max="100"
-value="21" id="age"
-oninput="ageVal.textContent=this.value">
-</div></div>
+          <div class="row g-3 mb-4">
 
-<div class="col-md-4"><div class="glass-card p-3">
-<label class="form-label small text-muted">Gender</label>
-<select class="form-select" id="gender">
-<option>Male</option>
-<option>Female</option>
-<option>Other</option>
-</select>
-</div></div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <label class="form-label small text-muted">Name</label>
+                <input type="text" class="form-control" id="name">
+              </div>
+            </div>
 
-<div class="col-md-6"><div class="glass-card p-3">
-<label class="form-label small text-muted">My Skills</label>
-<textarea class="form-control" id="skills" rows="3"></textarea>
-</div></div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <label class="form-label small text-muted">Email</label>
+                <input type="email" class="form-control" id="email">
+              </div>
+            </div>
 
-<div class="col-md-6"><div class="glass-card p-3">
-<label class="form-label small text-muted">Skills I Want to Learn</label>
-<textarea class="form-control" id="teachSkills" rows="3"></textarea>
-</div></div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <label class="form-label small text-muted">
+                  Age: <b id="ageVal">21</b>
+                </label>
+                <input type="range" class="form-range" min="18" max="100" value="21" id="age"
+                  oninput="ageVal.textContent=this.value">
+              </div>
+            </div>
 
-</div>
+            <div class="col-md-4">
+              <div class="glass-card p-3">
+                <label class="form-label small text-muted">Gender</label>
+                <select class="form-select" id="gender">
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
 
-<div class="d-flex gap-2">
-<button class="btn btn-primary" onclick="saveProfile()">Save</button>
-<button class="btn btn-outline-secondary" onclick="cancelEdit()">Cancel</button>
-</div>
+            <div class="col-md-6">
+              <div class="glass-card p-3">
+                <label class="form-label small text-muted">My Skills</label>
+                <textarea class="form-control" id="skills" rows="3"></textarea>
+              </div>
+            </div>
 
-</div>
+            <div class="col-md-6">
+              <div class="glass-card p-3">
+                <label class="form-label small text-muted">Skills I Want to Learn</label>
+                <textarea class="form-control" id="teachSkills" rows="3"></textarea>
+              </div>
+            </div>
 
-</div>
-</main>
-</div>
+          </div>
 
-<script>
-document.body.classList.add("fade-in");
-</script>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary" onclick="saveProfile()">Save</button>
+            <button class="btn btn-outline-secondary" onclick="cancelEdit()">Cancel</button>
+          </div>
 
+        </div>
 
-<script type="module">
-import { auth, db } from "./firebase-config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      </div>
+    </main>
+  </div>
 
-const viewMode = document.getElementById('viewMode');
-const editMode = document.getElementById('editMode');
-
-const vName = document.getElementById('vName');
-const vEmail = document.getElementById('vEmail');
-const vAge = document.getElementById('vAge');
-const vGender = document.getElementById('vGender');
-const vSkills = document.getElementById('vSkills');
-const vTeachSkills = document.getElementById('vTeachSkills');
-
-const ratingDisplay = document.getElementById('ratingDisplay');
-const sessionsTakenDisplay = document.getElementById('sessionsTakenDisplay');
-const sessionsGivenDisplay = document.getElementById('sessionsGivenDisplay');
-
-const nameInput = document.getElementById('name');
-const emailInput = document.getElementById('email');
-const ageInput = document.getElementById('age');
-const ageVal = document.getElementById('ageVal');
-const genderSelect = document.getElementById('gender');
-const skillsInput = document.getElementById('skills');
-const teachSkillsInput = document.getElementById('teachSkills');
-
-let currentUser = null;
-
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "signin.html";
-    return;
-  }
-
-  currentUser = user;
-
-  try {
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
-
-    if (snap.exists()) {
-      const data = snap.data();
-
-      vName.textContent = data.name || user.email.split("@")[0];
-      vEmail.textContent = data.email || user.email;
-      vAge.textContent = data.age != null ? data.age : "-";
-      vGender.textContent = data.gender || "-";
-
-      const skillsArray = Array.isArray(data.skills)
-        ? data.skills
-        : (data.teach ? String(data.teach).split(",") : []);
-      const skillsText = skillsArray
-        .map(s => s.trim())
-        .filter(Boolean)
-        .join(", ");
-
-      vSkills.textContent = skillsText || "-";
-      vTeachSkills.textContent = data.learn || "-";
-
-      const rating = data.rating != null ? data.rating : 0;
-      const sessionsTaken = data.sessionsTaken != null ? data.sessionsTaken : 0;
-      const sessionsGiven = data.sessionsGiven != null ? data.sessionsGiven : 0;
-
-      ratingDisplay.textContent = `⭐ ${rating.toFixed(1)}`;
-      sessionsTakenDisplay.textContent = sessionsTaken;
-      sessionsGivenDisplay.textContent = sessionsGiven;
-    } else {
-      vName.textContent = user.email.split("@")[0];
-      vEmail.textContent = user.email;
-      vAge.textContent = "-";
-      vGender.textContent = "-";
-      vSkills.textContent = "-";
-      vTeachSkills.textContent = "-";
-
-      ratingDisplay.textContent = "⭐ 0.0";
-      sessionsTakenDisplay.textContent = "0";
-      sessionsGivenDisplay.textContent = "0";
-    }
-  } catch (err) {
-    console.error("Failed to load profile", err);
-  }
-});
-
-function editProfile(){
-  viewMode.classList.add('d-none');
-  editMode.classList.remove('d-none');
-
-  nameInput.value = vName.textContent === "Loading..." ? "" : vName.textContent;
-  emailInput.value = vEmail.textContent === "Loading..." ? "" : vEmail.textContent;
-  ageInput.value = (vAge.textContent && vAge.textContent !== "-" ? vAge.textContent : "21");
-  ageVal.textContent = ageInput.value;
-  genderSelect.value = (vGender.textContent && vGender.textContent !== "-" ? vGender.textContent : "Male");
-  skillsInput.value = vSkills.textContent === "-" ? "" : vSkills.textContent;
-  teachSkillsInput.value = vTeachSkills.textContent === "-" ? "" : vTeachSkills.textContent;
-}
-
-async function saveProfile(){
-  if (!currentUser) {
-    alert("You must be logged in to save your profile.");
-    return;
-  }
-
-  const nameValue = nameInput.value.trim();
-  const emailValue = emailInput.value.trim() || currentUser.email;
-  const ageValue = parseInt(ageInput.value, 10);
-  const genderValue = genderSelect.value;
-  const skillsRaw = skillsInput.value;
-  const learnSkillsRaw = teachSkillsInput.value;
-
-  const skillsArray = skillsRaw
-    .split(",")
-    .map(s => s.trim())
-    .filter(Boolean);
-
-  const skillsNormalized = skillsArray.map(s => s.toLowerCase());
-
-  const learnArray = learnSkillsRaw
-    .split(",")
-    .map(s => s.trim())
-    .filter(Boolean);
-
-  const learnNormalized = learnArray.map(s => s.toLowerCase());
-
-  const payload = {
-    name: nameValue || emailValue.split("@")[0],
-    email: emailValue,
-    age: isNaN(ageValue) ? null : ageValue,
-    gender: genderValue,
-    skills: skillsArray,
-    skills_normalized: skillsNormalized,
-    learn: learnSkillsRaw,
-    learn_normalized: learnNormalized
-  };
-
-  try {
-    const ref = doc(db, "users", currentUser.uid);
-    
-    const existingSnap = await getDoc(ref);
-    const existingData = existingSnap.exists() ? existingSnap.data() : {};
-    
-    const finalPayload = {
-      ...payload,
-      rating: existingData.rating != null ? existingData.rating : 0,
-      sessionsTaken: existingData.sessionsTaken != null ? existingData.sessionsTaken : 0,
-      sessionsGiven: existingData.sessionsGiven != null ? existingData.sessionsGiven : 0
-    };
-    
-    await setDoc(ref, finalPayload, { merge: true });
-
-    vName.textContent = payload.name;
-    vEmail.textContent = payload.email;
-    vAge.textContent = payload.age != null ? payload.age : "-";
-    vGender.textContent = payload.gender || "-";
-    vSkills.textContent = skillsArray.length ? skillsArray.join(", ") : "-";
-    vTeachSkills.textContent = payload.learn || "-";
-
-    ratingDisplay.textContent = `⭐ ${finalPayload.rating.toFixed(1)}`;
-    sessionsTakenDisplay.textContent = finalPayload.sessionsTaken;
-    sessionsGivenDisplay.textContent = finalPayload.sessionsGiven;
-
-    cancelEdit();
-  } catch (err) {
-    console.error("Failed to save profile", err);
-    alert("Could not save profile. Please try again.");
-  }
-}
-
-function cancelEdit(){
-  editMode.classList.add('d-none');
-  viewMode.classList.remove('d-none');
-}
-
-window.editProfile = editProfile;
-window.saveProfile = saveProfile;
-window.cancelEdit = cancelEdit;
-</script>
-<script>
-  document.body.classList.add("fade-in");
+  <script>
+    document.body.classList.add("fade-in");
   </script>
-  
+
+
+  <script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const viewMode = document.getElementById('viewMode');
+    const editMode = document.getElementById('editMode');
+
+    const vName = document.getElementById('vName');
+    const vEmail = document.getElementById('vEmail');
+    const vAge = document.getElementById('vAge');
+    const vGender = document.getElementById('vGender');
+    const vSkills = document.getElementById('vSkills');
+    const vTeachSkills = document.getElementById('vTeachSkills');
+
+    const ratingDisplay = document.getElementById('ratingDisplay');
+    const sessionsTakenDisplay = document.getElementById('sessionsTakenDisplay');
+    const sessionsGivenDisplay = document.getElementById('sessionsGivenDisplay');
+
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const ageInput = document.getElementById('age');
+    const ageVal = document.getElementById('ageVal');
+    const genderSelect = document.getElementById('gender');
+    const skillsInput = document.getElementById('skills');
+    const teachSkillsInput = document.getElementById('teachSkills');
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "signin.html";
+        return;
+      }
+
+      currentUser = user;
+
+      try {
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+          const data = snap.data();
+
+          vName.textContent = data.name || user.email.split("@")[0];
+          vEmail.textContent = data.email || user.email;
+          vAge.textContent = data.age != null ? data.age : "-";
+          vGender.textContent = data.gender || "-";
+
+          const skillsArray = Array.isArray(data.skills)
+            ? data.skills
+            : (data.teach ? String(data.teach).split(",") : []);
+          const skillsText = skillsArray
+            .map(s => s.trim())
+            .filter(Boolean)
+            .join(", ");
+
+          vSkills.textContent = skillsText || "-";
+          vTeachSkills.textContent = data.learn || "-";
+
+          const rating = data.rating != null ? data.rating : 0;
+          const sessionsTaken = data.sessionsTaken != null ? data.sessionsTaken : 0;
+          const sessionsGiven = data.sessionsGiven != null ? data.sessionsGiven : 0;
+
+          ratingDisplay.textContent = `⭐ ${rating.toFixed(1)}`;
+          sessionsTakenDisplay.textContent = sessionsTaken;
+          sessionsGivenDisplay.textContent = sessionsGiven;
+        } else {
+          vName.textContent = user.email.split("@")[0];
+          vEmail.textContent = user.email;
+          vAge.textContent = "-";
+          vGender.textContent = "-";
+          vSkills.textContent = "-";
+          vTeachSkills.textContent = "-";
+
+          ratingDisplay.textContent = "⭐ 0.0";
+          sessionsTakenDisplay.textContent = "0";
+          sessionsGivenDisplay.textContent = "0";
+        }
+      } catch (err) {
+        console.error("Failed to load profile", err);
+      }
+    });
+
+    function editProfile() {
+      viewMode.classList.add('d-none');
+      editMode.classList.remove('d-none');
+
+      nameInput.value = vName.textContent === "Loading..." ? "" : vName.textContent;
+      emailInput.value = vEmail.textContent === "Loading..." ? "" : vEmail.textContent;
+      ageInput.value = (vAge.textContent && vAge.textContent !== "-" ? vAge.textContent : "21");
+      ageVal.textContent = ageInput.value;
+      genderSelect.value = (vGender.textContent && vGender.textContent !== "-" ? vGender.textContent : "Male");
+      skillsInput.value = vSkills.textContent === "-" ? "" : vSkills.textContent;
+      teachSkillsInput.value = vTeachSkills.textContent === "-" ? "" : vTeachSkills.textContent;
+    }
+
+    async function saveProfile() {
+      if (!currentUser) {
+        alert("You must be logged in to save your profile.");
+        return;
+      }
+
+      const nameValue = nameInput.value.trim();
+      const emailValue = emailInput.value.trim() || currentUser.email;
+      const ageValue = parseInt(ageInput.value, 10);
+      const genderValue = genderSelect.value;
+      const skillsRaw = skillsInput.value;
+      const learnSkillsRaw = teachSkillsInput.value;
+
+      const skillsArray = skillsRaw
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const skillsNormalized = skillsArray.map(s => s.toLowerCase());
+
+      const learnArray = learnSkillsRaw
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const learnNormalized = learnArray.map(s => s.toLowerCase());
+
+      const payload = {
+        name: nameValue || emailValue.split("@")[0],
+        email: emailValue,
+        age: isNaN(ageValue) ? null : ageValue,
+        gender: genderValue,
+        skills: skillsArray,
+        skills_normalized: skillsNormalized,
+        learn: learnSkillsRaw,
+        learn_normalized: learnNormalized
+      };
+
+      try {
+        const ref = doc(db, "users", currentUser.uid);
+
+        const existingSnap = await getDoc(ref);
+        const existingData = existingSnap.exists() ? existingSnap.data() : {};
+
+        const finalPayload = {
+          ...payload,
+          rating: existingData.rating != null ? existingData.rating : 0,
+          sessionsTaken: existingData.sessionsTaken != null ? existingData.sessionsTaken : 0,
+          sessionsGiven: existingData.sessionsGiven != null ? existingData.sessionsGiven : 0
+        };
+
+        await setDoc(ref, finalPayload, { merge: true });
+
+        vName.textContent = payload.name;
+        vEmail.textContent = payload.email;
+        vAge.textContent = payload.age != null ? payload.age : "-";
+        vGender.textContent = payload.gender || "-";
+        vSkills.textContent = skillsArray.length ? skillsArray.join(", ") : "-";
+        vTeachSkills.textContent = payload.learn || "-";
+
+        ratingDisplay.textContent = `⭐ ${finalPayload.rating.toFixed(1)}`;
+        sessionsTakenDisplay.textContent = finalPayload.sessionsTaken;
+        sessionsGivenDisplay.textContent = finalPayload.sessionsGiven;
+
+        cancelEdit();
+      } catch (err) {
+        console.error("Failed to save profile", err);
+        alert("Could not save profile. Please try again.");
+      }
+    }
+
+    function cancelEdit() {
+      editMode.classList.add('d-none');
+      viewMode.classList.remove('d-none');
+    }
+
+    window.editProfile = editProfile;
+    window.saveProfile = saveProfile;
+    window.cancelEdit = cancelEdit;
+
+    // Logout functionality
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        try {
+          await signOut(auth);
+          window.location.href = 'signin.html';
+        } catch (error) {
+          console.error('Error signing out:', error);
+        }
+      });
+    }
+  </script>
+  <script>
+    document.body.classList.add("fade-in");
+  </script>
+
 
 </body>
+
 </html>

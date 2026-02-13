@@ -365,8 +365,8 @@
                   </div>
                 </div>
               </div>
-              <a href="myprofile.html" class="avatar text-decoration-none" id="userAvatar" title="View my profile"
-                style="width: 48px; height: 48px; font-size: 1.2rem;">?</a>
+              <a href="myprofile.html" class="avatar text-decoration-none flex-shrink-0 overflow-hidden" id="userAvatar"
+                title="View my profile" style="width: 48px; height: 48px; font-size: 1.2rem;">?</a>
             </div>
           </div>
 
@@ -970,10 +970,16 @@
             welcomeText.textContent = `Welcome back, ${userName}! `;
           }
 
-          // Update avatar with first letter of name
+          // Update avatar
           const userAvatar = document.getElementById('userAvatar');
           if (userAvatar) {
-            userAvatar.textContent = userName.charAt(0).toUpperCase();
+            if (userData.photoURL) {
+              userAvatar.innerHTML = `<img src="${userData.photoURL}" class="w-100 h-100" style="object-fit: cover;">`;
+              userAvatar.style.padding = '0';
+            } else {
+              userAvatar.textContent = userName.charAt(0).toUpperCase();
+              userAvatar.style.padding = '';
+            }
           }
 
           // Update stats from user data
