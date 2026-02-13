@@ -19,11 +19,26 @@
       align-items: stretch;
       justify-content: center;
     }
+    .user-request-panel .btn-send-request {
+    width: auto !important;
+    align-self: center;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
 
+  /* Bottom action buttons (chat + back) */
+  .user-main .mt-auto {
+    justify-content: center;
+  }
+
+  .user-main .mt-auto .btn {
+    font-size: 0.95rem;
+    padding: 0.5rem 1.1rem;
+  }
     .user-layout {
       display: grid;
-      grid-template-columns: 280px 1fr 320px;
-      max-width: 1400px;
+      grid-template-columns: 380px 1fr 450px;
+      max-width: 1500px;
       width: 100%;
       margin: 2rem;
       border-radius: 16px;
@@ -34,25 +49,42 @@
       background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent),
                   radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), transparent),
                   #020617;
-      padding: 2rem;
+      padding: 2.5rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 2rem;
       border-right: 1px solid rgba(148, 163, 184, 0.25);
     }
 
     .user-avatar {
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       border-radius: 999px;
       background: linear-gradient(135deg, #22d3ee, #a855f7);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 3.5rem;
       font-weight: 700;
       color: #020617;
-      margin-bottom: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Make the stat cards on the left even bigger */
+    .user-sidebar .card {
+      padding: 1.5rem 1.25rem;
+      min-height: 90px;
+    }
+
+    .user-sidebar .card .fw-semibold {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-sidebar .card .text-muted {
+      font-size: 0.95rem !important;
+      font-weight: 500;
     }
 
     .user-main {
@@ -62,29 +94,66 @@
       gap: 1.5rem;
     }
 
+    /* Make Skills and About sections bigger */
+    .user-main section h6 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .user-main section .text-muted {
+      font-size: 1.05rem !important;
+    }
+
+    .user-main #userSkillsTags .badge {
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
+    }
+
+    /* Make buttons bigger */
+    .user-main .btn {
+      font-size: 1.1rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+    }
+
+    .user-main .btn i {
+      font-size: 2.0rem;
+    }
+
     .user-request-panel {
       background: radial-gradient(circle at top, rgba(129, 140, 248, 0.15), transparent),
                   #020617;
-      padding: 2rem 1.5rem;
+      padding: 2.5rem 2rem;
       border-left: 1px solid rgba(148, 163, 184, 0.25);
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.5rem;
     }
 
     .user-request-panel h6 {
-      margin-bottom: 0.25rem;
+      font-size: 1.4rem;
       font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .user-request-panel p {
+      font-size: 1.05rem !important;
+      line-height: 1.6;
     }
 
     .user-request-panel .form-control {
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(148, 163, 184, 0.3);
       color: #e2e8f0;
+      font-size: 1.05rem;
+      padding: 1rem 1.25rem;
+      line-height: 1.6;
     }
 
     .user-request-panel .form-control::placeholder {
       color: #64748b;
+      font-size: 1.05rem;
     }
 
     .user-request-panel .btn-send-request {
@@ -92,11 +161,17 @@
       border: none;
       color: #020617;
       font-weight: 600;
+      font-size: 1.15rem;
+      padding: 0.9rem 1.5rem;
     }
 
     .user-request-panel .btn-send-request:hover {
       opacity: 0.9;
       color: #020617;
+    }
+
+    .user-request-panel .btn-send-request i {
+      font-size: 1.2rem;
     }
 
     @media (max-width: 1100px) {
@@ -135,27 +210,27 @@
 
       <div class="row g-2">
         <div class="col-6">
-          <div class="card p-2 text-center">
-            <div class="fw-semibold small" id="userRating">⭐ 0.0</div>
-            <div class="text-muted" style="font-size: 0.75rem;">Rating</div>
+          <div class="card text-center">
+            <div class="fw-semibold" id="userRating">⭐ 0.0</div>
+            <div class="text-muted">Rating</div>
           </div>
         </div>
         <div class="col-6">
-          <div class="card p-2 text-center">
-            <div class="fw-semibold small" id="userSessionsGiven">0</div>
-            <div class="text-muted" style="font-size: 0.75rem;">Sessions Given</div>
+          <div class="card text-center">
+            <div class="fw-semibold" id="userSessionsGiven">0</div>
+            <div class="text-muted">Sessions Given</div>
           </div>
         </div>
         <div class="col-6">
-          <div class="card p-2 text-center">
-            <div class="fw-semibold small" id="userSessionsTaken">0</div>
-            <div class="text-muted" style="font-size: 0.75rem;">Sessions Taken</div>
+          <div class="card text-center">
+            <div class="fw-semibold" id="userSessionsTaken">0</div>
+            <div class="text-muted">Sessions Taken</div>
           </div>
         </div>
         <div class="col-6">
-          <div class="card p-2 text-center">
-            <div class="fw-semibold small" id="userSkillCount">0</div>
-            <div class="text-muted" style="font-size: 0.75rem;">Skills</div>
+          <div class="card text-center">
+            <div class="fw-semibold" id="userSkillCount">0</div>
+            <div class="text-muted">Skills</div>
           </div>
         </div>
       </div>
@@ -165,12 +240,12 @@
       <section>
         <h6 class="mb-2">Skills</h6>
         <div id="userSkillsTags" class="d-flex flex-wrap gap-2 mb-2"></div>
-        <div id="userSkillsEmpty" class="text-muted small">No skills listed yet.</div>
+        <div id="userSkillsEmpty" class="text-muted">No skills listed yet.</div>
       </section>
 
       <section>
         <h6 class="mb-2">About</h6>
-        <p id="userBio" class="text-muted small mb-0">This user hasn't added a bio yet.</p>
+        <p id="userBio" class="text-muted mb-0">This user hasn't added a bio yet.</p>
       </section>
 
       <div class="mt-auto d-flex flex-wrap gap-2">
@@ -185,8 +260,8 @@
 
     <aside class="user-request-panel">
       <h6>Send Session Request</h6>
-      <p class="small text-muted mb-2">Request a learning/teaching session. The other user will see your message with Accept or Reject options in chat.</p>
-      <textarea class="form-control rounded-3 mb-2" id="requestMessage" rows="4" placeholder="Add a message (optional)..."></textarea>
+      <p class="text-muted mb-2">Request a learning/teaching session. The other user will see your message with Accept or Reject options in chat.</p>
+      <textarea class="form-control rounded-3 mb-2" id="requestMessage" rows="5" placeholder="Add a message (optional)..."></textarea>
       <button class="btn btn-send-request rounded-pill w-100" id="sendRequestBtn" type="button">
         <i class="bi bi-send me-2"></i>Send Request
       </button>
