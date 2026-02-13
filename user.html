@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile - TeachMeMate</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 30% 20%, #18204a, var(--primary-black, #050816));
+      color: var(--light-gray, #e5e7eb);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .user-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      max-width: 1100px;
+      width: 100%;
+      margin: 2rem;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98));
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .user-sidebar {
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent),
+                  radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), transparent),
+                  #020617;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      border-right: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .user-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22d3ee, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #020617;
+      margin-bottom: 0.75rem;
+    }
+
+    .user-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .user-email {
+      font-size: 0.9rem;
+      color: var(--medium-gray, #9ca3af);
+    }
+
+    .user-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .user-stat-card {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 0.85rem;
+    }
+
+    .user-stat-value {
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .user-main {
+      padding: 2rem 2.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .user-section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .user-tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .user-tag {
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(45, 212, 191, 0.4);
+      font-size: 0.8rem;
+    }
+
+    .user-text-muted {
+      font-size: 0.9rem;
+      color: var(--medium-gray, #9ca3af);
+    }
+
+    .user-actions {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn-primary {
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1.4rem;
+      background: linear-gradient(135deg, #22d3ee, #a855f7);
+      color: #020617;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: transparent;
+      color: var(--light-gray, #e5e7eb);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 820px) {
+      .user-layout {
+        grid-template-columns: 1fr;
+        margin: 1rem;
+      }
+
+      .user-sidebar {
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="user-layout">
+    <aside class="user-sidebar">
+      <div>
+        <div class="user-avatar" id="userAvatar">U</div>
+        <div class="user-name" id="userName">Loading...</div>
+        <div class="user-email" id="userEmail">Loading...</div>
+      </div>
+
+      <div class="user-stats">
+        <div class="user-stat-card">
+          <div class="user-stat-value" id="userRating">⭐ 0.0</div>
+          <div class="user-text-muted">Rating</div>
+        </div>
+        <div class="user-stat-card">
+          <div class="user-stat-value" id="userSessionsGiven">0</div>
+          <div class="user-text-muted">Sessions Given</div>
+        </div>
+        <div class="user-stat-card">
+          <div class="user-stat-value" id="userSessionsTaken">0</div>
+          <div class="user-text-muted">Sessions Taken</div>
+        </div>
+        <div class="user-stat-card">
+          <div class="user-stat-value" id="userSkillCount">0</div>
+          <div class="user-text-muted">Skills</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="user-main">
+      <section>
+        <div class="user-section-title">Skills</div>
+        <div id="userSkillsTags" class="user-tag-list"></div>
+        <div id="userSkillsEmpty" class="user-text-muted">No skills listed yet.</div>
+      </section>
+
+      <section>
+        <div class="user-section-title">Interests</div>
+        <p id="userInterests" class="user-text-muted">No interests listed yet.</p>
+      </section>
+
+      <section>
+        <div class="user-section-title">About</div>
+        <p id="userBio" class="user-text-muted">This user hasn't added a bio yet.</p>
+      </section>
+
+      <div class="user-actions">
+        <button class="btn-primary" id="chatButton">
+          💬 Chat with this person
+        </button>
+        <button class="btn-ghost" type="button" onclick="window.location.href='dashboard.html'">
+          ← Back to dashboard
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const targetUid = params.get('uid');
+
+    const userAvatar = document.getElementById('userAvatar');
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
+    const userRating = document.getElementById('userRating');
+    const userSessionsGiven = document.getElementById('userSessionsGiven');
+    const userSessionsTaken = document.getElementById('userSessionsTaken');
+    const userSkillCount = document.getElementById('userSkillCount');
+
+    const userSkillsTags = document.getElementById('userSkillsTags');
+    const userSkillsEmpty = document.getElementById('userSkillsEmpty');
+    const userInterests = document.getElementById('userInterests');
+    const userBio = document.getElementById('userBio');
+    const chatButton = document.getElementById('chatButton');
+
+    let currentUser = null;
+    let targetDisplayName = null;
+
+    if (!targetUid) {
+      userName.textContent = "User not found";
+      userEmail.textContent = "";
+      chatButton.disabled = true;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Require sign-in to view and chat
+        window.location.href = "signin.html";
+        return;
+      }
+
+      currentUser = user;
+
+      if (!targetUid) return;
+
+      try {
+        const ref = doc(db, "users", targetUid);
+        const snap = await getDoc(ref);
+
+        if (!snap.exists()) {
+          userName.textContent = "User not found";
+          userEmail.textContent = "";
+          chatButton.disabled = true;
+          return;
+        }
+
+        const data = snap.data();
+
+        const displayName = data.name || (data.email || "").split("@")[0] || "User";
+        const email = data.email || "";
+
+        userName.textContent = displayName;
+        userEmail.textContent = email;
+        userAvatar.textContent = displayName.charAt(0).toUpperCase();
+        targetDisplayName = displayName;
+
+        const rating = data.rating != null ? data.rating : 0;
+        const sessionsGiven = data.sessionsGiven != null ? data.sessionsGiven : 0;
+        const sessionsTaken = data.sessionsTaken != null ? data.sessionsTaken : 0;
+
+        userRating.textContent = `⭐ ${rating.toFixed(1)}`;
+        userSessionsGiven.textContent = sessionsGiven;
+        userSessionsTaken.textContent = sessionsTaken;
+
+        const skillsArray = Array.isArray(data.skills)
+          ? data.skills
+          : (data.teach ? String(data.teach).split(",") : []);
+
+        const cleanedSkills = skillsArray
+          .map(s => s.trim())
+          .filter(Boolean);
+
+        userSkillCount.textContent = cleanedSkills.length;
+
+        userSkillsTags.innerHTML = '';
+        if (cleanedSkills.length) {
+          userSkillsEmpty.style.display = 'none';
+          cleanedSkills.forEach(skill => {
+            const tag = document.createElement('span');
+            tag.className = 'user-tag';
+            tag.textContent = skill;
+            userSkillsTags.appendChild(tag);
+          });
+        } else {
+          userSkillsEmpty.style.display = 'block';
+        }
+
+        userInterests.textContent = data.interests || "No interests listed yet.";
+        userBio.textContent = data.bio || "This user hasn't added a bio yet.";
+
+      } catch (err) {
+        console.error("Failed to load user profile", err);
+        userName.textContent = "Error loading user";
+        chatButton.disabled = true;
+      }
+    });
+
+    chatButton.addEventListener('click', () => {
+      if (!currentUser || !targetUid) return;
+      if (currentUser.uid === targetUid) {
+        window.location.href = "myprofile.html";
+        return;
+      }
+
+      // Deterministic room id for 1:1 chat between two users
+      const ids = [currentUser.uid, targetUid].sort();
+      const roomId = ids.join('_');
+
+      localStorage.setItem('currentRoomId', roomId);
+      localStorage.setItem('currentRoomName', targetDisplayName || 'User');
+      localStorage.setItem('currentRoomOtherUserId', targetUid);
+
+      window.location.href = `chat.html?room=${encodeURIComponent(roomId)}`;
+    });
+  </script>
+
+</body>
+</html>
+
