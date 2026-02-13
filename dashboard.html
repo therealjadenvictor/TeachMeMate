@@ -385,8 +385,7 @@
       onSnapshot,
       serverTimestamp,
       doc,
-      setDoc,
-      getDoc
+      setDoc
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -539,76 +538,36 @@
       return date.toLocaleDateString();
     }
 
-    // Get user name from uid
-    async function getUserName(uid) {
-      try {
-        const userRef = doc(db, "users", uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const data = userSnap.data();
-          return data.name || data.email?.split("@")[0] || "Unknown User";
-        }
-        return "Unknown User";
-      } catch (error) {
-        console.error("Error fetching user name:", error);
-        return "Unknown User";
-      }
-    }
-
     // Load and display accepted teaching sessions
     async function loadTeachingSessions(user) {
       if (!user) return;
 
       try {
-        // Query for documents where user is either sender or receiver
-        const q1 = query(
+        // Query for documents where user is in the users array
+        // Assumes each document in "accepted_request" looks like:
+        // { code: string, createdAt: Timestamp, users: [user1Id, user2Id] }
+        const qTeaching = query(
           collection(db, "accepted_request"),
-          where("senderId", "==", user.uid)
+          where("users", "array-contains", user.uid)
         );
-        const q2 = query(
-          collection(db, "accepted_request"),
-          where("receiverId", "==", user.uid)
-        );
-
-        const [snapshot1, snapshot2] = await Promise.all([
-          getDocs(q1),
-          getDocs(q2)
-        ]);
-
-        const sessions = [];
-        
-        snapshot1.forEach((docSnap) => {
-          sessions.push({ id: docSnap.id, ...docSnap.data() });
-        });
-        
-        snapshot2.forEach((docSnap) => {
-          // Avoid duplicates if user appears in both queries somehow
-          if (!sessions.find(s => s.id === docSnap.id)) {
-            sessions.push({ id: docSnap.id, ...docSnap.data() });
-          }
-        });
+        const snapshot = await getDocs(qTeaching);
 
         // Clear container
         teachingSessionsContainer.innerHTML = "";
 
-        if (sessions.length === 0) {
+        if (snapshot.empty) {
           teachingSessionsEmpty.style.display = "block";
           return;
         }
 
         teachingSessionsEmpty.style.display = "none";
 
-        // Get user names for all sessions
-        const sessionsWithNames = await Promise.all(
-          sessions.map(async (session) => {
-            const otherUserId = session.senderId === user.uid ? session.receiverId : session.senderId;
-            const otherUserName = await getUserName(otherUserId);
-            return { ...session, otherUserId, otherUserName };
-          })
-        );
-
         // Render session cards
-        sessionsWithNames.forEach((session) => {
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data() || {};
+          const code = data.code || '';
+          const createdAt = data.createdAt ? formatDate(data.createdAt) : 'Date not available';
+
           const cardCol = document.createElement("div");
           cardCol.className = "col-md-4";
 
@@ -618,20 +577,15 @@
           const header = document.createElement("div");
           header.className = "session-header";
           header.style.color = "var(--neon-purple)";
-          header.innerHTML = `<i class="bi bi-person-workspace me-2"></i> Session`;
+          header.innerHTML = `<i class="bi bi-person-workspace me-2"></i> Session Code: ${code || 'N/A'}`;
 
           const body = document.createElement("div");
           body.className = "session-body";
 
-          const sessionCode = session.code || session.id;
-          const createdAt = formatDate(session.createdAt);
-          const otherUser = session.otherUserName;
-
           body.innerHTML = `
-            <h5 class="text-white mb-2">Session with ${otherUser}</h5>
-            <p class="small text-muted mb-2">Code: <strong>${sessionCode}</strong></p>
+            <p class="small text-muted mb-2">Code: <strong class="text-white">${code || 'N/A'}</strong></p>
             <p class="small text-muted mb-4">Created: ${createdAt}</p>
-            <button class="btn btn-primary w-100 start-session-btn" data-code="${sessionCode}">
+            <button class="btn btn-primary w-100 start-session-btn" data-code="${code}">
               <i class="bi bi-camera-video me-2"></i> Start Live Session
             </button>
           `;
@@ -640,14 +594,17 @@
           card.appendChild(body);
           cardCol.appendChild(card);
           teachingSessionsContainer.appendChild(cardCol);
-        });
 
-        // Add event listeners to start session buttons
-        document.querySelectorAll(".start-session-btn").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            const code = e.target.closest(".start-session-btn").getAttribute("data-code");
-            window.location.href = `session.html?room=${encodeURIComponent(code)}`;
-          });
+          // Add event listener to start session button
+          const startBtn = body.querySelector('.start-session-btn');
+          if (startBtn) {
+            startBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (!code) return;
+              // Pass the session code to session.html via room parameter
+              window.location.href = `session.html?room=${encodeURIComponent(code)}`;
+            });
+          }
         });
 
       } catch (error) {
