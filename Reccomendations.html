@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recommendations</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+</head>
+
+<body class="p-4">
+
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0 text-primary">Recommended for You 🎯</h2>
+      <a href="dashboard.html" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+      </a>
+    </div>
+
+    <div id="recommendations" class="row g-3"></div>
+
+    <p id="emptyState" class="text-muted mt-3 d-none">
+      No recommendations yet. Add learning interests to your profile.
+    </p>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import {
+      collection,
+      getDocs,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const container = document.getElementById("recommendations");
+    const emptyState = document.getElementById("emptyState");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "signin.html";
+        return;
+      }
+
+      const meSnap = await getDoc(doc(db, "users", user.uid));
+      if (!meSnap.exists()) {
+        emptyState.classList.remove("d-none");
+        emptyState.textContent = "No profile found. Please complete your profile first.";
+        return;
+      }
+
+      const myData = meSnap.data();
+      
+      // Get learning interests - try learn_normalized first, fallback to parsing learn field
+      let myLearn = myData.learn_normalized || [];
+      
+      // If learn_normalized doesn't exist but learn does, parse it
+      if (!Array.isArray(myLearn) || myLearn.length === 0) {
+        if (myData.learn) {
+          myLearn = String(myData.learn)
+            .split(",")
+            .map(s => s.trim().toLowerCase())
+            .filter(Boolean);
+        }
+      }
+
+      console.log("My learning interests:", myLearn);
+      
+      if (!myLearn.length) {
+        emptyState.classList.remove("d-none");
+        emptyState.textContent = "No learning interests found. Please add skills you want to learn in your profile.";
+        return;
+      }
+
+      // Get all learning interests from the logged-in user's profile
+      const learningInterests = Array.isArray(myLearn) ? myLearn : [];
+
+      const allUsers = await getDocs(collection(db, "users"));
+
+      let found = false;
+      container.innerHTML = "";
+      
+      console.log("Total users found:", allUsers.size);
+      console.log("Looking for users who can teach:", learningInterests);
+
+      allUsers.forEach((docSnap) => {
+        // Exclude the logged-in user
+        if (docSnap.id === user.uid) return;
+
+        const data = docSnap.data();
+        
+        // Get skills - try skills_normalized first, fallback to parsing skills/teach field
+        let skills = data.skills_normalized || [];
+        if (!Array.isArray(skills) || skills.length === 0) {
+          if (data.skills && Array.isArray(data.skills)) {
+            skills = data.skills.map(s => String(s).toLowerCase().trim());
+          } else if (data.teach) {
+            skills = String(data.teach)
+              .split(",")
+              .map(s => s.trim().toLowerCase())
+              .filter(Boolean);
+          }
+        }
+        
+        const skillsDisplay = Array.isArray(data.skills) ? data.skills : 
+                             (data.teach ? String(data.teach).split(",").map(s => s.trim()).filter(Boolean) : []);
+
+        if (!Array.isArray(skills) || skills.length === 0) return;
+        
+        console.log(`Checking user ${data.name || docSnap.id}:`, {
+          skills_normalized: skills,
+          learningInterests: learningInterests
+        });
+
+        // Find which learning interests match this user's skills (case-insensitive)
+        const matchingInterests = learningInterests.filter(interest => {
+          const normalizedInterest = String(interest).toLowerCase().trim();
+          return skills.some(skill => String(skill).toLowerCase().trim() === normalizedInterest);
+        });
+
+        // If there's at least one matching skill, show this user as a recommendation
+        if (matchingInterests.length > 0) {
+          console.log(`✓ Match found! User ${data.name || docSnap.id} can teach:`, matchingInterests);
+          found = true;
+
+          const col = document.createElement("div");
+          col.className = "col-md-4";
+
+          // Find the display names of matching skills
+          const matchingSkillsDisplay = matchingInterests.map(interest => {
+            const index = skills.indexOf(interest);
+            return index !== -1 && skillsDisplay[index] ? skillsDisplay[index] : interest;
+          });
+
+          col.innerHTML = `
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title mb-3">${data.name || (data.email || '').split('@')[0] || 'User'}</h5>
+                <p class="small mb-2">
+                  <strong class="text-success">✓ Matches your interest:</strong> ${matchingSkillsDisplay.join(", ")}
+                </p>
+                <p class="small text-muted mb-3">
+                  <strong>Can Teach:</strong> ${skillsDisplay.length > 0 ? skillsDisplay.join(", ") : "Not specified"}
+                </p>
+                <a href="user.html?uid=${docSnap.id}" class="btn btn-outline-primary btn-sm w-100">
+                  View Profile
+                </a>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(col);
+        }
+      });
+
+      if (!found) {
+        emptyState.classList.remove("d-none");
+        emptyState.textContent = "No recommendations found. Make sure other users have added skills they can teach that match your learning interests.";
+        console.log("No matching users found. Check console for details.");
+      } else {
+        emptyState.classList.add("d-none");
+        console.log("Recommendations displayed successfully!");
+      }
+    });
+  </script>
+
+</body>
+</html>

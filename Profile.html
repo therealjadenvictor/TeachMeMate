@@ -177,12 +177,16 @@ try{
 const skillsArray=teachSkills.split(",").map(s=>s.trim()).filter(Boolean);
 const skillsNormalized=skillsArray.map(s=>s.toLowerCase());
 
+const learnArray=learnSkills.split(",").map(s=>s.trim()).filter(Boolean);
+const learnNormalized=learnArray.map(s=>s.toLowerCase());
+
 await setDoc(doc(db,"users",user.uid),{
 email:user.email,
 teach:teachSkills,
 learn:learnSkills,
 skills:skillsArray,
 skills_normalized:skillsNormalized,
+learn_normalized:learnNormalized,
 rating:0,
 sessionsTaken:0,
 sessionsGiven:0

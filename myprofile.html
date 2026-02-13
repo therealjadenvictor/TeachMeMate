@@ -362,6 +362,13 @@ async function saveProfile(){
 
   const skillsNormalized = skillsArray.map(s => s.toLowerCase());
 
+  const learnArray = learnSkillsRaw
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const learnNormalized = learnArray.map(s => s.toLowerCase());
+
   const payload = {
     name: nameValue || emailValue.split("@")[0],
     email: emailValue,
@@ -369,7 +376,8 @@ async function saveProfile(){
     gender: genderValue,
     skills: skillsArray,
     skills_normalized: skillsNormalized,
-    learn: learnSkillsRaw
+    learn: learnSkillsRaw,
+    learn_normalized: learnNormalized
   };
 
   try {
