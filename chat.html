@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chats - TeachMeMate</title>
-  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <!-- Custom Theme -->
+  <link rel="stylesheet" href="bootstrap-theme.css">
+  
   <style>
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at 30% 20%, #111827, #020617);
-      color: #e5e7eb;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
     }
 
@@ -38,18 +42,6 @@
       gap: 1rem;
     }
 
-    .chat-sidebar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-
-    .chat-sidebar-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
     .chat-conversations {
       flex: 1;
       overflow-y: auto;
@@ -64,6 +56,7 @@
       flex-direction: column;
       gap: 0.15rem;
       border: 1px solid transparent;
+      margin-bottom: 0.5rem;
     }
 
     .chat-conversation-item:hover,
@@ -91,25 +84,6 @@
       padding: 1.25rem 1.5rem;
     }
 
-    .chat-main-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
-      padding-bottom: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .chat-main-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .chat-main-subtitle {
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
     .chat-messages {
       flex: 1;
       overflow-y: auto;
@@ -117,6 +91,8 @@
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
+      min-height: 400px;
+      max-height: calc(100vh - 250px);
     }
 
     .chat-message {
@@ -129,48 +105,10 @@
 
     .chat-message.me {
       align-self: flex-end;
-      background: rgba(56, 189, 248, 0.2);
-      border: 1px solid rgba(56, 189, 248, 0.6);
     }
 
     .chat-message.them {
       align-self: flex-start;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(75, 85, 99, 0.9);
-    }
-
-    .chat-input-bar {
-      display: flex;
-      gap: 0.6rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(31, 41, 55, 0.9);
-    }
-
-    .chat-input-bar input {
-      flex: 1;
-      border-radius: 999px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: #020617;
-      color: #e5e7eb;
-      padding: 0.55rem 0.9rem;
-      font-size: 0.9rem;
-    }
-
-    .chat-input-bar button {
-      border-radius: 999px;
-      border: none;
-      padding: 0.55rem 1.1rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: linear-gradient(135deg, #22d3ee, #a855f7);
-      color: #020617;
-    }
-
-    .chat-empty {
-      font-size: 0.9rem;
-      color: #9ca3af;
-      margin-top: 1rem;
     }
 
     @media (max-width: 900px) {
@@ -185,40 +123,42 @@
 
   <div class="chat-layout">
     <aside class="chat-sidebar">
-      <div class="chat-sidebar-header">
+      <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <div class="chat-sidebar-title">Chats</div>
-          <div style="font-size:0.78rem;color:#9ca3af;">Your recent conversations</div>
+          <div class="fw-semibold">Chats</div>
+          <div class="small text-muted">Your recent conversations</div>
         </div>
-        <button class="btn-ghost" type="button" onclick="window.location.href='dashboard.html'"
-                style="border-radius:999px;border:1px solid rgba(148,163,184,0.6);background:transparent;color:#e5e7eb;font-size:0.75rem;padding:0.25rem 0.6rem;">
+        <button class="btn btn-sm btn-outline-secondary" type="button" onclick="window.location.href='dashboard.html'">
           ← Dashboard
         </button>
       </div>
 
       <div id="conversationList" class="chat-conversations">
-        <div class="chat-empty" id="conversationEmpty">
+        <div class="text-muted small" id="conversationEmpty">
           Start a chat from a user's profile to see it here.
         </div>
       </div>
     </aside>
 
     <main class="chat-main">
-      <div class="chat-main-header">
+      <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom border-secondary">
         <div>
-          <div class="chat-main-title" id="chatTitle">Select a conversation</div>
-          <div class="chat-main-subtitle" id="chatSubtitle">Your messages will appear here.</div>
+          <div class="fw-semibold" id="chatTitle">Select a conversation</div>
+          <div class="small text-muted" id="chatSubtitle">Your messages will appear here.</div>
         </div>
       </div>
 
       <div id="chatMessages" class="chat-messages"></div>
 
-      <div class="chat-input-bar">
-        <input id="chatInput" placeholder="Type a message..." autocomplete="off" />
-        <button type="button" id="chatSend">Send</button>
+      <div class="d-flex gap-2 pt-3 border-top border-secondary">
+        <input type="text" class="form-control rounded-pill" id="chatInput" placeholder="Type a message..." autocomplete="off" />
+        <button class="btn btn-primary rounded-pill" type="button" id="chatSend">Send</button>
       </div>
     </main>
   </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
     import { auth, db } from "./firebase-config.js";
@@ -269,7 +209,6 @@
           items.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        // Sort by createdAt client-side to avoid composite index requirement
         items.sort((a, b) => {
           const ta = a.createdAt?.seconds || 0;
           const tb = b.createdAt?.seconds || 0;
@@ -336,7 +275,6 @@
     }
 
     async function loadConversationList(user) {
-      // Show all conversations where the current user is a participant
       const convQuery = query(
         collection(db, "conversations"),
         where("participants", "array-contains", user.uid)
@@ -348,7 +286,6 @@
           items.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        // Sort newest first based on lastUpdated
         items.sort((a, b) => {
           const ta = a.lastUpdated?.seconds || 0;
           const tb = b.lastUpdated?.seconds || 0;
@@ -407,7 +344,6 @@
 
           item.addEventListener('click', () => {
             openConversation(conv.id, otherId, otherName);
-            // Remember current conversation for dashboard chat preview
             localStorage.setItem('currentRoomId', conv.id);
             if (otherId) {
               localStorage.setItem('currentRoomOtherUserId', otherId);
@@ -415,7 +351,6 @@
             if (otherName) {
               localStorage.setItem('currentRoomName', otherName);
             }
-            // Update URL without reloading
             const url = new URL(window.location.href);
             url.searchParams.set('room', conv.id);
             window.history.replaceState(null, '', url.toString());
@@ -461,7 +396,6 @@
 
         openConversation(roomId, otherUserId, otherUserName);
 
-        // Remember current conversation for dashboard chat preview
         localStorage.setItem('currentRoomId', roomId);
         if (otherUserId) {
           localStorage.setItem('currentRoomOtherUserId', otherUserId);
@@ -479,4 +413,3 @@
 
 </body>
 </html>
-

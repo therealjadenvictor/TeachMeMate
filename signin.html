@@ -1,191 +1,144 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In - TeachMeMate</title>
-  <link rel="stylesheet" href="styles.css">
-
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <!-- Custom Theme -->
+  <link rel="stylesheet" href="bootstrap-theme.css">
+  
   <style>
-    .auth-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+    body {
       min-height: 100vh;
-      gap: 2rem;
+      display: flex;
+      align-items: center;
     }
-
+    
+    .auth-container {
+      min-height: 100vh;
+    }
+    
     .auth-left {
       background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(183, 75, 255, 0.1));
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem;
+      text-align: center;
     }
-
-    .auth-right {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+    
+    .auth-text h2 {
+      font-size: 4rem;
+      font-weight: 800;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      letter-spacing: -1px;
+      color: #ffffff;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.35);
+      margin-bottom: 1rem;
     }
-
+    
+    .auth-text p {
+      transform: translateX(-20px);
+      font-size: 1.6rem;
+      font-weight: 500;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      opacity: 0.85;
+      letter-spacing: 0.5px;
+    }
+    
     .auth-form {
-      width: 100%;
       max-width: 400px;
-    }
-    .auth-form input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
-    .auth-title {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      text-align: center;
-    }
-
-    .auth-subtitle {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .form-link {
-      text-align: center;
-      margin-top: 1.5rem;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="auth-container">
-
-    <!-- Left Section -->
-    <div class="auth-left">
-      <div class="auth-text">
-        <h2>Welcome Back</h2>
-        <p>Sign in to continue your journey.</p>
-      </div>
-    </div>
-    
-    <style>
-    .auth-left{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-    }
-    
-    /* MAIN TITLE */
-    .auth-text h2{
-      font-size:4rem;
-      font-weight:800;
-      font-family:'Poppins','Segoe UI',sans-serif;
-      letter-spacing:-1px;
-      color:#ffffff;
-      text-shadow:0 0 25px rgba(255,255,255,0.35);
-      margin-bottom:1rem;
-    }
-    
-    /* SUBTITLE */
-    .auth-text p{
-      transform: translateX(-20px);
-      font-size:1.6rem;
-      font-weight:500;
-      font-family:'Inter','Segoe UI',sans-serif;
-      opacity:0.85;
-      letter-spacing:0.5px;
-    }
-    </style>
-    
-
-    <!-- Right Section -->
-    <div class="auth-right">
-      <div class="auth-form">
-
-        <h3 class="auth-title">Sign In</h3>
-        <p class="auth-subtitle">Welcome back to TeachMeMate</p>
-
-        <!-- IMPORTANT: Added ID -->
-        <form id="loginForm">
-
-          <div>
-            <label>Email Address</label><br>
-            <input type="email" id="email" placeholder="your@email.com" required>
-          </div>
-
-          <br>
-
-          <div>
-            <label>Password</label><br>
-            <input type="password" id="password" placeholder="Enter your password" required>
-          </div>
-
-          <br>
-
-          <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
-           Sign In
-         </button>
-
-
-        </form>
-
-        <div class="form-link">
-          Don't have an account? <a href="signup.html">Sign Up</a>
+  <div class="container-fluid auth-container">
+    <div class="row g-0 h-100">
+      <!-- Left Section -->
+      <div class="col-lg-6 auth-left">
+        <div class="auth-text">
+          <h2>Welcome Back</h2>
+          <p>Sign in to continue your journey.</p>
         </div>
+      </div>
+      
+      <!-- Right Section -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center p-4">
+        <div class="auth-form w-100">
+          <h3 class="text-center mb-2">Sign In</h3>
+          <p class="text-center text-muted mb-4">Welcome back to TeachMeMate</p>
 
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mb-3">
+              Sign In
+            </button>
+          </form>
+
+          <div class="text-center text-muted">
+            Don't have an account? <a href="signup.html" class="text-primary">Sign Up</a>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 
-
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   
- <script type="module">
-import { auth, db } from "./firebase-config.js";
-import { signInWithEmailAndPassword }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { doc, getDoc }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import { signInWithEmailAndPassword }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, getDoc }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// FORM
-const form = document.getElementById("loginForm");
+    const form = document.getElementById("loginForm");
 
-// 🔥 MAIN LOGIN LOGIC
-form.addEventListener("submit", async (e) => {
-  e.preventDefault(); 
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault(); 
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-    console.log("Logged in:", user.uid);
+        console.log("Logged in:", user.uid);
 
-    // 🔥 CHECK IF PROFILE EXISTS
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      console.log("User already has profile → Dashboard");
-      window.location.href = "dashboard.html";
-    } else {
-      console.log("New user → Profile page");
-      window.location.href = "profile.html";
-    }
+        if (docSnap.exists()) {
+          console.log("User already has profile → Dashboard");
+          window.location.href = "dashboard.html";
+        } else {
+          console.log("New user → Profile page");
+          window.location.href = "Profile.html";
+        }
 
-  } catch (error) {
-    console.error(error);
-    alert(error.message);
-  }
-});
-</script>
+      } catch (error) {
+        console.error(error);
+        alert(error.message);
+      }
+    });
+  </script>
 
+</body>
+</html>

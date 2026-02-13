@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Complete Profile - TeachMeMate</title>
-  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <!-- Custom Theme -->
+  <link rel="stylesheet" href="bootstrap-theme.css">
+  
   <style>
     body {
-      margin: 0;
-      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 30% 20%, #18204a, var(--primary-black, #050816));
-      color: var(--light-gray, #e5e7eb);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -24,115 +27,13 @@
     }
 
     .profile-card {
-      background: linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.98));
       border-radius: 20px;
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 24px 60px rgba(15,23,42,0.9);
       padding: 2rem 2.5rem;
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 2rem;
-    }
-
-    .profile-card-header {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .profile-title {
-      font-size: 1.6rem;
-      font-weight: 600;
-    }
-
-    .profile-subtitle {
-      font-size: 0.9rem;
-      color: var(--medium-gray, #9ca3af);
-    }
-
-    .profile-pill {
-      font-size: 0.8rem;
-      padding: 0.4rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid rgba(56,189,248,0.6);
-      background: rgba(15,23,42,0.9);
-      color: #e5e7eb;
-    }
-
-    .profile-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .field-group label {
-      display: block;
-      font-size: 0.9rem;
-      margin-bottom: 0.25rem;
-      color: var(--medium-gray, #9ca3af);
-    }
-
-    .field-group input {
-      width: 100%;
-      padding: 0.6rem 0.85rem;
-      border-radius: 10px;
-      border: 1px solid rgba(55,65,81,0.9);
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 0.9rem;
-    }
-
-    .field-hint {
-      font-size: 0.75rem;
-      color: var(--dark-gray, #6b7280);
-      margin-top: 0.25rem;
-    }
-
-    .profile-summary {
-      border-radius: 14px;
-      border: 1px solid rgba(148,163,184,0.35);
-      background: radial-gradient(circle at top left, rgba(56,189,248,0.18), transparent),
-                  radial-gradient(circle at bottom right, rgba(129,140,248,0.18), transparent),
-                  rgba(15,23,42,0.95);
-      padding: 1.25rem 1.5rem;
-      font-size: 0.9rem;
-    }
-
-    .summary-title {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .summary-item {
-      margin-top: 0.3rem;
-      color: var(--medium-gray, #9ca3af);
-    }
-
-    .btn-primary-wide {
-      margin-top: 1.75rem;
-      width: 100%;
-      padding: 0.75rem 1.5rem;
-      border-radius: 999px;
-      border: none;
-      background: linear-gradient(135deg, #22d3ee, #a855f7);
-      color: #020617;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
     }
 
     @media (max-width: 800px) {
       .profile-card {
-        grid-template-columns: 1fr;
         padding: 1.75rem 1.5rem;
-      }
-
-      .profile-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.4rem;
       }
     }
   </style>
@@ -140,39 +41,46 @@
 <body>
 
   <div class="profile-shell">
-    <div class="profile-card">
-      <div class="profile-card-header">
-        <div>
-          <div class="profile-title">Complete your profile</div>
-          <div class="profile-subtitle">Tell others what you can teach and what you’d love to learn.</div>
+    <div class="card profile-card">
+      <div class="card-header border-0 bg-transparent pb-2">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+          <div>
+            <h4 class="mb-1">Complete your profile</h4>
+            <p class="text-muted small mb-0">Tell others what you can teach and what you'd love to learn.</p>
+          </div>
+          <span class="badge badge-primary">Step 2 · Skills & interests</span>
         </div>
-        <div class="profile-pill">Step 2 · Skills & interests</div>
       </div>
 
-      <form id="profileForm" class="profile-form">
-        <div class="field-group">
-          <label for="teachSkills">Skills I can teach</label>
-          <input type="text" id="teachSkills" placeholder="e.g. Python, Guitar, Video Editing" required>
-          <div class="field-hint">Use commas to separate multiple skills. These will be used so others can find you.</div>
+      <div class="card-body">
+        <form id="profileForm">
+          <div class="mb-4">
+            <label for="teachSkills" class="form-label">Skills I can teach</label>
+            <input type="text" class="form-control" id="teachSkills" placeholder="e.g. Python, Guitar, Video Editing" required>
+            <div class="form-text">Use commas to separate multiple skills. These will be used so others can find you.</div>
+          </div>
+
+          <div class="mb-4">
+            <label for="learnSkills" class="form-label">Skills I want to learn</label>
+            <input type="text" class="form-control" id="learnSkills" placeholder="e.g. AI, Public Speaking" required>
+            <div class="form-text">We'll use this to suggest relevant people and sessions for you.</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Save & go to dashboard</button>
+        </form>
+
+        <div class="card bg-gradient-card mt-4 p-3">
+          <h6 class="mb-2">Why this matters</h6>
+          <p class="small text-muted mb-1">· Your <strong>teach skills</strong> make you discoverable to learners searching for help.</p>
+          <p class="small text-muted mb-1">· Your <strong>learn skills</strong> help us match you with the right mentors and sessions.</p>
+          <p class="small text-muted mb-0">· You can always refine these later from your profile page.</p>
         </div>
-
-        <div class="field-group">
-          <label for="learnSkills">Skills I want to learn</label>
-          <input type="text" id="learnSkills" placeholder="e.g. AI, Public Speaking" required>
-          <div class="field-hint">We’ll use this to suggest relevant people and sessions for you.</div>
-        </div>
-
-        <button type="submit" class="btn-primary-wide">Save & go to dashboard</button>
-      </form>
-
-      <aside class="profile-summary">
-        <div class="summary-title">Why this matters</div>
-        <div class="summary-item">· Your <strong>teach skills</strong> make you discoverable to learners searching for help.</div>
-        <div class="summary-item">· Your <strong>learn skills</strong> help us match you with the right mentors and sessions.</div>
-        <div class="summary-item">· You can always refine these later from your profile page.</div>
-      </aside>
+      </div>
     </div>
   </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script type="module">
     import { auth, db } from "./firebase-config.js";
@@ -200,7 +108,6 @@
       }
 
       try {
-        // Initialize profile with default stats
         const skillsArray = teachSkills
           .split(",")
           .map(s => s.trim())
@@ -214,7 +121,6 @@
           learn: learnSkills,
           skills: skillsArray,
           skills_normalized: skillsNormalized,
-          // Default stats for new users
           rating: 0,
           sessionsTaken: 0,
           sessionsGiven: 0

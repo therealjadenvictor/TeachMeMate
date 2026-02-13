@@ -1,0 +1,232 @@
+/* Bootstrap Dark Theme Override for TeachMeMate */
+/* This file customizes Bootstrap to match the TeachMeMate dark theme */
+
+:root {
+  --bs-body-bg: #0a0e27;
+  --bs-body-color: #e0e0e0;
+  --bs-primary: #00d4ff;
+  --bs-secondary: #b74bff;
+  --bs-success: #39ff14;
+  --bs-danger: #ff006e;
+  --bs-dark: #141829;
+  --bs-border-color: #252d47;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0e27 0%, #141829 100%);
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+/* Navbar Dark Theme */
+.navbar-dark {
+  background: rgba(10, 14, 39, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.98)) !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+}
+
+.card:hover {
+  border-color: var(--bs-primary) !important;
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #00d4ff, #00a8cc) !important;
+  border: none !important;
+  color: #0a0e27 !important;
+  font-weight: 600;
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.7);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(0, 212, 255, 1);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #b74bff, #9c2aff) !important;
+  border: none !important;
+  color: #0a0e27 !important;
+  font-weight: 600;
+}
+
+.btn-outline-primary {
+  border-color: var(--bs-primary) !important;
+  color: var(--bs-primary) !important;
+}
+
+.btn-outline-primary:hover {
+  background: rgba(0, 212, 255, 0.1) !important;
+  border-color: var(--bs-primary) !important;
+  color: var(--bs-primary) !important;
+}
+
+/* Forms */
+.form-control, .form-select {
+  background: #020617 !important;
+  border: 1px solid rgba(55, 65, 81, 0.9) !important;
+  color: #e5e7eb !important;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(0, 212, 255, 0.05) !important;
+  border-color: var(--bs-primary) !important;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3) !important;
+  color: #e5e7eb !important;
+}
+
+.form-control::placeholder {
+  color: #6b7280 !important;
+}
+
+.form-label {
+  color: #9ca3af !important;
+  font-weight: 600;
+}
+
+/* List Groups */
+.list-group-item {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+  color: #e5e7eb !important;
+}
+
+.list-group-item:hover, .list-group-item.active {
+  background: rgba(0, 212, 255, 0.1) !important;
+  border-color: var(--bs-primary) !important;
+  color: var(--bs-primary) !important;
+}
+
+/* Badges */
+.badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.badge-primary {
+  background: rgba(0, 212, 255, 0.2) !important;
+  color: var(--bs-primary) !important;
+  border: 1px solid var(--bs-primary);
+}
+
+/* Sidebar */
+.sidebar {
+  background: linear-gradient(180deg, #0e1428, #0b1020) !important;
+  border-right: 1px solid #1f284f;
+}
+
+.sidebar .nav-link {
+  color: #9fb3ff !important;
+  border-left: 4px solid transparent;
+  padding: 1rem 1.5rem;
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link.active {
+  background: rgba(0, 212, 255, 0.08) !important;
+  color: var(--bs-primary) !important;
+  border-left-color: var(--bs-primary);
+}
+
+/* Offcanvas */
+.offcanvas {
+  background: linear-gradient(180deg, #0e1428, #0b1020) !important;
+  border-right: 1px solid #1f284f;
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid #1f284f;
+}
+
+/* Text Colors */
+.text-primary {
+  color: var(--bs-primary) !important;
+}
+
+.text-secondary {
+  color: var(--bs-secondary) !important;
+}
+
+.text-muted {
+  color: #9ca3af !important;
+}
+
+/* Background Gradients */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(183, 75, 255, 0.1)) !important;
+}
+
+.bg-gradient-card {
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent),
+              radial-gradient(circle at bottom right, rgba(129, 140, 248, 0.18), transparent),
+              rgba(15, 23, 42, 0.95) !important;
+}
+
+/* Avatar */
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--bs-primary), var(--bs-secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0e27;
+  font-weight: 700;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+}
+
+/* Chat Messages */
+.chat-message {
+  max-width: 70%;
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.chat-message.me {
+  background: rgba(56, 189, 248, 0.2);
+  border: 1px solid rgba(56, 189, 248, 0.6);
+  align-self: flex-end;
+}
+
+.chat-message.them {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(75, 85, 99, 0.9);
+  align-self: flex-start;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0e27;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 212, 255, 0.5);
+}
