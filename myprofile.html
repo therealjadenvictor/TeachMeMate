@@ -5,203 +5,245 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Profile - TMate</title>
 
-<!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-<!-- Custom Theme -->
 <link rel="stylesheet" href="bootstrap-theme.css">
+<link rel="stylesheet" href="styles.css">
 
 <style>
-body {
-  min-height: 100vh;
+body{
+  min-height:100vh;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+body.fade-in{opacity:1;}
+
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:240px;
+  height:100vh;
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.05);
 }
 
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 240px;
-  height: 100vh;
-  overflow-y: auto;
-  z-index: 1000;
+.sidebar .nav-link{
+  color:#bbb;
+  border-radius:10px;
+  margin-bottom:6px;
+  transition:all 0.2s ease;
+}
+.sidebar .nav-link:hover{
+  background:rgba(0,212,255,0.1);
+  color:white;
 }
 
-.main {
-  margin-left: 240px;
-  min-height: 100vh;
+.main{
+  margin-left:240px;
+  min-height:100vh;
 }
 
-@media (max-width: 991px) {
-  .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
-  
-  .main {
-    margin-left: 0;
-  }
+@media(max-width:991px){
+  .sidebar{position:relative;width:100%;height:auto;}
+  .main{margin-left:0;}
 }
+
+.glass-card{
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.05);
+  border-radius:20px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+
+.form-control, .form-select, textarea{
+  background:rgba(255,255,255,0.08);
+  border:none;
+  color:white;
+  border-radius:12px;
+}
+
+.form-control:focus, .form-select:focus{
+  box-shadow:0 0 0 2px rgba(0,212,255,0.5);
+  background:rgba(255,255,255,0.12);
+  color:white;
+}
+
+.btn-primary{
+  background:linear-gradient(90deg,#00d4ff,#b74bff);
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+}
+/* Fix white dropdown background */
+.form-select {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: #fff !important;
+  border: none;
+  border-radius: 12px;
+}
+
+/* Fix dropdown options background (browser dependent) */
+.form-select option {
+  background-color: #1e1e1e;
+  color: #fff;
+}
+
+/* Fix focus state */
+.form-select:focus {
+  background-color: rgba(255,255,255,0.12) !important;
+  color: #fff !important;
+  box-shadow: 0 0 0 2px rgba(0,212,255,0.5);
+}
+
+/* Fix default arrow color in dark mode */
+.form-select {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ffffff' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 6.344a.5.5 0 0 1 .708-.708L8 10.293l4.84-4.657a.5.5 0 0 1 .707.708l-4.796 4.796a.5.5 0 0 1-.708 0z'/%3E%3C/svg%3E");
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="d-flex">
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="p-3 mb-3">
-      <h4 class="text-center mb-0 text-primary">TMate</h4>
-    </div>
 
-    <nav class="nav flex-column px-2">
-      <a class="nav-link" href="dashboard.html">
-        <i class="bi bi-speedometer2 me-2"></i> Dashboard
-      </a>
-      <a class="nav-link" href="chat.html">
-        <i class="bi bi-chat-dots me-2"></i> All Chats
-      </a>
-      <a class="nav-link" href="#">
-        <i class="bi bi-book me-2"></i> My Sessions
-      </a>
-      <a class="nav-link" href="#">
-        <i class="bi bi-person-workspace me-2"></i> Teaching
-      </a>
-    </nav>
-  </aside>
+<!-- Sidebar -->
+<aside class="sidebar p-3">
+  <h4 class="text-center text-primary mb-4">TMate</h4>
+  <nav class="nav flex-column">
+    <a class="nav-link" href="dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a>
+    <a class="nav-link" href="chat.html"><i class="bi bi-chat-dots me-2"></i>All Chats</a>
+    <a class="nav-link" href="#"><i class="bi bi-book me-2"></i>My Sessions</a>
+    <a class="nav-link" href="#"><i class="bi bi-person-workspace me-2"></i>Teaching</a>
+  </nav>
+</aside>
 
-  <!-- Main Content -->
-  <main class="main flex-grow-1 p-4">
-    <div class="container-fluid">
-      <h1 class="text-primary mb-4">My Profile</h1>
+<!-- Main -->
+<main class="main flex-grow-1 p-4">
+<div class="container-fluid">
 
-      <!-- Stats Cards -->
-      <div class="row g-3 mb-4">
-        <div class="col-md-3 col-sm-6">
-          <div class="card text-center p-3">
-            <h2 class="text-primary mb-2" id="ratingDisplay">⭐ 0.0</h2>
-            <p class="text-muted mb-0">Rating</p>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="card text-center p-3">
-            <h2 class="text-primary mb-2" id="sessionsTakenDisplay">0</h2>
-            <p class="text-muted mb-0">Sessions Taken</p>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="card text-center p-3">
-            <h2 class="text-primary mb-2" id="sessionsGivenDisplay">0</h2>
-            <p class="text-muted mb-0">Sessions Given</p>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6">
-          <div class="card text-center p-3">
-            <h2 class="text-primary mb-2">18 Feb</h2>
-            <p class="text-muted mb-0">Next Session</p>
-          </div>
-        </div>
-      </div>
+<h1 class="text-primary mb-4">My Profile</h1>
 
-      <!-- VIEW MODE -->
-      <div id="viewMode">
-        <div class="row g-3 mb-4">
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <span class="text-muted small">Name</span>
-              <div class="value mt-2" id="vName">Loading...</div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <span class="text-muted small">Email</span>
-              <div class="value mt-2" id="vEmail">Loading...</div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <span class="text-muted small">Age</span>
-              <div class="value mt-2" id="vAge">-</div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <span class="text-muted small">Gender</span>
-              <div class="value mt-2" id="vGender">-</div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <span class="text-muted small">My Skills</span>
-              <div class="value mt-2" id="vSkills">-</div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <span class="text-muted small">Skills I Want to Learn</span>
-              <div class="value mt-2" id="vTeachSkills">-</div>
-            </div>
-          </div>
-        </div>
-        <button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
-      </div>
+<!-- Stats -->
+<div class="row g-3 mb-4">
+<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
+<h2 id="ratingDisplay">⭐ 0.0</h2><p class="text-muted mb-0">Rating</p>
+</div></div>
 
-      <!-- EDIT MODE -->
-      <div id="editMode" class="d-none">
-        <div class="row g-3 mb-4">
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <label class="form-label text-muted small">Name</label>
-              <input type="text" class="form-control" id="name">
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <label class="form-label text-muted small">Email</label>
-              <input type="email" class="form-control" id="email">
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <label class="form-label text-muted small">Age: <b id="ageVal">21</b></label>
-              <input type="range" class="form-range" min="18" max="100" value="21" id="age" oninput="ageVal.textContent=this.value">
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-6">
-            <div class="card p-3">
-              <label class="form-label text-muted small">Gender</label>
-              <select class="form-select" id="gender">
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card p-3">
-              <label class="form-label text-muted small">My Skills</label>
-              <textarea class="form-control" id="skills" rows="3"></textarea>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card p-3">
-              <label class="form-label text-muted small">Skills I Want to Learn</label>
-              <textarea class="form-control" id="teachSkills" rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-primary" onclick="saveProfile()">Save</button>
-          <button class="btn btn-outline-secondary" onclick="cancelEdit()">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </main>
+<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
+<h2 id="sessionsTakenDisplay">0</h2><p class="text-muted mb-0">Sessions Taken</p>
+</div></div>
+
+<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
+<h2 id="sessionsGivenDisplay">0</h2><p class="text-muted mb-0">Sessions Given</p>
+</div></div>
+
+<div class="col-md-3 col-sm-6"><div class="glass-card p-3 text-center">
+<h2>18 Feb</h2><p class="text-muted mb-0">Next Session</p>
+</div></div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- VIEW MODE -->
+<div id="viewMode">
+<div class="row g-3 mb-4">
+
+<div class="col-md-4"><div class="glass-card p-3">
+<span class="text-muted small">Name</span>
+<div id="vName">Loading...</div>
+</div></div>
+
+<div class="col-md-4"><div class="glass-card p-3">
+<span class="text-muted small">Email</span>
+<div id="vEmail">Loading...</div>
+</div></div>
+
+<div class="col-md-4"><div class="glass-card p-3">
+<span class="text-muted small">Age</span>
+<div id="vAge">-</div>
+</div></div>
+
+<div class="col-md-4"><div class="glass-card p-3">
+<span class="text-muted small">Gender</span>
+<div id="vGender">-</div>
+</div></div>
+
+<div class="col-md-6"><div class="glass-card p-3">
+<span class="text-muted small">My Skills</span>
+<div id="vSkills">-</div>
+</div></div>
+
+<div class="col-md-6"><div class="glass-card p-3">
+<span class="text-muted small">Skills I Want to Learn</span>
+<div id="vTeachSkills">-</div>
+</div></div>
+
+</div>
+
+<button class="btn btn-primary" onclick="editProfile()">Edit Profile</button>
+</div>
+
+<!-- EDIT MODE -->
+<div id="editMode" class="d-none">
+
+<div class="row g-3 mb-4">
+
+<div class="col-md-4"><div class="glass-card p-3">
+<label class="form-label small text-muted">Name</label>
+<input type="text" class="form-control" id="name">
+</div></div>
+
+<div class="col-md-4"><div class="glass-card p-3">
+<label class="form-label small text-muted">Email</label>
+<input type="email" class="form-control" id="email">
+</div></div>
+
+<div class="col-md-4"><div class="glass-card p-3">
+<label class="form-label small text-muted">
+Age: <b id="ageVal">21</b>
+</label>
+<input type="range" class="form-range" min="18" max="100"
+value="21" id="age"
+oninput="ageVal.textContent=this.value">
+</div></div>
+
+<div class="col-md-4"><div class="glass-card p-3">
+<label class="form-label small text-muted">Gender</label>
+<select class="form-select" id="gender">
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+</div></div>
+
+<div class="col-md-6"><div class="glass-card p-3">
+<label class="form-label small text-muted">My Skills</label>
+<textarea class="form-control" id="skills" rows="3"></textarea>
+</div></div>
+
+<div class="col-md-6"><div class="glass-card p-3">
+<label class="form-label small text-muted">Skills I Want to Learn</label>
+<textarea class="form-control" id="teachSkills" rows="3"></textarea>
+</div></div>
+
+</div>
+
+<div class="d-flex gap-2">
+<button class="btn btn-primary" onclick="saveProfile()">Save</button>
+<button class="btn btn-outline-secondary" onclick="cancelEdit()">Cancel</button>
+</div>
+
+</div>
+
+</div>
+</main>
+</div>
+
+<script>
+document.body.classList.add("fade-in");
+</script>
+
 
 <script type="module">
 import { auth, db } from "./firebase-config.js";
@@ -372,6 +414,10 @@ window.editProfile = editProfile;
 window.saveProfile = saveProfile;
 window.cancelEdit = cancelEdit;
 </script>
+<script>
+  document.body.classList.add("fade-in");
+  </script>
+  
 
 </body>
 </html>

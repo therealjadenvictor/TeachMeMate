@@ -1,138 +1,204 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Complete Profile - TeachMeMate</title>
-  
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-  <!-- Custom Theme -->
-  <link rel="stylesheet" href="bootstrap-theme.css">
-  
-  <style>
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Complete Profile - TeachMeMate</title>
 
-    .profile-shell {
-      width: 100%;
-      max-width: 960px;
-      padding: 2rem 1.5rem;
-    }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+<link rel="stylesheet" href="bootstrap-theme.css">
+<link rel="stylesheet" href="styles.css">
 
-    .profile-card {
-      border-radius: 20px;
-      padding: 2rem 2.5rem;
-    }
+<style>
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+body.fade-in{opacity:1;}
+body.fade-out{opacity:0;}
 
-    @media (max-width: 800px) {
-      .profile-card {
-        padding: 1.75rem 1.5rem;
-      }
-    }
-  </style>
+.profile-shell{
+  width:100%;
+  max-width:960px;
+  padding:2rem 1.5rem;
+}
+
+.profile-card{
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.05);
+  border-radius:20px;
+  padding:2rem 2.5rem;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  transition:transform 0.3s ease;
+}
+
+.profile-card:hover{
+  transform:translateY(-2px);
+}
+
+.form-control{
+  background:rgba(255,255,255,0.08);
+  border:none;
+  color:white;
+  border-radius:12px;
+}
+
+.form-control:focus{
+  box-shadow:0 0 0 2px rgba(0,212,255,0.5);
+  background:rgba(255,255,255,0.12);
+  color:white;
+}
+
+.btn-primary{
+  background:linear-gradient(90deg,#00d4ff,#b74bff);
+  border:none;
+  border-radius:12px;
+  font-weight:600;
+  padding:0.75rem;
+  transition:all 0.3s ease;
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 20px rgba(0,212,255,0.5);
+}
+</style>
 </head>
+
 <body>
 
-  <div class="profile-shell">
-    <div class="card profile-card">
-      <div class="card-header border-0 bg-transparent pb-2">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-          <div>
-            <h4 class="mb-1">Complete your profile</h4>
-            <p class="text-muted small mb-0">Tell others what you can teach and what you'd love to learn.</p>
-          </div>
-          <span class="badge badge-primary">Step 2 · Skills & interests</span>
-        </div>
-      </div>
+<div class="profile-shell">
+<div class="card profile-card border-0">
 
-      <div class="card-body">
-        <form id="profileForm">
-          <div class="mb-4">
-            <label for="teachSkills" class="form-label">Skills I can teach</label>
-            <input type="text" class="form-control" id="teachSkills" placeholder="e.g. Python, Guitar, Video Editing" required>
-            <div class="form-text">Use commas to separate multiple skills. These will be used so others can find you.</div>
-          </div>
+<div class="card-header border-0 bg-transparent pb-2">
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+<div>
+<h4 class="mb-1">Complete your profile</h4>
+<p class="text-muted small mb-0">Tell others what you can teach and what you'd love to learn.</p>
+</div>
+<span class="badge bg-primary">Step 2 · Skills & Interests</span>
+</div>
+</div>
 
-          <div class="mb-4">
-            <label for="learnSkills" class="form-label">Skills I want to learn</label>
-            <input type="text" class="form-control" id="learnSkills" placeholder="e.g. AI, Public Speaking" required>
-            <div class="form-text">We'll use this to suggest relevant people and sessions for you.</div>
-          </div>
+<div class="card-body">
 
-          <button type="submit" class="btn btn-primary w-100">Save & go to dashboard</button>
-        </form>
+<form id="profileForm">
 
-        <div class="card bg-gradient-card mt-4 p-3">
-          <h6 class="mb-2">Why this matters</h6>
-          <p class="small text-muted mb-1">· Your <strong>teach skills</strong> make you discoverable to learners searching for help.</p>
-          <p class="small text-muted mb-1">· Your <strong>learn skills</strong> help us match you with the right mentors and sessions.</p>
-          <p class="small text-muted mb-0">· You can always refine these later from your profile page.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="mb-4">
+<label class="form-label">Skills I can teach</label>
+<input type="text" class="form-control" id="teachSkills"
+placeholder="e.g. Python, Guitar, Video Editing" required>
+<div class="form-text">Use commas to separate multiple skills.</div>
+</div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<div class="mb-4">
+<label class="form-label">Skills I want to learn</label>
+<input type="text" class="form-control" id="learnSkills"
+placeholder="e.g. AI, Public Speaking" required>
+<div class="form-text">We use this to match you with mentors.</div>
+</div>
 
-  <script type="module">
-    import { auth, db } from "./firebase-config.js";
-    import { doc, setDoc }
-      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<button type="submit" id="saveBtn" class="btn btn-primary w-100">
+<span id="btnText">Save & Go to Dashboard</span>
+<span id="btnSpinner" class="spinner-border spinner-border-sm ms-2 d-none"></span>
+</button>
 
-    const profileForm = document.getElementById("profileForm");
+</form>
 
-    profileForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
+<!-- Replaced section -->
+<p class="text-muted small text-center mt-4 mb-0">
+You can refine these anytime later.
+</p>
 
-      const user = auth.currentUser;
+</div>
+</div>
+</div>
 
-      if (!user) {
-        alert("You must be logged in!");
-        return;
-      }
+<!-- Toast -->
+<div class="position-fixed top-0 end-0 p-3">
+<div id="toast" class="toast align-items-center text-bg-danger border-0">
+<div class="d-flex">
+<div class="toast-body" id="toastMessage"></div>
+<button type="button" class="btn-close btn-close-white me-2 m-auto"
+data-bs-dismiss="toast"></button>
+</div>
+</div>
+</div>
 
-      const teachSkills = document.getElementById("teachSkills").value.trim();
-      const learnSkills = document.getElementById("learnSkills").value.trim();
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-      if (!teachSkills || !learnSkills) {
-        alert("Please fill in both 'Skills I can teach' and 'Skills I want to learn'.");
-        return;
-      }
+<script type="module">
+import { auth, db } from "./firebase-config.js";
+import { doc, setDoc }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-      try {
-        const skillsArray = teachSkills
-          .split(",")
-          .map(s => s.trim())
-          .filter(Boolean);
-        
-        const skillsNormalized = skillsArray.map(s => s.toLowerCase());
+document.body.classList.add("fade-in");
 
-        await setDoc(doc(db, "users", user.uid), {
-          email: user.email,
-          teach: teachSkills,
-          learn: learnSkills,
-          skills: skillsArray,
-          skills_normalized: skillsNormalized,
-          rating: 0,
-          sessionsTaken: 0,
-          sessionsGiven: 0
-        });
+function smoothRedirect(url){
+  document.body.classList.add("fade-out");
+  setTimeout(()=>window.location.href=url,300);
+}
 
-        window.location.href = "dashboard.html";
+function showToast(message,type="danger"){
+  const toastEl=document.getElementById("toast");
+  document.getElementById("toastMessage").textContent=message;
+  toastEl.className=`toast align-items-center text-bg-${type} border-0`;
+  new bootstrap.Toast(toastEl).show();
+}
 
-      } catch (error) {
-        alert(error.message);
-      }
-    });
-  </script>
+profileForm.addEventListener("submit", async (e)=>{
+e.preventDefault();
+
+const user=auth.currentUser;
+
+if(!user){
+showToast("You must be logged in!");
+return;
+}
+
+const teachSkills=document.getElementById("teachSkills").value.trim();
+const learnSkills=document.getElementById("learnSkills").value.trim();
+
+if(!teachSkills||!learnSkills){
+showToast("Please fill in both fields.");
+return;
+}
+
+saveBtn.disabled=true;
+btnSpinner.classList.remove("d-none");
+btnText.textContent="Saving...";
+
+try{
+const skillsArray=teachSkills.split(",").map(s=>s.trim()).filter(Boolean);
+const skillsNormalized=skillsArray.map(s=>s.toLowerCase());
+
+await setDoc(doc(db,"users",user.uid),{
+email:user.email,
+teach:teachSkills,
+learn:learnSkills,
+skills:skillsArray,
+skills_normalized:skillsNormalized,
+rating:0,
+sessionsTaken:0,
+sessionsGiven:0
+});
+
+showToast("Profile saved!","success");
+setTimeout(()=>smoothRedirect("dashboard.html"),800);
+
+}catch(error){
+showToast(error.message);
+saveBtn.disabled=false;
+btnSpinner.classList.add("d-none");
+btnText.textContent="Save & Go to Dashboard";
+}
+});
+</script>
 
 </body>
 </html>
