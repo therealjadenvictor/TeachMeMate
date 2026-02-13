@@ -202,6 +202,7 @@
       serverTimestamp,
       doc,
       getDoc,
+      getDocs,
       setDoc,
       updateDoc
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -250,40 +251,38 @@
       rejectBtn.className = 'btn btn-outline-danger';
       rejectBtn.textContent = 'Reject';
 
-            acceptBtn.onclick = async () => {
-  try {
-    // Generate unique 6-digit code
-    let uniqueCode;
-    let exists = true;
+      acceptBtn.onclick = async () => {
+        try {
+          // Generate unique 6-digit code
+          let uniqueCode;
+          let exists = true;
 
-    while (exists) {
-      uniqueCode = Math.floor(100000 + Math.random() * 900000).toString();
+          while (exists) {
+            uniqueCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-      const q = query(
-        collection(db, "accepted_request"),
-        where("code", "==", uniqueCode)
-      );
+            const q = query(
+              collection(db, "accepted_request"),
+              where("code", "==", uniqueCode)
+            );
 
-      const snap = await getDocs(q);
-      exists = !snap.empty;
-    }
+            const snap = await getDocs(q);
+            exists = !snap.empty;
+          }
 
-    // Save accepted request
-    await addDoc(collection(db, "accepted_request"), {
-      users: [docData.from, currentUser.uid].sort(),
-      code: uniqueCode,
-      createdAt: serverTimestamp()
-    });
+          // Save accepted request
+          await addDoc(collection(db, "accepted_request"), {
+            users: [docData.from, currentUser.uid].sort(),
+            code: uniqueCode,
+            createdAt: serverTimestamp()
+          });
 
-  } catch (err) {
-    console.error("Accept request failed:", err);
-  }
-};
+        } catch (err) {
+          console.error("Accept request failed:", err);
+        }
+      };
 
-
-        rejectBtn.onclick = () =>
-          updateDoc(doc(db, 'chats', requestId), { status: 'rejected' });
-      }
+      rejectBtn.onclick = () =>
+        updateDoc(doc(db, 'chats', requestId), { status: 'rejected' });
 
       actions.appendChild(acceptBtn);
       actions.appendChild(rejectBtn);
