@@ -19,6 +19,13 @@
       overflow-x: hidden;
     }
 
+    :root {
+      --neon-cyan: #00d4ff;
+      --neon-purple: #b74bff;
+      --medium-gray: #9ca3af;
+      --white: #ffffff;
+    }
+
     /* Sidebar matching chat.html style */
     .sidebar {
       position: fixed;
@@ -143,10 +150,107 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, white, var(--light-gray));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      /* background: linear-gradient(135deg, white, var(--light-gray)); Removed to allow specific colors */
+      /* -webkit-background-clip: text; */
+      /* -webkit-text-fill-color: transparent; */
+      /* background-clip: text; */
+    }
+
+    /* Isometric Cube Animation */
+    @keyframes animate {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+
+      100% {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    .cube-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      min-height: 350px;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .container {
+      position: relative;
+      transform: skewY(-20deg) scale(0.7);
+      animation: animate 5s linear infinite;
+    }
+
+    .container .cube {
+      position: relative;
+      z-index: 2;
+    }
+
+    .container .cube:nth-child(2) {
+      z-index: 1;
+      translate: -60px -60px;
+    }
+
+    .container .cube:nth-child(3) {
+      z-index: 3;
+      translate: 60px 60px;
+    }
+
+    .container .cube div {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      translate: calc(-70px * var(--x)) calc(-60px * var(--y));
+    }
+
+    .container .cube div span {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background: #dcdcdc;
+      z-index: calc(1 * var(--i));
+      transition: 1.5s;
+    }
+
+    .container .cube div span:hover {
+      transition: 0s;
+      background: #ef4149;
+      filter: drop-shadow(0 0 30px #ef4149);
+    }
+
+    .container .cube div span:hover:before,
+    .container .cube div span:hover:after {
+      transition: 0s;
+      background: #ef4149;
+    }
+
+    .container .cube div span:before {
+      content: "";
+      position: absolute;
+      left: -40px;
+      width: 40px;
+      height: 100%;
+      background: #fff;
+      transform-origin: right;
+      transform: skewY(45deg);
+      transition: 1.5s;
+    }
+
+    .container .cube div span:after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      left: 0px;
+      width: 100%;
+      height: 40px;
+      background: #f2f2f2;
+      transform-origin: bottom;
+      transform: skewX(45deg);
+      transition: 1.5s;
     }
 
     .session-card {
@@ -239,20 +343,30 @@
           <!-- Header -->
           <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
             <div>
-              <h1 class="mb-2">Welcome back, Alex! 👋</h1>
-              <p class="text-muted mb-0 fs-5">Here's your learning dashboard</p>
+              <h1 class="mb-2" id="welcomeText">Welcome back, </h1>
+              <p class="mb-0 fs-5" style="color: var(--medium-gray);">Here's your learning dashboard</p>
             </div>
 
             <div class="d-flex align-items-center gap-4">
-              <div class="search-bar-wrapper">
+              <div class="search-bar-wrapper position-relative">
                 <div class="search-input-group">
                   <i class="bi bi-search"></i>
                   <input type="text" class="form-control" id="skillSearchInput"
-                    placeholder="Find a mentor (e.g. Python, UI/UX)..." autocomplete="off">
+                    placeholder="Search a skill (e.g. Python)" autocomplete="off">
+                </div>
+                <!-- Search Dropdown Results -->
+                <div id="searchDropdown" class="position-absolute w-100 mt-2 rounded-3 shadow-lg"
+                  style="display: none; z-index: 1050; background: #1e293b; border: 1px solid rgba(148, 163, 184, 0.2); max-height: 400px; overflow-y: auto;">
+                  <div id="dropdownResultsContainer" class="list-group list-group-flush bg-transparent">
+                    <!-- Dynamic Items -->
+                  </div>
+                  <div id="dropdownEmpty" class="p-3 text-center text-muted small" style="display: none;">
+                    No users found with that skill.
+                  </div>
                 </div>
               </div>
-              <a href="myprofile.html" class="avatar text-decoration-none" title="View my profile"
-                style="width: 48px; height: 48px; font-size: 1.2rem;">A</a>
+              <a href="myprofile.html" class="avatar text-decoration-none" id="userAvatar" title="View my profile"
+                style="width: 48px; height: 48px; font-size: 1.2rem;">?</a>
             </div>
           </div>
 
@@ -263,94 +377,108 @@
               <div class="row g-4">
                 <div class="col-md-6">
                   <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-cyan);">12</h3>
-                    <p class="text-muted mb-0 text-uppercase small fw-bold">Sessions Completed</p>
+                    <h3 class="" style="color: var(--neon-cyan);" id="sessionsTakenStat">0</h3>
+                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Sessions Completed
+                    </p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-purple);">8</h3>
-                    <p class="text-muted mb-0 text-uppercase small fw-bold">Students</p>
+                    <h3 class="" style="color: var(--neon-purple);" id="sessionsGivenStat">0</h3>
+                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Students</p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-pink);">5</h3>
-                    <p class="text-muted mb-0 text-uppercase small fw-bold">Active Goals</p>
+                    <h3 class="" style="color: var(--neon-pink);" id="activeGoalsStat">0</h3>
+                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Learning Goals</p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-green);">4.8 <span class="fs-6 text-muted">⭐</span></h3>
-                    <p class="text-muted mb-0 text-uppercase small fw-bold">Rating</p>
+                    <h3 class="" style="color: var(--neon-green);" id="ratingStat">0 <span
+                        class="fs-6 text-muted">⭐</span></h3>
+                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Rating</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Right Column: User Search -->
+            <!-- Right Column: Animated Cube -->
             <div class="col-lg-5">
-              <div class="card h-100 border-0 bg-transparent">
-                <h3 class="mb-2">Users with this skill</h3>
-                <p class="text-muted small mb-3">
-                  Type a skill in the search bar above to find mentors.
-                </p>
-                <div id="userResults" class="row g-3"></div>
-                <div id="userResultsEmpty"
-                  class="text-muted small mt-2 p-4 text-center border rounded bg-dark bg-opacity-25">
-                  <i class="bi bi-search display-6 mb-3 d-block text-secondary"></i>
-                  Start by searching for a skill to see matching users.
+              <div class="card h-100">
+                <div class="cube-container">
+                  <div class="container">
+                    <div class="cube">
+                      <div style="--x:0; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                      <div style="--x:1; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                      <div style="--x:2; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                    </div>
+                    <div class="cube">
+                      <div style="--x:0; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                      <div style="--x:1; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                      <div style="--x:2; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                    </div>
+                    <div class="cube">
+                      <div style="--x:0; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                      <div style="--x:1; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                      <div style="--x:2; --y:0;">
+                        <span style="--i:3;"></span>
+                        <span style="--i:2;"></span>
+                        <span style="--i:1;"></span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Learning Sessions -->
+          <!-- My Classes Section -->
           <div class="row mb-5">
             <div class="col-12">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="mb-0">My Learning Sessions</h3>
-                <button class="btn btn-sm btn-ghost">View All</button>
+                <h3 class="mb-0">My Classes</h3>
+                <button class="btn btn-sm btn-ghost" id="viewAllClassesBtn">View All</button>
               </div>
 
-              <div class="row g-4">
-                <div class="col-md-4">
-                  <div class="card session-card p-0 h-100 border-0">
-                    <div class="session-header">
-                      <i class="bi bi-code-slash me-2"></i> Web Dev
-                    </div>
-                    <div class="session-body">
-                      <h5 class="text-white mb-2">Advanced React Hooks</h5>
-                      <p class="small text-muted mb-3">Next session: Tomorrow, 10:00 AM</p>
-                      <button class="btn btn-sm btn-outline w-100">Join Room</button>
-                    </div>
-                  </div>
-                </div>
+              <div id="dashboardClassesContainer" class="row g-4">
+                <!-- Dynamic Content -->
               </div>
-            </div>
-          </div>
-
-          <!-- Teaching Sessions -->
-          <div class="row">
-            <div class="col-12">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="mb-0">Sessions I'm Teaching</h3>
-                <button class="btn btn-sm btn-ghost">View All</button>
-              </div>
-
-              <div class="row g-4">
-                <div class="col-md-4">
-                  <div class="card session-card p-0 h-100 border-0">
-                    <div class="session-header text-neon-purple" style="color: var(--neon-purple);">
-                      <i class="bi bi-filetype-js me-2"></i> JavaScript
-                    </div>
-                    <div class="session-body">
-                      <h5 class="text-white mb-2">JavaScript Essentials</h5>
-                      <p class="small text-muted mb-3">Next session: Wed, 2:00 PM</p>
-                      <button class="btn btn-sm btn-secondary w-100">Prepare Class</button>
-                    </div>
-                  </div>
-                </div>
+              <div id="dashboardClassesEmpty" class="text-center text-muted p-4" style="display:none;">
+                <p class="mb-0" style="color: var(--medium-gray);">No active classes yet.</p>
               </div>
             </div>
           </div>
@@ -385,109 +513,141 @@
       onSnapshot,
       serverTimestamp,
       doc,
-      setDoc
+      setDoc,
+      getDoc,
+      limit,
+      orderBy
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+    // Search Functionality
     const searchInput = document.getElementById('skillSearchInput');
-    const resultsContainer = document.getElementById('userResults');
-    const emptyState = document.getElementById('userResultsEmpty');
-    const logoutBtn = document.getElementById('logoutBtn');
+    const dropdown = document.getElementById('searchDropdown');
+    const dropdownContainer = document.getElementById('dropdownResultsContainer');
+    const dropdownEmpty = document.getElementById('dropdownEmpty');
 
-    function renderUsers(users) {
-      resultsContainer.innerHTML = '';
+    let debounceTimer;
 
-      if (!users.length) {
-        emptyState.textContent = 'No users found with that skill yet.';
-        emptyState.style.display = 'block';
-        return;
-      }
+    if (searchInput && dropdown) {
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
 
-      emptyState.style.display = 'none';
+      // Perform search on input
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        const term = e.target.value.trim();
 
-      users.forEach((user) => {
-        const data = user.data ? user.data() : user;
-        const uid = user.id || data.uid;
-
-        const cardCol = document.createElement('div');
-        cardCol.className = 'col-12';
-
-        const card = document.createElement('div');
-        card.className = 'card session-card';
-        card.style.cursor = 'pointer';
-
-        const header = document.createElement('div');
-        header.className = 'session-header';
-        header.innerHTML = `<strong>${data.name || 'Unnamed user'}</strong>`;
-
-        const cardBody = document.createElement('div');
-        cardBody.className = 'session-body';
-
-        const skillsText = Array.isArray(data.skills)
-          ? data.skills.join(', ')
-          : (data.skills || 'Not specified');
-
-        cardBody.innerHTML =
-          '<div class="mb-3"><strong class="text-info">Skills:</strong> <span class="text-white">' +
-          skillsText +
-          '</span></div>' +
-          (data.bio
-            ? '<div class="text-muted small mb-3">' +
-            data.bio +
-            '</div>'
-            : '') +
-          '<button class="btn btn-sm btn-outline-primary w-100 mt-2">View Profile</button>';
-
-        card.appendChild(header);
-        card.appendChild(cardBody);
-        cardCol.appendChild(card);
-
-        if (uid) {
-          card.addEventListener('click', () => {
-            window.location.href = `user.html?uid=${encodeURIComponent(uid)}`;
-          });
+        if (!term) {
+          dropdown.style.display = 'none';
+          dropdownContainer.innerHTML = '';
+          return;
         }
 
-        resultsContainer.appendChild(cardCol);
+        debounceTimer = setTimeout(() => {
+          performSearch(term);
+        }, 300);
+      });
+
+      // Show dropdown again if input has value and is focused
+      searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim() && dropdownContainer.children.length > 0) {
+          dropdown.style.display = 'block';
+        }
       });
     }
 
-    async function searchBySkill(raw) {
-      const term = (raw || '').trim().toLowerCase();
-
-      if (!term) {
-        resultsContainer.innerHTML = '';
-        emptyState.textContent =
-          'Start by searching for a skill to see matching users.';
-        emptyState.style.display = 'block';
-        return;
-      }
+    async function performSearch(term) {
+      const searchTerm = term.toLowerCase();
+      dropdown.style.display = 'block';
+      dropdownContainer.innerHTML = '<div class="p-3 text-center text-muted"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>';
+      dropdownEmpty.style.display = 'none';
 
       try {
+        // Query users who have this skill
+        // Using 'skills_normalized' as confirmed in myprofile.html
         const q = query(
           collection(db, "users"),
-          where("skills_normalized", "array-contains", term)
+          where("skills_normalized", "array-contains", searchTerm),
+          limit(5)
         );
+
         const snapshot = await getDocs(q);
 
-        const users = [];
-        snapshot.forEach((doc) => users.push(doc));
+        dropdownContainer.innerHTML = '';
 
-        renderUsers(users);
-      } catch (err) {
-        console.error('Error searching users by skill', err);
-        emptyState.textContent =
-          'Something went wrong while searching. Please try again.';
-        emptyState.style.display = 'block';
+        if (snapshot.empty) {
+          dropdownEmpty.style.display = 'block';
+          return;
+        }
+
+        dropdownEmpty.style.display = 'none';
+        let resultCount = 0;
+
+        snapshot.forEach((docSnap) => {
+          const userData = docSnap.data();
+          // Don't show current user
+          if (auth.currentUser && auth.currentUser.uid === docSnap.id) return;
+
+          resultCount++;
+          const resultItem = createDropdownItem(docSnap.id, userData);
+          dropdownContainer.appendChild(resultItem);
+        });
+
+        if (resultCount === 0) {
+          dropdownEmpty.style.display = 'block';
+        }
+
+      } catch (error) {
+        console.error("Error searching users:", error);
+        dropdownContainer.innerHTML = '<div class="p-3 text-center text-danger small">Error loading results.</div>';
       }
     }
 
-    if (searchInput) {
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          searchBySkill(searchInput.value);
-        }
-      });
+    function createDropdownItem(uid, data) {
+      const item = document.createElement('a');
+      item.href = `user.html?uid=${encodeURIComponent(uid)}`;
+      item.className = 'list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 border-bottom border-secondary';
+      item.style.backgroundColor = 'transparent';
+      item.style.borderColor = 'rgba(148, 163, 184, 0.1)';
+      item.style.color = 'var(--white)';
+      item.style.textDecoration = 'none';
+
+      // Avatar (using first letter if no image)
+      const initial = data.name ? data.name.charAt(0).toUpperCase() : '?';
+      const avatarHtml = data.photoURL
+        ? `<img src="${data.photoURL}" class="rounded-circle" width="40" height="40" style="object-fit: cover;">`
+        : `<div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold" style="width: 40px; height: 40px; font-size: 1rem;">${initial}</div>`;
+
+      // Skills tags (first 2)
+      // Updated to check 'skills' array as per profile schema
+      const skillsArray = Array.isArray(data.skills) ? data.skills : (data.teach ? String(data.teach).split(",") : []);
+      const skillsHtml = skillsArray.length > 0
+        ? skillsArray.slice(0, 2).map(skill => `<span class="badge bg-secondary me-1" style="font-size: 0.7rem;">${skill}</span>`).join('')
+        : '';
+
+      item.innerHTML = `
+        ${avatarHtml}
+        <div class="flex-grow-1" style="min-width: 0;">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <h6 class="mb-0 text-truncate text-white">${data.name || 'Unknown User'}</h6>
+            <small class="text-info" style="font-size: 0.75rem;">${data.title || 'Member'}</small>
+          </div>
+          <div class="text-truncate">
+            ${skillsHtml}
+          </div>
+        </div>
+        <i class="bi bi-chevron-right text-muted small"></i>
+      `;
+
+      // Hover effect
+      item.addEventListener('mouseenter', () => item.style.backgroundColor = 'rgba(255,255,255,0.05)');
+      item.addEventListener('mouseleave', () => item.style.backgroundColor = 'transparent');
+
+      return item;
     }
 
     if (logoutBtn) {
@@ -510,6 +670,11 @@
     const teachingSessionsContainer = document.getElementById("teachingSessionsContainer");
     const teachingSessionsEmpty = document.getElementById("teachingSessionsEmpty");
 
+    // Dashboard Classes Elements
+    const dashboardClassesContainer = document.getElementById("dashboardClassesContainer");
+    const dashboardClassesEmpty = document.getElementById("dashboardClassesEmpty");
+    const viewAllClassesBtn = document.getElementById("viewAllClassesBtn");
+
     const sidebarLinks = document.querySelectorAll(".sidebar .nav-link");
 
     let currentUser = null;
@@ -522,7 +687,7 @@
     // Format date from Firestore timestamp
     function formatDate(timestamp) {
       if (!timestamp) return "Date not available";
-      
+
       const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp.seconds * 1000);
       const now = new Date();
       const diffMs = now - date;
@@ -534,8 +699,116 @@
       if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
       if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
       if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-      
+
       return date.toLocaleDateString();
+    }
+
+    // Load and display dashboard classes (preview)
+    async function loadDashboardClasses(user) {
+      if (!user) return;
+
+      try {
+        // Query for accepted requests involved by user
+        // Limiting to 3 for dashboard preview
+        const qClasses = query(
+          collection(db, "accepted_request"),
+          where("users", "array-contains", user.uid),
+          limit(3)
+        );
+
+        const snapshot = await getDocs(qClasses);
+
+        dashboardClassesContainer.innerHTML = "";
+
+        if (snapshot.empty) {
+          dashboardClassesEmpty.style.display = "block";
+          return;
+        }
+
+        dashboardClassesEmpty.style.display = "none";
+
+        // Process snapshots in parallel to fetch user details
+        const sessionPromises = snapshot.docs.map(async (docSnap) => {
+          const data = docSnap.data() || {};
+          const code = data.code || '';
+          const createdAt = data.createdAt ? formatDate(data.createdAt) : 'Date not available';
+          const users = data.users || [];
+
+          // Find the other user ID
+          const otherUserId = users.find(uid => uid !== user.uid);
+          let otherUserName = 'Unknown User';
+
+          if (otherUserId) {
+            try {
+              const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
+              if (otherUserSnap.exists()) {
+                const otherUserData = otherUserSnap.data();
+                otherUserName = otherUserData.name || otherUserData.email?.split('@')[0] || 'User';
+              }
+            } catch (err) {
+              console.error("Error fetching other user details:", err);
+            }
+          }
+
+          return { code, createdAt, otherUserName };
+        });
+
+        const sessions = await Promise.all(sessionPromises);
+
+        sessions.forEach((session) => {
+          const { code, createdAt, otherUserName } = session;
+
+          const cardCol = document.createElement("div");
+          cardCol.className = "col-md-4";
+
+          const card = document.createElement("div");
+          card.className = "card session-card p-0 border-0 h-100";
+
+          const header = document.createElement("div");
+          header.className = "session-header";
+          header.innerHTML = `<i class="bi bi-camera-video me-2"></i> Session with ${otherUserName}`;
+
+          const body = document.createElement("div");
+          body.className = "session-body";
+
+          body.innerHTML = `
+            <p class="small mb-2" style="color: var(--medium-gray);">Code: <strong class="text-white">${code || 'N/A'}</strong></p>
+            <p class="small mb-3" style="color: var(--medium-gray);">Created: ${createdAt}</p>
+            <button class="btn btn-sm btn-primary w-100 start-session-btn" data-code="${code}">
+              Join Class
+            </button>
+          `;
+
+          card.appendChild(header);
+          card.appendChild(body);
+          cardCol.appendChild(card);
+          dashboardClassesContainer.appendChild(cardCol);
+
+          // Add event listener to start session button
+          const startBtn = body.querySelector('.start-session-btn');
+          if (startBtn) {
+            startBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (!code) return;
+              window.location.href = `session.html?room=${encodeURIComponent(code)}`;
+            });
+          }
+        });
+
+      } catch (error) {
+        console.error("Error loading dashboard classes:", error);
+        dashboardClassesEmpty.style.display = "block";
+        dashboardClassesEmpty.textContent = "Failed to load classes.";
+      }
+    }
+
+    // View All Classes Click
+    if (viewAllClassesBtn) {
+      viewAllClassesBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Trigger click on Teaching/My Classes nav button
+        teachingBtn.click();
+      });
     }
 
     // Load and display accepted teaching sessions
@@ -563,10 +836,44 @@
         teachingSessionsEmpty.style.display = "none";
 
         // Render session cards
-        snapshot.forEach((docSnap) => {
+        // Process snapshots in parallel to fetch user details
+        const sessionPromises = snapshot.docs.map(async (docSnap) => {
           const data = docSnap.data() || {};
           const code = data.code || '';
           const createdAt = data.createdAt ? formatDate(data.createdAt) : 'Date not available';
+          const users = data.users || [];
+
+          // Find the other user ID
+          const otherUserId = users.find(uid => uid !== user.uid);
+          let otherUserName = 'Unknown User';
+
+          if (otherUserId) {
+            try {
+              const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
+              if (otherUserSnap.exists()) {
+                const otherUserData = otherUserSnap.data();
+                otherUserName = otherUserData.name || otherUserData.email?.split('@')[0] || 'User';
+              }
+            } catch (err) {
+              console.error("Error fetching other user details:", err);
+            }
+          }
+
+          return { code, createdAt, otherUserName };
+        });
+
+        const sessions = await Promise.all(sessionPromises);
+
+        teachingSessionsContainer.innerHTML = "";
+
+        // Check emptiness again after processing (though snapshot.empty check should cover it)
+        if (sessions.length === 0) {
+          teachingSessionsEmpty.style.display = "block";
+          return;
+        }
+
+        sessions.forEach((session) => {
+          const { code, createdAt, otherUserName } = session;
 
           const cardCol = document.createElement("div");
           cardCol.className = "col-md-4";
@@ -577,7 +884,7 @@
           const header = document.createElement("div");
           header.className = "session-header";
           header.style.color = "var(--neon-purple)";
-          header.innerHTML = `<i class="bi bi-person-workspace me-2"></i> Session Code: ${code || 'N/A'}`;
+          header.innerHTML = `<i class="bi bi-person-workspace me-2"></i> Session with ${otherUserName}`;
 
           const body = document.createElement("div");
           body.className = "session-body";
@@ -606,7 +913,6 @@
             });
           }
         });
-
       } catch (error) {
         console.error("Error loading teaching sessions:", error);
         teachingSessionsContainer.innerHTML = `
@@ -626,7 +932,7 @@
       dashboardSection.style.display = "none";
       teachingSection.style.display = "block";
       setActive(teachingBtn);
-      
+
       // Load sessions when tab is opened
       if (currentUser) {
         loadTeachingSessions(currentUser);
@@ -642,13 +948,73 @@
     });
 
     // Initialize auth state listener
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.href = "signin.html";
         return;
       }
       currentUser = user;
-      
+
+      // Fetch user profile data
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+
+          // Update welcome text with user's name or email
+          const userName = userData.name || user.email?.split('@')[0] || 'User';
+          const welcomeText = document.getElementById('welcomeText');
+          if (welcomeText) {
+            welcomeText.textContent = `Welcome back, ${userName}! `;
+          }
+
+          // Update avatar with first letter of name
+          const userAvatar = document.getElementById('userAvatar');
+          if (userAvatar) {
+            userAvatar.textContent = userName.charAt(0).toUpperCase();
+          }
+
+          // Update stats from user data
+          const sessionsTaken = userData.sessionsTaken || 0;
+          const sessionsGiven = userData.sessionsGiven || 0;
+          const rating = userData.rating || 0;
+
+          // Count active learning goals (learn_normalized array length)
+          const activeGoals = userData.learn_normalized?.length || 0;
+
+          // Update stat elements
+          const sessionsTakenEl = document.getElementById('sessionsTakenStat');
+          if (sessionsTakenEl) {
+            sessionsTakenEl.textContent = sessionsTaken;
+          }
+
+          const sessionsGivenEl = document.getElementById('sessionsGivenStat');
+          if (sessionsGivenEl) {
+            sessionsGivenEl.textContent = sessionsGiven;
+          }
+
+          const activeGoalsEl = document.getElementById('activeGoalsStat');
+          if (activeGoalsEl) {
+            activeGoalsEl.textContent = activeGoals;
+          }
+
+          const ratingEl = document.getElementById('ratingStat');
+          if (ratingEl) {
+            const ratingValue = rating > 0 ? rating.toFixed(1) : '0';
+            ratingEl.innerHTML = `${ratingValue} <span class="fs-6 text-muted">⭐</span>`;
+          }
+        } else {
+          console.warn('User document does not exist in Firestore');
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+
+      // Load dashboard classes preview
+      loadDashboardClasses(user);
+
       // If teaching section is already visible, load sessions
       if (teachingSection.style.display === "block") {
         loadTeachingSessions(user);
