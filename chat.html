@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chats - TeachMeMate</title>
-  
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
   <!-- Custom Theme -->
   <link rel="stylesheet" href="bootstrap-theme.css">
-  
+
   <style>
     body {
       margin: 0;
@@ -34,7 +35,7 @@
 
     .chat-sidebar {
       background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent),
-                  #020617;
+        #020617;
       border-right: 1px solid rgba(148, 163, 184, 0.3);
       padding: 1.25rem 1rem;
       display: flex;
@@ -147,8 +148,102 @@
         margin: 1rem;
       }
     }
+
+    /* Cube Animation Styles */
+    @keyframes cubeAnimate {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+
+      100% {
+        filter: hue-rotate(360deg);
+      }
+    }
+
+    .cube-wedge-container {
+      /* Centered in the placeholder */
+      transform: scale(1.2) skewY(-20deg);
+      animation: cubeAnimate 5s linear infinite;
+      pointer-events: none;
+    }
+
+    .cube-wedge-container * {
+      pointer-events: auto;
+      /* Re-enable pointer events for cubes */
+    }
+
+    .cube-wedge-container .cube {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cube-wedge-container .cube:nth-child(2) {
+      z-index: 1;
+      translate: -60px -60px;
+    }
+
+    .cube-wedge-container .cube:nth-child(3) {
+      z-index: 3;
+      translate: 60px 60px;
+    }
+
+    .cube-wedge-container .cube div {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      translate: calc(-70px * var(--x)) calc(-60px * var(--y));
+    }
+
+    .cube-wedge-container .cube div span {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background: #dcdcdc;
+      z-index: calc(1 * var(--i));
+      transition: 1.5s;
+    }
+
+    .cube-wedge-container .cube div span:hover {
+      transition: 0s;
+      background: #ef4149;
+      filter: drop-shadow(0 0 30px #ef4149);
+    }
+
+    .cube-wedge-container .cube div span:hover:before,
+    .cube-wedge-container .cube div span:hover:after {
+      transition: 0s;
+      background: #ef4149;
+    }
+
+    .cube-wedge-container .cube div span:before {
+      content: "";
+      position: absolute;
+      left: -40px;
+      width: 40px;
+      height: 100%;
+      background: #fff;
+      transform-origin: right;
+      transform: skewY(45deg);
+      transition: 1.5s;
+    }
+
+    .cube-wedge-container .cube div span:after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      left: 0px;
+      width: 100%;
+      height: 40px;
+      background: #f2f2f2;
+      transform-origin: bottom;
+      transform: skewX(45deg);
+      transition: 1.5s;
+    }
   </style>
 </head>
+
 <body>
 
   <div class="chat-layout">
@@ -180,8 +275,67 @@
 
       <div id="chatMessages" class="chat-messages"></div>
 
+      <!-- Centered Cube Placeholder (Default shown until chat opens) -->
+      <div id="noChatCube" class="d-none justify-content-center align-items-center flex-grow-1"
+        style="min-height: 400px;">
+        <div class="cube-wedge-container">
+          <div class="cube">
+            <div style="--x:-1; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+            <div style="--x:0; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+            <div style="--x:1; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+          </div>
+          <div class="cube">
+            <div style="--x:-1; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+            <div style="--x:0; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+            <div style="--x:1; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+          </div>
+          <div class="cube">
+            <div style="--x:-1; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+            <div style="--x:0; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+            <div style="--x:1; --y:0;">
+              <span style="--i:3;"></span>
+              <span style="--i:2;"></span>
+              <span style="--i:1;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="d-flex gap-2 pt-3 border-top border-secondary">
-        <input type="text" class="form-control rounded-pill" id="chatInput" placeholder="Type a message..." autocomplete="off" />
+        <input type="text" class="form-control rounded-pill" id="chatInput" placeholder="Type a message..."
+          autocomplete="off" />
         <button class="btn btn-primary rounded-pill" type="button" id="chatSend">Send</button>
       </div>
     </main>
@@ -217,6 +371,7 @@
     const chatSend = document.getElementById('chatSend');
     const chatTitle = document.getElementById('chatTitle');
     const chatSubtitle = document.getElementById('chatSubtitle');
+    const noChatCube = document.getElementById('noChatCube');
 
     let currentUser = null;
     let activeRoomId = null;
@@ -224,110 +379,110 @@
     const userNameCache = new Map();
 
     function renderMessage(docData, isMe) {
-  const div = document.createElement('div');
-  div.className = 'chat-message ' + (isMe ? 'me' : 'them');
+      const div = document.createElement('div');
+      div.className = 'chat-message ' + (isMe ? 'me' : 'them');
 
-  if (docData.type === 'session_request') {
-    div.classList.add('request-card');
+      if (docData.type === 'session_request') {
+        div.classList.add('request-card');
 
-    const textEl = document.createElement('div');
-    textEl.className = 'request-text';
-    textEl.textContent = docData.text || 'Session request';
-    div.appendChild(textEl);
+        const textEl = document.createElement('div');
+        textEl.className = 'request-text';
+        textEl.textContent = docData.text || 'Session request';
+        div.appendChild(textEl);
 
-    const status = docData.status || 'pending';
-    const requestId = docData.id || docData.requestId;
+        const status = docData.status || 'pending';
+        const requestId = docData.id || docData.requestId;
 
-    // Receiver → Accept/Reject buttons
-    if (!isMe && status === 'pending') {
-      const actions = document.createElement('div');
-      actions.className = 'request-actions';
+        // Receiver → Accept/Reject buttons
+        if (!isMe && status === 'pending') {
+          const actions = document.createElement('div');
+          actions.className = 'request-actions';
 
-      const acceptBtn = document.createElement('button');
-      acceptBtn.className = 'btn btn-success';
-      acceptBtn.textContent = 'Accept';
+          const acceptBtn = document.createElement('button');
+          acceptBtn.className = 'btn btn-success';
+          acceptBtn.textContent = 'Accept';
 
-      const rejectBtn = document.createElement('button');
-      rejectBtn.className = 'btn btn-outline-danger';
-      rejectBtn.textContent = 'Reject';
+          const rejectBtn = document.createElement('button');
+          rejectBtn.className = 'btn btn-outline-danger';
+          rejectBtn.textContent = 'Reject';
 
-      acceptBtn.onclick = async () => {
-        try {
-          const senderId = docData.from;
-          const receiverId = currentUser.uid;
-          
-          // Generate unique 6-digit code that is never repeated for any combo
-          let uniqueCode;
-          let exists = true;
+          acceptBtn.onclick = async () => {
+            try {
+              const senderId = docData.from;
+              const receiverId = currentUser.uid;
 
-          while (exists) {
-            uniqueCode = Math.floor(100000 + Math.random() * 900000).toString();
+              // Generate unique 6-digit code that is never repeated for any combo
+              let uniqueCode;
+              let exists = true;
 
-            // Check if this code already exists globally (never repeated for any combo)
-            const q = query(
-              collection(db, "accepted_request"),
-              where("code", "==", uniqueCode)
-            );
+              while (exists) {
+                uniqueCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-            const snap = await getDocs(q);
-            exists = !snap.empty;
-          }
+                // Check if this code already exists globally (never repeated for any combo)
+                const q = query(
+                  collection(db, "accepted_request"),
+                  where("code", "==", uniqueCode)
+                );
 
-          // Save accepted request with 3 separate fields: senderId, receiverId, code
-          await addDoc(collection(db, "accepted_request"), {
-            senderId: senderId,
-            receiverId: receiverId,
-            code: uniqueCode,
-            createdAt: serverTimestamp()
-          });
+                const snap = await getDocs(q);
+                exists = !snap.empty;
+              }
 
-          // Update the chat message status to 'accepted'
-          if (requestId) {
-            await updateDoc(doc(db, 'chats', requestId), { status: 'accepted' });
-          }
+              // Save accepted request with 3 separate fields: senderId, receiverId, code
+              await addDoc(collection(db, "accepted_request"), {
+                senderId: senderId,
+                receiverId: receiverId,
+                code: uniqueCode,
+                createdAt: serverTimestamp()
+              });
 
-        } catch (err) {
-          console.error("Accept request failed:", err);
+              // Update the chat message status to 'accepted'
+              if (requestId) {
+                await updateDoc(doc(db, 'chats', requestId), { status: 'accepted' });
+              }
+
+            } catch (err) {
+              console.error("Accept request failed:", err);
+            }
+          };
+
+          rejectBtn.onclick = () =>
+            updateDoc(doc(db, 'chats', requestId), { status: 'rejected' });
+
+          actions.appendChild(acceptBtn);
+          actions.appendChild(rejectBtn);
+          div.appendChild(actions);
         }
-      };
 
-      rejectBtn.onclick = () =>
-        updateDoc(doc(db, 'chats', requestId), { status: 'rejected' });
+        // Sender → Pending indicator
+        if (isMe && status === 'pending') {
+          const pendingEl = document.createElement('div');
+          pendingEl.className = 'request-status text-info fw-semibold';
+          pendingEl.textContent = '⏳ Pending request';
+          div.appendChild(pendingEl);
+        }
 
-      actions.appendChild(acceptBtn);
-      actions.appendChild(rejectBtn);
-      div.appendChild(actions);
+        // Final status for both users
+        if (status === 'accepted') {
+          const statusEl = document.createElement('div');
+          statusEl.className = 'request-status text-success fw-semibold';
+          statusEl.textContent = '✓ Accepted';
+          div.appendChild(statusEl);
+        }
+
+        if (status === 'rejected') {
+          const statusEl = document.createElement('div');
+          statusEl.className = 'request-status text-danger fw-semibold';
+          statusEl.textContent = '✗ Rejected';
+          div.appendChild(statusEl);
+        }
+
+      } else {
+        div.textContent = docData.text || '';
+      }
+
+      chatMessages.appendChild(div);
     }
-
-    // Sender → Pending indicator
-    if (isMe && status === 'pending') {
-      const pendingEl = document.createElement('div');
-      pendingEl.className = 'request-status text-info fw-semibold';
-      pendingEl.textContent = '⏳ Pending request';
-      div.appendChild(pendingEl);
-    }
-
-    // Final status for both users
-    if (status === 'accepted') {
-      const statusEl = document.createElement('div');
-      statusEl.className = 'request-status text-success fw-semibold';
-      statusEl.textContent = '✓ Accepted';
-      div.appendChild(statusEl);
-    }
-
-    if (status === 'rejected') {
-      const statusEl = document.createElement('div');
-      statusEl.className = 'request-status text-danger fw-semibold';
-      statusEl.textContent = '✗ Rejected';
-      div.appendChild(statusEl);
-    }
-
-  } else {
-    div.textContent = docData.text || '';
-  }
-
-  chatMessages.appendChild(div);
-}
 
 
     function subscribeToMessages(roomId) {
@@ -404,6 +559,12 @@
 
       subscribeToMessages(roomId);
       bindSend(roomId);
+
+      // UI State: Chat Open
+      chatMessages.style.display = 'flex';
+      chatMessages.classList.remove('d-none');
+      noChatCube.classList.remove('d-flex');
+      noChatCube.classList.add('d-none');
     }
 
     async function loadConversationList(user) {
@@ -437,8 +598,8 @@
           const otherId =
             Array.isArray(conv.participants) && conv.participants.length === 2
               ? (conv.participants[0] === user.uid
-                  ? conv.participants[1]
-                  : conv.participants[0])
+                ? conv.participants[1]
+                : conv.participants[0])
               : null;
 
           let otherName = 'User';
@@ -539,9 +700,17 @@
         chatMessages.innerHTML = '';
         chatTitle.textContent = "Your chats";
         chatSubtitle.textContent = "Open a chat from someone's profile to start talking.";
+
+        // UI State: No Chat
+        chatMessages.style.display = 'none';
+        chatMessages.classList.add('d-none');
+        noChatCube.classList.remove('d-none');
+        noChatCube.classList.add('d-flex');
       }
     });
   </script>
 
+
 </body>
+
 </html>
