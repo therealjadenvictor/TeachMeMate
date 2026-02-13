@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile - TMate</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#070b18;
+  --sidebar:#0e1428;
+  --card:#1e2545;
+  --accent:#00d4ff;
+  --text:#d6e1ff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:radial-gradient(circle at 30% 20%,#18204a,var(--bg));
+  color:var(--text);
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:0;
+  top:0;
+  width:240px;
+  height:100vh;
+  background:linear-gradient(180deg,#0e1428,#0b1020);
+  border-right:1px solid #1f284f;
+  padding:2rem 0;
+}
+
+.sidebar h2{
+  color:#6fa8ff;
+  text-align:center;
+  margin-bottom:2.5rem;
+  letter-spacing:2px;
+}
+
+.sidebar a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:1rem 1.5rem;
+  color:#9fb3ff;
+  text-decoration:none;
+  border-left:4px solid transparent;
+}
+
+.sidebar a.active,
+.sidebar a:hover{
+  background:rgba(0,212,255,0.08);
+  color:var(--accent);
+  border-left-color:var(--accent);
+}
+
+/* MAIN */
+.main{
+  margin-left:240px;
+  padding:3rem 4rem;
+}
+
+h1{
+  color:var(--accent);
+  margin-bottom:2rem;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1.5rem;
+  margin-bottom:3rem;
+}
+
+.card{
+  background:var(--card);
+  padding:2rem;
+  border-radius:16px;
+  text-align:center;
+}
+
+.profile-details{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.5rem;
+}
+
+.detail{
+  background:var(--card);
+  padding:1.5rem;
+  border-radius:12px;
+}
+
+.detail span{
+  color:#9fb3ff;
+  font-size:0.85rem;
+}
+
+.value{
+  font-size:1.1rem;
+  margin-top:6px;
+}
+
+input,select,textarea{
+  width:100%;
+  margin-top:6px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  background:#141a33;
+  color:white;
+}
+
+button{
+  margin-top:2rem;
+  padding:0.8rem 1.8rem;
+  background:var(--accent);
+  border:none;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.hidden{display:none;}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>TMATE</h2>
+<a class="active">📊 Dashboard</a>
+<a>🎓 My Sessions</a>
+<a>👨‍🏫 Teaching</a>
+<a>📚 Learning</a>
+<a>👤 Profile</a>
+<a>⚙️ Settings</a>
+</div>
+
+<div class="main">
+<h1>My Profile</h1>
+
+<div class="cards">
+<div class="card"><h2>⭐ 4.8</h2>Rating</div>
+<div class="card"><h2>12</h2>Sessions Taken</div>
+<div class="card"><h2>9</h2>Sessions Given</div>
+<div class="card"><h2>18 Feb</h2>Next Session</div>
+</div>
+
+<!-- VIEW MODE -->
+<div id="viewMode">
+<div class="profile-details">
+<div class="detail"><span>Name</span><div class="value" id="vName">Alex</div></div>
+<div class="detail"><span>Email</span><div class="value" id="vEmail">alex@email.com</div></div>
+<div class="detail"><span>Age</span><div class="value" id="vAge">21</div></div>
+<div class="detail"><span>Gender</span><div class="value" id="vGender">Male</div></div>
+<div class="detail"><span>Skills</span><div class="value" id="vSkills">Coding, Electronics</div></div>
+<div class="detail"><span>Interests</span><div class="value" id="vInterests">AI, Startups</div></div>
+</div>
+<button onclick="editProfile()">Edit Profile</button>
+</div>
+
+<!-- EDIT MODE -->
+<div id="editMode" class="hidden">
+<div class="profile-details">
+<div class="detail"><span>Name</span><input id="name"></div>
+<div class="detail"><span>Email</span><input id="email" type="email"></div>
+
+<div class="detail">
+<span>Age: <b id="ageVal">21</b></span>
+<input type="range" min="18" max="100" value="21" id="age" oninput="ageVal.textContent=this.value">
+</div>
+
+<div class="detail"><span>Gender</span>
+<select id="gender"><option>Male</option><option>Female</option><option>Other</option></select>
+</div>
+
+<div class="detail"><span>Skills</span><textarea id="skills"></textarea></div>
+<div class="detail"><span>Interests</span><textarea id="interests"></textarea></div>
+</div>
+<button onclick="saveProfile()">Save</button>
+<button onclick="cancelEdit()">Cancel</button>
+</div>
+</div>
+
+<script>
+function editProfile(){
+  viewMode.classList.add('hidden');
+  editMode.classList.remove('hidden');
+  name.value=vName.textContent;
+  email.value=vEmail.textContent;
+  age.value=vAge.textContent;
+  ageVal.textContent=vAge.textContent;
+  gender.value=vGender.textContent;
+  skills.value=vSkills.textContent;
+  interests.value=vInterests.textContent;
+}
+
+function saveProfile(){
+  vName.textContent=name.value;
+  vEmail.textContent=email.value;
+  vAge.textContent=age.value;
+  vGender.textContent=gender.value;
+  vSkills.textContent=skills.value;
+  vInterests.textContent=interests.value;
+  cancelEdit();
+}
+
+function cancelEdit(){
+  editMode.classList.add('hidden');
+  viewMode.classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>

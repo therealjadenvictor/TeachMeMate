@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - TeachMeMate</title>
   <link rel="stylesheet" href="styles.css">
+
   <style>
+    /* LAYOUT */
     .dashboard-layout {
       display: grid;
       grid-template-columns: 250px 1fr;
       min-height: 100vh;
     }
 
+    /* SIDEBAR */
     .sidebar {
       background: var(--secondary-black);
       border-right: 1px solid var(--accent-black);
@@ -26,18 +30,14 @@
       list-style: none;
     }
 
-    .sidebar-menu li {
-      margin: 0;
-    }
-
     .sidebar-menu a {
       display: flex;
       align-items: center;
       gap: 1rem;
       padding: 1rem 1.5rem;
       color: var(--medium-gray);
-      transition: all 0.3s ease;
       border-left: 3px solid transparent;
+      transition: 0.3s;
     }
 
     .sidebar-menu a:hover,
@@ -47,18 +47,128 @@
       border-left-color: var(--neon-cyan);
     }
 
+
+    /* MAIN CONTENT: chatbox middle-left, dashboard right */
     .main-content {
       margin-left: 250px;
       padding: 2rem;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 2rem;
+      align-items: start;
     }
 
+    /* CHATBOX - middle-left, fixed width */
+    .chatbox-panel {
+      grid-column: 1;
+      width: 320px;
+      background: linear-gradient(135deg, var(--tertiary-black), var(--accent-black));
+      border: 1px solid var(--accent-black);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 420px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .dashboard-main {
+      grid-column: 2;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    /* HEADER */
     .dashboard-header {
+      grid-column: 1 / -1;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
     }
 
+    .chatbox-header {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--accent-black);
+      background: rgba(0, 212, 255, 0.08);
+      color: var(--neon-cyan);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .chatbox-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chatbox-messages .msg {
+      max-width: 85%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .chatbox-messages .msg.you {
+      align-self: flex-end;
+      background: rgba(0, 212, 255, 0.15);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+    }
+
+    .chatbox-messages .msg.bot {
+      align-self: flex-start;
+      background: var(--accent-black);
+      border: 1px solid var(--tertiary-black);
+      color: var(--medium-gray);
+    }
+
+    .chatbox-input-wrap {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--accent-black);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chatbox-input-wrap input {
+      flex: 1;
+      background: var(--secondary-black);
+      border: 1px solid var(--tertiary-black);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      color: var(--light-gray);
+      font-size: 0.9rem;
+    }
+
+    .chatbox-input-wrap input::placeholder {
+      color: var(--dark-gray);
+    }
+
+    .chatbox-input-wrap input:focus {
+      outline: none;
+      border-color: var(--neon-cyan);
+    }
+
+    .chatbox-input-wrap button {
+      background: var(--neon-cyan);
+      color: var(--primary-black);
+      border: none;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .chatbox-input-wrap button:hover {
+      box-shadow: var(--glow-cyan);
+    }
+
+    /* SEARCH */
     .search-bar {
       display: flex;
       align-items: center;
@@ -67,7 +177,6 @@
       border-radius: 6px;
       padding: 0.5rem 1rem;
       max-width: 400px;
-      flex: 1;
     }
 
     .search-bar input {
@@ -75,18 +184,14 @@
       border: none;
       color: var(--light-gray);
       width: 100%;
-      padding: 0;
     }
 
-    .search-bar input::placeholder {
-      color: var(--dark-gray);
-    }
-
+    /* STATS */
     .stats-grid {
+      grid-column: 1 / -1;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 2rem;
     }
 
     .stat-card {
@@ -98,28 +203,15 @@
     }
 
     .stat-card h3 {
-      font-size: 2rem;
       color: var(--neon-cyan);
       margin-bottom: 0.5rem;
     }
 
-    .stat-card p {
-      color: var(--medium-gray);
-      margin: 0;
-    }
-
-    .section-title {
-      font-size: 1.5rem;
-      color: var(--neon-cyan);
-      margin-bottom: 1.5rem;
-      margin-top: 2rem;
-    }
-
+    /* SESSION CARDS */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 2rem;
     }
 
     .session-card {
@@ -127,55 +219,36 @@
       border: 1px solid var(--accent-black);
       border-radius: 8px;
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: 0.3s;
     }
 
     .session-card:hover {
       border-color: var(--neon-cyan);
       transform: translateY(-4px);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
     }
 
     .session-header {
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(183, 75, 255, 0.2));
       padding: 1rem;
       border-bottom: 1px solid var(--accent-black);
+      background: linear-gradient(135deg,
+          rgba(0, 212, 255, 0.2),
+          rgba(183, 75, 255, 0.2));
     }
 
     .session-content {
       padding: 1.5rem;
     }
 
-    .session-title {
-      font-size: 1.1rem;
-      color: var(--light-gray);
-      margin-bottom: 0.5rem;
-    }
-
-    .session-meta {
-      display: flex;
-      gap: 1rem;
-      font-size: 0.9rem;
-      color: var(--medium-gray);
-      margin-bottom: 1rem;
-    }
-
-    .session-description {
-      color: var(--medium-gray);
-      margin-bottom: 1rem;
-    }
-
     .session-footer {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       padding-top: 1rem;
       border-top: 1px solid var(--accent-black);
     }
 
+    /* AVATARS */
     .avatar-group {
       display: flex;
-      gap: -0.5rem;
     }
 
     .avatar-small {
@@ -187,209 +260,158 @@
       align-items: center;
       justify-content: center;
       color: var(--primary-black);
-      font-size: 0.85rem;
       font-weight: 700;
       border: 2px solid var(--secondary-black);
     }
 
-    .badge-small {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-layout {
+    /* RESPONSIVE */
+    @media (max-width:900px) {
+      .main-content {
         grid-template-columns: 1fr;
+        margin-left: 0;
+      }
+
+      .dashboard-main {
+        grid-column: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .chatbox-panel {
+        grid-column: auto;
+        width: 100%;
+        max-width: 100%;
       }
 
       .sidebar {
         position: relative;
         width: 100%;
         height: auto;
-        border-bottom: 1px solid var(--accent-black);
-        margin-bottom: 1rem;
-      }
-
-      .main-content {
-        margin-left: 0;
       }
     }
   </style>
 </head>
+
 <body>
+
   <div class="dashboard-layout">
-    <!-- Sidebar -->
+
     <div class="sidebar">
-      <div style="padding: 0 1.5rem; margin-bottom: 2rem;">
-        <div class="navbar-brand" style="font-size: 1.25rem; text-align: center;">TMate</div>
+      <div style="padding:0 1.5rem;margin-bottom:2rem;">
+        <div class="navbar-brand" style="text-align:center;">TMate</div>
       </div>
 
       <ul class="sidebar-menu">
-        <li><a href="#dashboard" class="active">📊 Dashboard</a></li>
-        <li><a href="#sessions">🎓 My Sessions</a></li>
-        <li><a href="#teaching">👨‍🏫 Teaching</a></li>
-        <li><a href="#learning">📚 Learning</a></li>
-        <li><a href="#messages">💬 Messages</a></li>
-        <li><a href="#profile">👤 Profile</a></li>
-        <li><a href="#settings">⚙️ Settings</a></li>
+        <li><a href="#" class="active">📊 Dashboard</a></li>
+        <li><a href="#">🎓 My Sessions</a></li>
+        <li><a href="#">👨‍🏫 Teaching</a></li>
+        <li><a href="#">📚 Learning</a></li>
+        <li><a href="#">👤 Profile</a></li>
+        <li><a href="#">⚙️ Settings</a></li>
       </ul>
 
-      <div style="position: absolute; bottom: 2rem; width: 100%; padding: 0 1rem;">
-        <button class="btn btn-secondary" style="width: 100%; padding: 10px;">Logout</button>
+      <div style="position:absolute;bottom:2rem;width:100%;padding:0 1rem;">
+        <button class="btn btn-secondary" style="width:100%;">Logout</button>
       </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
-      <!-- Header -->
-      <div class="dashboard-header">
+
+      <aside class="chatbox-panel">
+        <div class="chatbox-header">Chat</div>
+        <div class="chatbox-messages" id="chatMessages">
+          <div class="msg bot">Hi! Ask me anything about your sessions.</div>
+        </div>
+        <div class="chatbox-input-wrap">
+          <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+          <button type="button" id="chatSend">Send</button>
+        </div>
+      </aside>
+
+      <div class="dashboard-main">
+        <div class="dashboard-header">
+          <div>
+            <h2>Welcome back, Alex! 👋</h2>
+            <p style="color:var(--medium-gray);">Here's your learning dashboard</p>
+          </div>
+
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <div class="search-bar">
+              <input type="text" placeholder="Search sessions...">
+            </div>
+            <div class="avatar">A</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>12</h3>
+            <p>Sessions Completed</p>
+          </div>
+          <div class="stat-card">
+            <h3>8</h3>
+            <p>People Learning from You</p>
+          </div>
+          <div class="stat-card">
+            <h3>5</h3>
+            <p>Active Learning Goals</p>
+          </div>
+          <div class="stat-card">
+            <h3>⭐ 4.8</h3>
+            <p>Your Rating</p>
+          </div>
+        </div>
+
         <div>
-          <h2>Welcome back, Alex! 👋</h2>
-          <p style="color: var(--medium-gray);">Here's your learning dashboard</p>
-        </div>
-        <div style="display: flex; gap: 1rem; align-items: center;">
-          <div class="search-bar">
-            <input type="text" placeholder="Search sessions...">
+          <h3>My Learning Sessions</h3>
+          <div class="card-grid">
+            <div class="session-card">
+              <div class="session-header">Web Dev</div>
+              <div class="session-content">
+                Advanced React Hooks
+              </div>
+            </div>
           </div>
-          <div class="avatar" style="margin: 0;">A</div>
         </div>
+
+        <div>
+          <h3>Sessions I'm Teaching</h3>
+          <div class="card-grid">
+            <div class="session-card">
+              <div class="session-header">JavaScript</div>
+              <div class="session-content">
+                JavaScript Essentials
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3>12</h3>
-          <p>Sessions Completed</p>
-        </div>
-        <div class="stat-card">
-          <h3>8</h3>
-          <p>People Learning from You</p>
-        </div>
-        <div class="stat-card">
-          <h3>5</h3>
-          <p>Active Learning Goals</p>
-        </div>
-        <div class="stat-card">
-          <h3>⭐ 4.8</h3>
-          <p>Your Rating</p>
-        </div>
-      </div>
-
-      <!-- My Learning Sessions -->
-      <div style="margin-top: 3rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <h3 class="section-title">My Learning Sessions</h3>
-          <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">+ New Session</button>
-        </div>
-
-        <div class="card-grid">
-          <!-- Session Card 1 -->
-          <div class="session-card">
-            <div class="session-header">
-              <span class="badge badge-success" style="margin-right: 0.5rem;">Active</span>
-              <span class="badge badge-primary">Web Dev</span>
-            </div>
-            <div class="session-content">
-              <div class="session-title">Advanced React Hooks</div>
-              <div class="session-meta">
-                <span>👨‍🏫 Michael Chen</span>
-                <span>⏱️ 2h per week</span>
-              </div>
-              <div class="session-description">Deep dive into React hooks and state management patterns.</div>
-              <div class="session-footer">
-                <div class="avatar-group">
-                  <div class="avatar-small">M</div>
-                  <div class="avatar-small">Y</div>
-                </div>
-                <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Join Session</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Session Card 2 -->
-          <div class="session-card">
-            <div class="session-header">
-              <span class="badge badge-success">Active</span>
-              <span class="badge badge-primary">Data Science</span>
-            </div>
-            <div class="session-content">
-              <div class="session-title">Machine Learning Fundamentals</div>
-              <div class="session-meta">
-                <span>👩‍🏫 Sarah Williams</span>
-                <span>⏱️ 3h per week</span>
-              </div>
-              <div class="session-description">Learn the basics of ML algorithms and data preprocessing.</div>
-              <div class="session-footer">
-                <div class="avatar-group">
-                  <div class="avatar-small">S</div>
-                  <div class="avatar-small">A</div>
-                  <div class="avatar-small">J</div>
-                </div>
-                <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.9rem;">Join Session</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Session Card 3 -->
-          <div class="session-card">
-            <div class="session-header">
-              <span class="badge badge-danger">Starting Soon</span>
-              <span class="badge badge-primary">Design</span>
-            </div>
-            <div class="session-content">
-              <div class="session-title">UI/UX Design Principles</div>
-              <div class="session-meta">
-                <span>👩‍🏫 Emma Rodriguez</span>
-                <span>⏱️ Feb 15</span>
-              </div>
-              <div class="session-description">Master the fundamentals of modern UI/UX design.</div>
-              <div class="session-footer">
-                <div class="avatar-group">
-                  <div class="avatar-small">E</div>
-                </div>
-                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.9rem;">Register</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Teaching Sessions -->
-      <div style="margin-top: 3rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <h3 class="section-title">Sessions I'm Teaching</h3>
-          <button class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">+ Create Session</button>
-        </div>
-
-        <div class="card-grid">
-          <!-- Teaching Session Card -->
-          <div class="session-card">
-            <div class="session-header">
-              <span class="badge badge-success">Active</span>
-              <span class="badge badge-primary">JavaScript</span>
-            </div>
-            <div class="session-content">
-              <div class="session-title">JavaScript Essentials</div>
-              <div class="session-meta">
-                <span>👥 12 Students</span>
-                <span>⏱️ Every Tuesday</span>
-              </div>
-              <div class="session-description">Comprehensive guide to JavaScript fundamentals for beginners.</div>
-              <div class="session-footer">
-                <div class="avatar-group">
-                  <div class="avatar-small">J</div>
-                  <div class="avatar-small">K</div>
-                  <div class="avatar-small">L</div>
-                </div>
-                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.9rem;">Manage</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      var messages = document.getElementById('chatMessages');
+      var input = document.getElementById('chatInput');
+      var sendBtn = document.getElementById('chatSend');
+      function send() {
+        var text = (input.value || '').trim();
+        if (!text) return;
+        var div = document.createElement('div');
+        div.className = 'msg you';
+        div.textContent = text;
+        messages.appendChild(div);
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+      }
+      sendBtn.addEventListener('click', send);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') send();
+      });
+    })();
+  </script>
+
 </body>
+
 </html>
