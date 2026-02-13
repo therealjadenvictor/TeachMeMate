@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Complete Profile - TeachMeMate</title>
+</head>
+<body>
+
+  <h2>Complete Your Profile</h2>
+
+  <form id="profileForm">
+
+    <label>Skills I Can Teach:</label><br>
+    <input type="text" id="teachSkills" placeholder="e.g. Python, Guitar, Editing" required>
+    <br><br>
+
+    <label>Skills I Want To Learn:</label><br>
+    <input type="text" id="learnSkills" placeholder="e.g. AI, Public Speaking" required>
+    <br><br>
+
+    <button type="submit">Save Profile</button>
+
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } 
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
+      authDomain: "teachmemate-347ab.firebaseapp.com",
+      projectId: "teachmemate-347ab",
+      storageBucket: "teachmemate-347ab.firebasestorage.app",
+      messagingSenderId: "739144710255",
+      appId: "1:739144710255:web:91de287fdbf35a8db4b59a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const profileForm = document.getElementById("profileForm");
+
+    profileForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert("You must be logged in!");
+        return;
+      }
+
+      const teachSkills = document.getElementById("teachSkills").value;
+      const learnSkills = document.getElementById("learnSkills").value;
+
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          teach: teachSkills,
+          learn: learnSkills
+        });
+
+        window.location.href = "dashboard.html";
+
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  </script>
+
+</body>
+</html>
