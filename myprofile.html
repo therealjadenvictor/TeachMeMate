@@ -134,12 +134,12 @@ button{
 
 <div class="sidebar">
 <h2>TMATE</h2>
-<a class="active">📊 Dashboard</a>
-<a>🎓 My Sessions</a>
-<a>👨‍🏫 Teaching</a>
-<a>📚 Learning</a>
-<a>👤 Profile</a>
-<a>⚙️ Settings</a>
+<a href="dashboard.html">📊 Dashboard</a>
+<a href="session.html">🎓 My Sessions</a>
+<a href="#">👨‍🏫 Teaching</a>
+<a href="#">📚 Learning</a>
+<a href="myprofile.html" class="active">👤 Profile</a>
+<a href="#">⚙️ Settings</a>
 </div>
 
 <div class="main">
@@ -155,12 +155,12 @@ button{
 <!-- VIEW MODE -->
 <div id="viewMode">
 <div class="profile-details">
-<div class="detail"><span>Name</span><div class="value" id="vName">Alex</div></div>
-<div class="detail"><span>Email</span><div class="value" id="vEmail">alex@email.com</div></div>
-<div class="detail"><span>Age</span><div class="value" id="vAge">21</div></div>
-<div class="detail"><span>Gender</span><div class="value" id="vGender">Male</div></div>
-<div class="detail"><span>Skills</span><div class="value" id="vSkills">Coding, Electronics</div></div>
-<div class="detail"><span>Interests</span><div class="value" id="vInterests">AI, Startups</div></div>
+<div class="detail"><span>Name</span><div class="value" id="vName">Loading...</div></div>
+<div class="detail"><span>Email</span><div class="value" id="vEmail">Loading...</div></div>
+<div class="detail"><span>Age</span><div class="value" id="vAge">-</div></div>
+<div class="detail"><span>Gender</span><div class="value" id="vGender">-</div></div>
+<div class="detail"><span>Skills</span><div class="value" id="vSkills">-</div></div>
+<div class="detail"><span>Interests</span><div class="value" id="vInterests">-</div></div>
 </div>
 <button onclick="editProfile()">Edit Profile</button>
 </div>
@@ -188,33 +188,147 @@ button{
 </div>
 </div>
 
-<script>
+<script type="module">
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const viewMode = document.getElementById('viewMode');
+const editMode = document.getElementById('editMode');
+
+const vName = document.getElementById('vName');
+const vEmail = document.getElementById('vEmail');
+const vAge = document.getElementById('vAge');
+const vGender = document.getElementById('vGender');
+const vSkills = document.getElementById('vSkills');
+const vInterests = document.getElementById('vInterests');
+
+const nameInput = document.getElementById('name');
+const emailInput = document.getElementById('email');
+const ageInput = document.getElementById('age');
+const ageVal = document.getElementById('ageVal');
+const genderSelect = document.getElementById('gender');
+const skillsInput = document.getElementById('skills');
+const interestsInput = document.getElementById('interests');
+
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    // Not logged in → go to sign in
+    window.location.href = "signin.html";
+    return;
+  }
+
+  currentUser = user;
+
+  try {
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+
+    if (snap.exists()) {
+      const data = snap.data();
+
+      vName.textContent = data.name || user.email.split("@")[0];
+      vEmail.textContent = data.email || user.email;
+      vAge.textContent = data.age != null ? data.age : "-";
+      vGender.textContent = data.gender || "-";
+
+      const skillsArray = Array.isArray(data.skills)
+        ? data.skills
+        : (data.teach ? String(data.teach).split(",") : []);
+      const skillsText = skillsArray
+        .map(s => s.trim())
+        .filter(Boolean)
+        .join(", ");
+
+      vSkills.textContent = skillsText || "-";
+      vInterests.textContent = data.interests || "-";
+    } else {
+      // No profile yet → basic defaults from auth
+      vName.textContent = user.email.split("@")[0];
+      vEmail.textContent = user.email;
+      vAge.textContent = "-";
+      vGender.textContent = "-";
+      vSkills.textContent = "-";
+      vInterests.textContent = "-";
+    }
+  } catch (err) {
+    console.error("Failed to load profile", err);
+  }
+});
+
 function editProfile(){
   viewMode.classList.add('hidden');
   editMode.classList.remove('hidden');
-  name.value=vName.textContent;
-  email.value=vEmail.textContent;
-  age.value=vAge.textContent;
-  ageVal.textContent=vAge.textContent;
-  gender.value=vGender.textContent;
-  skills.value=vSkills.textContent;
-  interests.value=vInterests.textContent;
+
+  nameInput.value = vName.textContent === "Loading..." ? "" : vName.textContent;
+  emailInput.value = vEmail.textContent === "Loading..." ? "" : vEmail.textContent;
+  ageInput.value = (vAge.textContent && vAge.textContent !== "-" ? vAge.textContent : "21");
+  ageVal.textContent = ageInput.value;
+  genderSelect.value = (vGender.textContent && vGender.textContent !== "-" ? vGender.textContent : "Male");
+  skillsInput.value = vSkills.textContent === "-" ? "" : vSkills.textContent;
+  interestsInput.value = vInterests.textContent === "-" ? "" : vInterests.textContent;
 }
 
-function saveProfile(){
-  vName.textContent=name.value;
-  vEmail.textContent=email.value;
-  vAge.textContent=age.value;
-  vGender.textContent=gender.value;
-  vSkills.textContent=skills.value;
-  vInterests.textContent=interests.value;
-  cancelEdit();
+async function saveProfile(){
+  if (!currentUser) {
+    alert("You must be logged in to save your profile.");
+    return;
+  }
+
+  const nameValue = nameInput.value.trim();
+  const emailValue = emailInput.value.trim() || currentUser.email;
+  const ageValue = parseInt(ageInput.value, 10);
+  const genderValue = genderSelect.value;
+  const skillsRaw = skillsInput.value;
+  const interestsValue = interestsInput.value.trim();
+
+  const skillsArray = skillsRaw
+    .split(",")
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  const skillsNormalized = skillsArray.map(s => s.toLowerCase());
+
+  const payload = {
+    name: nameValue || emailValue.split("@")[0],
+    email: emailValue,
+    age: isNaN(ageValue) ? null : ageValue,
+    gender: genderValue,
+    skills: skillsArray,
+    skills_normalized: skillsNormalized,
+    interests: interestsValue
+  };
+
+  try {
+    const ref = doc(db, "users", currentUser.uid);
+    await setDoc(ref, payload, { merge: true });
+
+    // Reflect changes in the view mode
+    vName.textContent = payload.name;
+    vEmail.textContent = payload.email;
+    vAge.textContent = payload.age != null ? payload.age : "-";
+    vGender.textContent = payload.gender || "-";
+    vSkills.textContent = skillsArray.length ? skillsArray.join(", ") : "-";
+    vInterests.textContent = payload.interests || "-";
+
+    cancelEdit();
+  } catch (err) {
+    console.error("Failed to save profile", err);
+    alert("Could not save profile. Please try again.");
+  }
 }
 
 function cancelEdit(){
   editMode.classList.add('hidden');
   viewMode.classList.remove('hidden');
 }
+
+// Expose functions for inline onclick handlers
+window.editProfile = editProfile;
+window.saveProfile = saveProfile;
+window.cancelEdit = cancelEdit;
 </script>
 
 </body>

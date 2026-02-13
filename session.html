@@ -94,10 +94,8 @@
 
 <script type="module">
   // ================= FIREBASE =================
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { auth, db } from "./firebase-config.js";
   import {
-    getFirestore,
     collection,
     addDoc,
     onSnapshot,
@@ -105,16 +103,6 @@
     where,
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
-    authDomain: "teachmemate-347ab.firebaseapp.com",
-    projectId: "teachmemate-347ab",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
 
   // ================= AGORA =================
   const APP_ID = "ENTER APP ID";

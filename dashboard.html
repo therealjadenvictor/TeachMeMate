@@ -336,9 +336,13 @@
 
           <div style="display:flex;gap:1rem;align-items:center;">
             <div class="search-bar">
-              <input type="text" placeholder="Search sessions...">
+              <input
+                type="text"
+                id="skillSearchInput"
+                placeholder="Search by skill (e.g. Python, UI/UX)..."
+                autocomplete="off">
             </div>
-            <div class="avatar">A</div>
+            <a href="myprofile.html" class="avatar" title="View my profile">A</a>
           </div>
         </div>
 
@@ -358,6 +362,18 @@
           <div class="stat-card">
             <h3>⭐ 4.8</h3>
             <p>Your Rating</p>
+          </div>
+        </div>
+
+        <div>
+          <h3>Users with this skill</h3>
+          <p style="color:var(--medium-gray);font-size:0.9rem;">
+            Type a skill in the search bar above and press Enter to find matching users.
+          </p>
+          <div id="userResults" class="card-grid"></div>
+          <div id="userResultsEmpty"
+               style="color:var(--dark-gray);font-size:0.9rem;margin-top:0.5rem;">
+            Start by searching for a skill to see matching users.
           </div>
         </div>
 
@@ -410,6 +426,103 @@
         if (e.key === 'Enter') send();
       });
     })();
+  </script>
+
+  <script type="module">
+    import { db } from "./firebase-config.js";
+    import {
+      collection,
+      query,
+      where,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const searchInput = document.getElementById('skillSearchInput');
+    const resultsContainer = document.getElementById('userResults');
+    const emptyState = document.getElementById('userResultsEmpty');
+
+    function renderUsers(users) {
+      resultsContainer.innerHTML = '';
+
+      if (!users.length) {
+        emptyState.textContent = 'No users found with that skill yet.';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      users.forEach((user) => {
+        const data = user.data ? user.data() : user; // support doc snapshots or plain objects
+
+        const card = document.createElement('div');
+        card.className = 'session-card';
+
+        const header = document.createElement('div');
+        header.className = 'session-header';
+        header.textContent = data.name || 'Unnamed user';
+
+        const content = document.createElement('div');
+        content.className = 'session-content';
+
+        const skillsText = Array.isArray(data.skills)
+          ? data.skills.join(', ')
+          : (data.skills || 'Not specified');
+
+        content.innerHTML =
+          '<div style="margin-bottom:0.5rem;"><strong>Skills:</strong> ' +
+          skillsText +
+          '</div>' +
+          (data.bio
+            ? '<div style="color:var(--medium-gray);font-size:0.9rem;">' +
+              data.bio +
+              '</div>'
+            : '');
+
+        card.appendChild(header);
+        card.appendChild(content);
+        resultsContainer.appendChild(card);
+      });
+    }
+
+    async function searchBySkill(raw) {
+      const term = (raw || '').trim().toLowerCase();
+
+      if (!term) {
+        resultsContainer.innerHTML = '';
+        emptyState.textContent =
+          'Start by searching for a skill to see matching users.';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      try {
+        // Assumes each user document has a `skills_normalized` array of lowercase skill strings
+        const q = query(
+          collection(db, "users"),
+          where("skills_normalized", "array-contains", term)
+        );
+        const snapshot = await getDocs(q);
+
+        const users = [];
+        snapshot.forEach((doc) => users.push(doc));
+
+        renderUsers(users);
+      } catch (err) {
+        console.error('Error searching users by skill', err);
+        emptyState.textContent =
+          'Something went wrong while searching. Please try again.';
+        emptyState.style.display = 'block';
+      }
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          searchBySkill(searchInput.value);
+        }
+      });
+    }
   </script>
 
 </body>

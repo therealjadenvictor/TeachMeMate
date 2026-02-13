@@ -109,43 +109,23 @@
 
   
  <script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
-import { getAuth, signInWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import { getFirestore, doc, getDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCWfzeXnsjSSL_ShSnZGEgorg6llFLxBJ0",
-  authDomain: "teachmemate-347ab.firebaseapp.com",
-  projectId: "teachmemate-347ab",
-  storageBucket: "teachmemate-347ab.firebasestorage.app",
-  messagingSenderId: "739144710255",
-  appId: "1:739144710255:web:91de287fdbf35a8db4b59a"
-};
-
-// INIT
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+import { auth, db } from "./firebase-config.js";
+import { signInWithEmailAndPassword }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // FORM
 const form = document.getElementById("loginForm");
 
 // 🔥 MAIN LOGIN LOGIC
 form.addEventListener("submit", async (e) => {
-
   e.preventDefault(); 
 
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
   try {
-
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -167,8 +147,6 @@ form.addEventListener("submit", async (e) => {
     console.error(error);
     alert(error.message);
   }
-
 });
-
 </script>
 
