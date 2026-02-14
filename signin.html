@@ -44,59 +44,123 @@
       margin: auto;
       font-size: 3.5rem;
       font-weight: 300;
-      animation: lights 5s 750ms linear infinite;
-      color: hsl(230, 40%, 80%);
     }
 
-    @keyframes lights {
-      0% {
-        color: hsl(230, 40%, 80%);
-        text-shadow:
-          0 0 1em hsla(320, 100%, 50%, 0.2),
-          0 0 0.125em hsla(320, 100%, 60%, 0.3),
-          -1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
-          1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
-      }
+    /* Cool animated text with blue shadow effect */
+    .cool {
+      font: bold 3rem/1.2 sans-serif;
+      white-space: nowrap;
+    }
 
-      30% {
-        color: hsl(230, 80%, 90%);
-        text-shadow:
-          0 0 1em hsla(320, 100%, 50%, 0.5),
-          0 0 0.125em hsla(320, 100%, 60%, 0.5),
-          -0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
-          0.5em 0.125em 0.25em hsla(200, 100%, 60%, 0.4);
-      }
+    .cool span {
+      color: #87ceeb;
+      display: inline-block;
+      position: relative;
+      font-weight: 800;
+    }
 
-      40% {
+    /* Stagger animation delays for each span */
+    .cool span:nth-child(1)::before,
+    .cool span:nth-child(1)::after {
+      animation-delay: 0.1s;
+    }
+
+    .cool span:nth-child(2)::before,
+    .cool span:nth-child(2)::after {
+      animation-delay: 0.2s;
+    }
+
+    .cool span:nth-child(3)::before,
+    .cool span:nth-child(3)::after {
+      animation-delay: 0.3s;
+    }
+
+    .cool span:nth-child(4)::before,
+    .cool span:nth-child(4)::after {
+      animation-delay: 0.4s;
+    }
+
+    .cool span:nth-child(5)::before,
+    .cool span:nth-child(5)::after {
+      animation-delay: 0.5s;
+    }
+
+    .cool span:nth-child(6)::before,
+    .cool span:nth-child(6)::after {
+      animation-delay: 0.6s;
+    }
+
+    .cool span:nth-child(7)::before,
+    .cool span:nth-child(7)::after {
+      animation-delay: 0.7s;
+    }
+
+    .cool span:nth-child(8)::before,
+    .cool span:nth-child(8)::after {
+      animation-delay: 0.8s;
+    }
+
+    /* Make the font show base color if no animation is playing */
+    @media (prefers-reduced-motion) {
+      .cool span {
         color: hsl(230, 100%, 95%);
-        text-shadow:
-          0 0 1em hsla(320, 100%, 50%, 0.5),
-          0 0 0.125em hsla(320, 100%, 90%, 0.5),
-          -0.25em -0.125em 0.125em hsla(40, 100%, 60%, 0.2),
-          0.25em 0.125em 0.125em hsla(200, 100%, 60%, 0.4);
+      }
+    }
+
+    /* Blue accent layer - animates vertically */
+    .cool span::before {
+      animation: max-height 1.5s cubic-bezier(0.61, 1, 0.88, 1) infinite alternate both;
+      color: #5dade2;
+    }
+
+    /* White/light layer - animates horizontally */
+    .cool span::after {
+      animation: max-width 2s cubic-bezier(0.61, 1, 0.88, 1) infinite alternate both;
+      color: hsl(230, 100%, 95%);
+    }
+
+    .cool span::before,
+    .cool span::after {
+      content: attr(data-text);
+      left: 0;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      speak: none;
+    }
+
+    /* Disable animation for reduced motion preference */
+    @media (prefers-reduced-motion) {
+
+      .cool span::before,
+      .cool span::after {
+        animation: none;
+        content: "";
+      }
+    }
+
+    @keyframes max-width {
+      from {
+        max-width: 0;
       }
 
-      70% {
-        color: hsl(230, 80%, 90%);
-        text-shadow:
-          0 0 1em hsla(320, 100%, 50%, 0.5),
-          0 0 0.125em hsla(320, 100%, 60%, 0.5),
-          0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
-          -0.5em 0.125em 0.25em hsla(200, 100%, 60%, 0.4);
+      to {
+        max-width: 100%;
+      }
+    }
+
+    @keyframes max-height {
+      from {
+        max-height: 0;
       }
 
-      100% {
-        color: hsl(230, 40%, 80%);
-        text-shadow:
-          0 0 1em hsla(320, 100%, 50%, 0.2),
-          0 0 0.125em hsla(320, 100%, 60%, 0.3),
-          1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
-          -1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+      to {
+        max-height: 100%;
       }
     }
 
     .auth-form {
-      max-width: 420px;
+      max-width: 550px;
       backdrop-filter: blur(15px);
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
@@ -171,7 +235,10 @@
 
       <div class="col-lg-6 auth-left">
         <div class="auth-text">
-          <h2>Welcome Back</h2>
+          <h2 class="cool">
+            <span data-text="Welcome">Welcome</span>
+            <span data-text="Back">Back</span>
+          </h2>
           <p>Sign in to continue your journey.</p>
         </div>
       </div>
