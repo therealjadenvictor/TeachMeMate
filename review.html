@@ -141,8 +141,12 @@
         const newRating = prevRating > 0
           ? (prevRating + selectedRating) / 2
           : selectedRating;
+        const prevTimesRated = data.timesRated != null ? Number(data.timesRated) : 0;
 
-        await updateDoc(userRef, { rating: Math.round(newRating * 10) / 10 });
+        await updateDoc(userRef, {
+          rating: Math.round(newRating * 10) / 10,
+          timesRated: prevTimesRated + 1
+        });
 
         window.location.href = "dashboard.html";
       } catch (err) {

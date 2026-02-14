@@ -102,6 +102,9 @@
     query,
     where,
     getDocs,
+    doc,
+    getDoc,
+    updateDoc,
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -198,11 +201,26 @@
     }
   };
 
+  async function incrementSessionsTaken(uid) {
+    try {
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+      const current = (userSnap.exists() && userSnap.data().sessionsTaken != null)
+        ? Number(userSnap.data().sessionsTaken) : 0;
+      await updateDoc(userRef, { sessionsTaken: current + 1 });
+    } catch (err) {
+      console.error("Failed to increment sessionsTaken for", uid, err);
+    }
+  }
+
   window.endCall = async () => {
+    const me = auth.currentUser;
+    const otherJoined = client.remoteUsers && client.remoteUsers.length > 0;
+
     localTracks.forEach(t => t.close());
     await client.leave();
 
-    const me = auth.currentUser;
+    let otherUid = null;
     if (me && room) {
       try {
         const q = query(
@@ -211,17 +229,21 @@
         );
         const snap = await getDocs(q);
         if (!snap.empty) {
-          const doc = snap.docs[0];
-          const data = doc.data();
-          const otherUid = data.senderId === me.uid ? data.receiverId : data.senderId;
-          if (otherUid) {
-            window.location.href = `review.html?uid=${encodeURIComponent(otherUid)}`;
-            return;
+          const data = snap.docs[0].data();
+          otherUid = data.senderId === me.uid ? data.receiverId : data.senderId;
+          if (otherUid && otherJoined) {
+            await incrementSessionsTaken(me.uid);
+            await incrementSessionsTaken(otherUid);
           }
         }
       } catch (err) {
-        console.error("Could not resolve other user for review:", err);
+        console.error("Could not update sessions or resolve other user:", err);
       }
+    }
+
+    if (otherUid) {
+      window.location.href = `review.html?uid=${encodeURIComponent(otherUid)}`;
+      return;
     }
     window.location.href = "dashboard.html";
   };

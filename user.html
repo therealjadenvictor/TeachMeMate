@@ -217,14 +217,14 @@
         </div>
         <div class="col-6">
           <div class="card text-center">
-            <div class="fw-semibold" id="userSessionsGiven">0</div>
-            <div class="text-muted">Sessions Given</div>
+            <div class="fw-semibold" id="userTimesRated">0</div>
+            <div class="text-muted">Times Rated</div>
           </div>
         </div>
         <div class="col-6">
           <div class="card text-center">
             <div class="fw-semibold" id="userSessionsTaken">0</div>
-            <div class="text-muted">Sessions Taken</div>
+            <div class="text-muted">Sessions Attended</div>
           </div>
         </div>
         <div class="col-6">
@@ -283,7 +283,7 @@
     const userName = document.getElementById('userName');
     const userEmail = document.getElementById('userEmail');
     const userRating = document.getElementById('userRating');
-    const userSessionsGiven = document.getElementById('userSessionsGiven');
+    const userTimesRated = document.getElementById('userTimesRated');
     const userSessionsTaken = document.getElementById('userSessionsTaken');
     const userSkillCount = document.getElementById('userSkillCount');
 
@@ -337,11 +337,11 @@
         targetDisplayName = displayName;
 
         const rating = data.rating != null ? data.rating : 0;
-        const sessionsGiven = data.sessionsGiven != null ? data.sessionsGiven : 0;
+        const timesRated = data.timesRated != null ? data.timesRated : 0;
         const sessionsTaken = data.sessionsTaken != null ? data.sessionsTaken : 0;
 
         userRating.textContent = `⭐ ${rating.toFixed(1)}`;
-        userSessionsGiven.textContent = sessionsGiven;
+        userTimesRated.textContent = timesRated;
         userSessionsTaken.textContent = sessionsTaken;
 
         const skillsArray = Array.isArray(data.skills)

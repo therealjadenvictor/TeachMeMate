@@ -272,15 +272,15 @@
 
           <div class="col-md-3 col-sm-6">
             <div class="glass-card holographic-card p-3 text-center">
-              <h2 id="sessionsTakenDisplay">0</h2>
-              <p class="text-muted mb-0">Sessions Taken</p>
+              <h2 id="timesRatedDisplay">0</h2>
+              <p class="text-muted mb-0">Times Rated</p>
             </div>
           </div>
 
           <div class="col-md-3 col-sm-6">
             <div class="glass-card holographic-card p-3 text-center">
-              <h2 id="sessionsGivenDisplay">0</h2>
-              <p class="text-muted mb-0">Sessions Given</p>
+              <h2 id="sessionsTakenDisplay">0</h2>
+              <p class="text-muted mb-0">Sessions Attended</p>
             </div>
           </div>
 
@@ -431,8 +431,8 @@
     const vTeachSkills = document.getElementById('vTeachSkills');
 
     const ratingDisplay = document.getElementById('ratingDisplay');
+    const timesRatedDisplay = document.getElementById('timesRatedDisplay');
     const sessionsTakenDisplay = document.getElementById('sessionsTakenDisplay');
-    const sessionsGivenDisplay = document.getElementById('sessionsGivenDisplay');
 
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
@@ -476,12 +476,12 @@
           vTeachSkills.textContent = data.learn || "-";
 
           const rating = data.rating != null ? data.rating : 0;
+          const timesRated = data.timesRated != null ? data.timesRated : 0;
           const sessionsTaken = data.sessionsTaken != null ? data.sessionsTaken : 0;
-          const sessionsGiven = data.sessionsGiven != null ? data.sessionsGiven : 0;
 
           ratingDisplay.textContent = `⭐ ${rating.toFixed(1)}`;
+          timesRatedDisplay.textContent = timesRated;
           sessionsTakenDisplay.textContent = sessionsTaken;
-          sessionsGivenDisplay.textContent = sessionsGiven;
         } else {
           vName.textContent = user.email.split("@")[0];
           vEmail.textContent = user.email;
@@ -491,8 +491,8 @@
           vTeachSkills.textContent = "-";
 
           ratingDisplay.textContent = "⭐ 0.0";
+          timesRatedDisplay.textContent = "0";
           sessionsTakenDisplay.textContent = "0";
-          sessionsGivenDisplay.textContent = "0";
         }
       } catch (err) {
         console.error("Failed to load profile", err);
@@ -559,8 +559,8 @@
         const finalPayload = {
           ...payload,
           rating: existingData.rating != null ? existingData.rating : 0,
-          sessionsTaken: existingData.sessionsTaken != null ? existingData.sessionsTaken : 0,
-          sessionsGiven: existingData.sessionsGiven != null ? existingData.sessionsGiven : 0
+          timesRated: existingData.timesRated != null ? existingData.timesRated : 0,
+          sessionsTaken: existingData.sessionsTaken != null ? existingData.sessionsTaken : 0
         };
 
         await setDoc(ref, finalPayload, { merge: true });
@@ -573,8 +573,8 @@
         vTeachSkills.textContent = payload.learn || "-";
 
         ratingDisplay.textContent = `⭐ ${finalPayload.rating.toFixed(1)}`;
+        timesRatedDisplay.textContent = finalPayload.timesRated;
         sessionsTakenDisplay.textContent = finalPayload.sessionsTaken;
-        sessionsGivenDisplay.textContent = finalPayload.sessionsGiven;
 
         cancelEdit();
       } catch (err) {
