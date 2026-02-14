@@ -101,6 +101,7 @@
     onSnapshot,
     query,
     where,
+    getDocs,
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -200,6 +201,28 @@
   window.endCall = async () => {
     localTracks.forEach(t => t.close());
     await client.leave();
+
+    const me = auth.currentUser;
+    if (me && room) {
+      try {
+        const q = query(
+          collection(db, "accepted_request"),
+          where("code", "==", room)
+        );
+        const snap = await getDocs(q);
+        if (!snap.empty) {
+          const doc = snap.docs[0];
+          const data = doc.data();
+          const otherUid = data.senderId === me.uid ? data.receiverId : data.senderId;
+          if (otherUid) {
+            window.location.href = `review.html?uid=${encodeURIComponent(otherUid)}`;
+            return;
+          }
+        }
+      } catch (err) {
+        console.error("Could not resolve other user for review:", err);
+      }
+    }
     window.location.href = "dashboard.html";
   };
 </script>

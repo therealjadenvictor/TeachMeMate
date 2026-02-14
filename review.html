@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate Session - TeachMeMate</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="bootstrap-theme.css">
+
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    .review-card {
+      max-width: 420px;
+      width: 100%;
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+
+    .star-rating {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+      font-size: 2.5rem;
+      cursor: pointer;
+    }
+
+    .star-rating .bi-star,
+    .star-rating .bi-star-fill {
+      color: rgba(148, 163, 184, 0.4);
+      transition: color 0.2s;
+    }
+
+    .star-rating .bi-star-fill.highlight,
+    .star-rating .bi-star.highlight {
+      color: #fbbf24;
+    }
+
+    .star-rating:hover .bi-star,
+    .star-rating:hover .bi-star-fill {
+      color: #fbbf24;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="review-card text-center">
+    <h2 class="mb-2">Rate your session</h2>
+    <p class="text-muted mb-0" id="prompt">How was your session with <strong id="userName">...</strong>?</p>
+
+    <div class="star-rating" id="starRating" role="group" aria-label="Rate out of 5 stars">
+      <i class="bi bi-star" data-value="1" title="1 star"></i>
+      <i class="bi bi-star" data-value="2" title="2 stars"></i>
+      <i class="bi bi-star" data-value="3" title="3 stars"></i>
+      <i class="bi bi-star" data-value="4" title="4 stars"></i>
+      <i class="bi bi-star" data-value="5" title="5 stars"></i>
+    </div>
+
+    <p class="small text-muted mb-3" id="ratingLabel">Tap to select a rating</p>
+
+    <button class="btn btn-primary w-100" id="submitBtn" disabled>
+      Submit rating
+    </button>
+
+    <a href="dashboard.html" class="btn btn-link text-muted mt-3 d-block">Skip and go to dashboard</a>
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase-config.js";
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const targetUid = params.get("uid");
+
+    const userNameEl = document.getElementById("userName");
+    const starRatingEl = document.getElementById("starRating");
+    const ratingLabelEl = document.getElementById("ratingLabel");
+    const submitBtn = document.getElementById("submitBtn");
+
+    let selectedRating = 0;
+
+    function highlightStars(upTo) {
+      starRatingEl.querySelectorAll(".bi-star, .bi-star-fill").forEach((star, i) => {
+        const value = i + 1;
+        star.classList.toggle("highlight", value <= upTo);
+        star.classList.remove("bi-star-fill", "bi-star");
+        star.classList.add(value <= upTo ? "bi-star-fill" : "bi-star");
+      });
+    }
+
+    starRatingEl.addEventListener("click", (e) => {
+      const star = e.target.closest("[data-value]");
+      if (!star) return;
+      selectedRating = parseInt(star.dataset.value, 10);
+      highlightStars(selectedRating);
+      ratingLabelEl.textContent = `${selectedRating} of 5 stars`;
+      submitBtn.disabled = false;
+    });
+
+    starRatingEl.addEventListener("mouseenter", (e) => {
+      const star = e.target.closest("[data-value]");
+      if (star) highlightStars(parseInt(star.dataset.value, 10));
+    });
+
+    starRatingEl.addEventListener("mouseleave", () => {
+      highlightStars(selectedRating);
+    });
+
+    submitBtn.addEventListener("click", async () => {
+      if (!targetUid || selectedRating < 1 || selectedRating > 5) return;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Saving...";
+
+      try {
+        const userRef = doc(db, "users", targetUid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          alert("User not found.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit rating";
+          return;
+        }
+
+        const data = userSnap.data();
+        const prevRating = data.rating != null ? Number(data.rating) : 0;
+        const newRating = prevRating > 0
+          ? (prevRating + selectedRating) / 2
+          : selectedRating;
+
+        await updateDoc(userRef, { rating: Math.round(newRating * 10) / 10 });
+
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        console.error("Failed to save rating:", err);
+        alert("Failed to save rating. Please try again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit rating";
+      }
+    });
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "signin.html";
+        return;
+      }
+
+      if (!targetUid) {
+        userNameEl.textContent = "unknown user";
+        return;
+      }
+
+      try {
+        const userRef = doc(db, "users", targetUid);
+        const snap = await getDoc(userRef);
+        const name = snap.exists()
+          ? (snap.data().name || (snap.data().email || "").split("@")[0] || "User")
+          : "this user";
+        userNameEl.textContent = name;
+      } catch (err) {
+        console.error("Failed to load user:", err);
+        userNameEl.textContent = "this user";
+      }
+    });
+  </script>
+</body>
+</html>
