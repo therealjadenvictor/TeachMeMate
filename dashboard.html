@@ -670,7 +670,7 @@
                 </div>
                 <div class="card stat-card">
                   <h3 style="color: var(--neon-purple);" id="sessionsGivenStat">0</h3>
-                  <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Students</p>
+                  <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">No of ratings</p>
                 </div>
                 <div class="card stat-card">
                   <h3 style="color: var(--neon-pink);" id="activeGoalsStat">0</h3>
@@ -1284,7 +1284,7 @@
           }
 
           const sessionsTaken = userData.sessionsTaken || 0;
-          const sessionsGiven = userData.sessionsGiven || 0;
+          const reviewCount = userData.timesRated || 0;
           const rating = userData.rating || 0;
 
           const activeGoals = userData.learn_normalized?.length || 0;
@@ -1296,7 +1296,7 @@
 
           const sessionsGivenEl = document.getElementById('sessionsGivenStat');
           if (sessionsGivenEl) {
-            sessionsGivenEl.textContent = sessionsGiven;
+            sessionsGivenEl.textContent = reviewCount;
           }
 
           const activeGoalsEl = document.getElementById('activeGoalsStat');
