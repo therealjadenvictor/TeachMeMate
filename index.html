@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TeachMeMate - Learn & Teach Together</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="transitions.css">
 
   <style>
     .cta-section {
@@ -22,18 +24,19 @@
 
     /* NEW FEATURE CARD STYLE */
     .feature-card {
-  background: transparent;              /* same as background */
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 22px;
-  padding: 2.2rem;
-  text-align: center;
-  transition: all 0.35s ease;
-}
+      background: transparent;
+      /* same as background */
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 2.2rem;
+      text-align: center;
+      transition: all 0.35s ease;
+    }
 
-.feature-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(255,255,255,0.25);
-}
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
 
     .feature-icon {
       font-size: 3rem;
@@ -52,86 +55,88 @@
 
 <body>
 
-<!-- NAVBAR -->
-<nav>
-  <div class="navbar">
-    <div class="navbar-brand">TeachMeMate</div>
-    <ul class="nav-menu">
-      <li class="nav-item"><a href="#home">Home</a></li>
-      <li class="nav-item"><a href="#features">Features</a></li>
-      <li class="nav-item"><a href="signin.html">Sign In</a></li>
-    </ul>
-  </div>
-</nav>
+  <!-- NAVBAR -->
+  <nav>
+    <div class="navbar">
+      <div class="navbar-brand">TeachMeMate</div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="#home">Home</a></li>
+        <li class="nav-item"><a href="#features">Features</a></li>
+        <li class="nav-item"><a href="signin.html">Sign In</a></li>
+      </ul>
+    </div>
+  </nav>
 
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-content">
-    <h1>TeachMeMate</h1>
-    <p class="hero-subtitle">Learn & Teach Together</p>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>TeachMeMate</h1>
+      <p class="hero-subtitle">Learn & Teach Together</p>
 
-    <p style="font-size: 1.1rem; color: var(--medium-gray); margin: 2rem 0;">
-      Connect with others who share your interests and learn from each other. 
-      Grow together in a community of passionate learners and teachers.
+      <p style="font-size: 1.1rem; color: var(--medium-gray); margin: 2rem 0;">
+        Connect with others who share your interests and learn from each other.
+        Grow together in a community of passionate learners and teachers.
+      </p>
+
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="location.href='signup.html'">
+          Get Started
+        </button>
+        <button class="btn btn-outline" onclick="location.href='signin.html'">
+          Sign In
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="container cta-section" id="features">
+    <h2>Why TeachMeMate?</h2>
+    <p style="color: var(--medium-gray); margin-bottom: 3rem; font-size: 1.1rem;">
+      Join a platform designed for collaborative learning
     </p>
 
-    <div class="hero-buttons">
-      <button class="btn btn-primary" onclick="location.href='signup.html'">
-        Get Started
-      </button>
-      <button class="btn btn-outline" onclick="location.href='signin.html'">
-        Sign In
-      </button>
+    <div class="features">
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Build Community</h3>
+        <p>Find peers with similar interests and create meaningful learning connections.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📚</div>
+        <h3>Share Knowledge</h3>
+        <p>Teach others what you know and strengthen your own understanding.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast & Easy</h3>
+        <p>Simple, intuitive interface makes learning effortless and enjoyable.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌍</div>
+        <h3>Skill Exchange</h3>
+        <p>Connect with people who have skills to share and love learning from others.</p>
+      </div>
+
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- FEATURES -->
-<section class="container cta-section" id="features">
-  <h2>Why TeachMeMate?</h2>
-  <p style="color: var(--medium-gray); margin-bottom: 3rem; font-size: 1.1rem;">
-    Join a platform designed for collaborative learning
-  </p>
-
-  <div class="features">
-
-    <div class="feature-card">
-      <div class="feature-icon">👥</div>
-      <h3>Build Community</h3>
-      <p>Find peers with similar interests and create meaningful learning connections.</p>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">📚</div>
-      <h3>Share Knowledge</h3>
-      <p>Teach others what you know and strengthen your own understanding.</p>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">⚡</div>
-      <h3>Fast & Easy</h3>
-      <p>Simple, intuitive interface makes learning effortless and enjoyable.</p>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">🌍</div>
-      <h3>Skill Exchange</h3>
-      <p>Connect with people who have skills to share and love learning from others.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer style="background: var(--secondary-black);
+  <!-- FOOTER -->
+  <footer style="background: var(--secondary-black);
                border-top: 1px solid var(--accent-black);
                padding: 2rem;
                text-align: center;
                margin-top: 4rem;">
-  <p style="color: var(--medium-gray);">
-    © 2026 TeachMeMate. All rights reserved.
-  </p>
-</footer>
+    <p style="color: var(--medium-gray);">
+      © 2026 TeachMeMate. All rights reserved.
+    </p>
+  </footer>
 
+  <script src="transitions.js"></script>
 </body>
+
 </html>

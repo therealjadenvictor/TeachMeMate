@@ -12,21 +12,23 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
   <!-- Custom Theme -->
   <link rel="stylesheet" href="bootstrap-theme.css">
+  <link rel="stylesheet" href="transitions.css">
 
   <style>
     body {
       min-height: 100vh;
       overflow-x: hidden;
     }
+
     .my-classes-text {
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--white);
-  text-shadow:
-    0 0 8px rgba(0, 212, 255, 0.4),
-    0 0 20px rgba(0, 212, 255, 0.2);
-}
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--white);
+      text-shadow:
+        0 0 8px rgba(0, 212, 255, 0.4),
+        0 0 20px rgba(0, 212, 255, 0.2);
+    }
 
     :root {
       --neon-cyan: #00d4ff;
@@ -88,75 +90,74 @@
       background: rgba(0, 212, 255, 0.05);
       border-left-color: var(--neon-cyan);
     }
+
     /* Sessions I'm Teaching heading */
-#teachingSection h2 {
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--white);
-  text-shadow:
-    0 0 10px rgba(0, 212, 255, 0.4),
-    0 0 25px rgba(0, 212, 255, 0.25);
-}
+    #teachingSection h2 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--white);
+      text-shadow:
+        0 0 10px rgba(0, 212, 255, 0.4),
+        0 0 25px rgba(0, 212, 255, 0.25);
+    }
 
-/* Teaching session cards bigger + modern */
-#teachingSection .session-card {
-  padding: 0;
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-  transform: scale(1.02);
-}
+    /* Teaching session cards bigger + modern */
+    #teachingSection .session-card {
+      padding: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      transform: scale(1.02);
+    }
 
-/* Glowing border effect */
-#teachingSection .session-card::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: linear-gradient(
-    120deg,
-    #0a2540,
-    #0f3d6e,
-    #1e4f8a,
-    #0f3d6e,
-    #0a2540
-  );
-  background-size: 300% 300%;
-  animation: glowShift 6s linear infinite;
-  opacity: 0.35;
-  z-index: 0;
-}
+    /* Glowing border effect */
+    #teachingSection .session-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(120deg,
+          #0a2540,
+          #0f3d6e,
+          #1e4f8a,
+          #0f3d6e,
+          #0a2540);
+      background-size: 300% 300%;
+      animation: glowShift 6s linear infinite;
+      opacity: 0.35;
+      z-index: 0;
+    }
 
-/* Ensure text stays above glow */
-#teachingSection .session-card > * {
-  position: relative;
-  z-index: 1;
-}
+    /* Ensure text stays above glow */
+    #teachingSection .session-card>* {
+      position: relative;
+      z-index: 1;
+    }
 
-/* Header bigger */
-#teachingSection .session-header {
-  font-size: 1.1rem;
-  padding: 1.4rem 1.6rem;
-}
+    /* Header bigger */
+    #teachingSection .session-header {
+      font-size: 1.1rem;
+      padding: 1.4rem 1.6rem;
+    }
 
-/* Body bigger */
-#teachingSection .session-body {
-  font-size: 1.05rem;
-  padding: 1.8rem;
-}
+    /* Body bigger */
+    #teachingSection .session-body {
+      font-size: 1.05rem;
+      padding: 1.8rem;
+    }
 
-/* Button bigger */
-#teachingSection .session-body .btn {
-  font-size: 1rem;
-  padding: 0.7rem 1.2rem;
-}
+    /* Button bigger */
+    #teachingSection .session-body .btn {
+      font-size: 1rem;
+      padding: 0.7rem 1.2rem;
+    }
 
-/* Hover effect */
-#teachingSection .session-card:hover {
-  transform: translateY(-6px) scale(1.04);
-  box-shadow: 0 0 35px rgba(56,189,248,0.25);
-}
+    /* Hover effect */
+    #teachingSection .session-card:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.25);
+    }
 
     .nav-link i {
       font-size: 1.1rem;
@@ -175,6 +176,7 @@
       box-shadow: 0 0 15px rgba(0, 212, 255, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1);
       transition: transform 0.2s, box-shadow 0.3s;
     }
+
     .btn-premium:hover {
       color: #0a0e27;
       background: linear-gradient(135deg, #00e5ff 0%, #00d4ff 100%);
@@ -182,6 +184,7 @@
       transform: translateY(-1px);
       box-shadow: 0 0 25px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.15);
     }
+
     .premium-btn-text {
       font-size: 1rem;
       font-weight: 600;
@@ -286,6 +289,7 @@
       0% {
         filter: hue-rotate(0deg);
       }
+
       100% {
         filter: hue-rotate(360deg);
       }
@@ -441,124 +445,133 @@
         grid-template-columns: 1fr;
       }
     }
+
     /* Bigger overview cards grid */
-.overview-cards-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.8rem;
-}
+    .overview-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.8rem;
+    }
 
-/* Modern bold glowing stat cards */
-.stat-card {
-  padding: 2.2rem 1.5rem;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #020617, #020617);
-  border: 1px solid rgba(148,163,184,0.25);
-  text-align: center;
-  transition: all 0.35s ease;
-  position: relative;
-  overflow: hidden;
-}
+    /* Modern bold glowing stat cards */
+    .stat-card {
+      padding: 2.2rem 1.5rem;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      text-align: center;
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-.stat-card::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  background: linear-gradient(120deg,
-      #0a2540,
-      #0f3d6e,
-      #1e4f8a,
-      #0f3d6e,
-      #0a2540);
-  background-size: 300% 300%;
-  animation: glowShift 6s linear infinite;
-  opacity: 0.35;
-  z-index: 0;
-}
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(120deg,
+          #0a2540,
+          #0f3d6e,
+          #1e4f8a,
+          #0f3d6e,
+          #0a2540);
+      background-size: 300% 300%;
+      animation: glowShift 6s linear infinite;
+      opacity: 0.35;
+      z-index: 0;
+    }
 
-.welcome-text {
-  font-size: 2.4rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--white);
-  text-shadow:
-    0 0 8px rgba(0, 212, 255, 0.4),
-    0 0 20px rgba(0, 212, 255, 0.2);
-}
+    .welcome-text {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--white);
+      text-shadow:
+        0 0 8px rgba(0, 212, 255, 0.4),
+        0 0 20px rgba(0, 212, 255, 0.2);
+    }
 
-.welcome-subtext {
-  font-size: 1.2rem;
-  font-weight: 500;
-  opacity: 0.85;
-}
+    .welcome-subtext {
+      font-size: 1.2rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
 
-.stat-card > * {
-  position: relative;
-  z-index: 1;
-}
-.overview-section h3 {
-   font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--white);
-  text-shadow:
-    0 0 10px rgba(0, 212, 255, 0.4),
-    0 0 25px rgba(0, 212, 255, 0.25);
-}
+    .stat-card>* {
+      position: relative;
+      z-index: 1;
+    }
 
-
-/* Hover lift effect */
-.stat-card:hover {
-  transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 0 35px rgba(56,189,248,0.25);
-}
-
-/* Bigger bold numbers */
-.stat-card h3 {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-/* Label styling */
-.stat-card p {
-  font-size: 0.9rem;
-  letter-spacing: 1.2px;
-  opacity: 0.85;
-}
-
-/* Glow color animation */
-@keyframes glowShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-/* Bigger My Classes cards */
-.session-card {
-  padding: 0;
-  transform: scale(1.03);
-}
-
-/* Header text bigger */
-.session-header {
-  font-size: 1.1rem;
-  padding: 1.2rem 1.6rem;
-}
-
-/* Content inside bigger */
-.session-body {
-  font-size: 1.05rem;
-  padding: 1.8rem;
-}
-
-/* Button bigger */
-.session-body .btn {
-  font-size: 1rem;
-  padding: 0.6rem 1rem;
-}
+    .overview-section h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--white);
+      text-shadow:
+        0 0 10px rgba(0, 212, 255, 0.4),
+        0 0 25px rgba(0, 212, 255, 0.25);
+    }
 
 
+    /* Hover lift effect */
+    .stat-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.25);
+    }
+
+    /* Bigger bold numbers */
+    .stat-card h3 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    /* Label styling */
+    .stat-card p {
+      font-size: 0.9rem;
+      letter-spacing: 1.2px;
+      opacity: 0.85;
+    }
+
+    /* Glow color animation */
+    @keyframes glowShift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Bigger My Classes cards */
+    .session-card {
+      padding: 0;
+      transform: scale(1.03);
+    }
+
+    /* Header text bigger */
+    .session-header {
+      font-size: 1.1rem;
+      padding: 1.2rem 1.6rem;
+    }
+
+    /* Content inside bigger */
+    .session-body {
+      font-size: 1.05rem;
+      padding: 1.8rem;
+    }
+
+    /* Button bigger */
+    .session-body .btn {
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
+    }
   </style>
 </head>
 
@@ -587,7 +600,8 @@
       </nav>
 
       <div class="position-absolute bottom-0 start-0 end-0 p-4 d-flex flex-column gap-2">
-        <a href="premium.html" class="btn btn-premium w-100 d-flex align-items-center justify-content-center gap-2 text-decoration-none">
+        <a href="premium.html"
+          class="btn btn-premium w-100 d-flex align-items-center justify-content-center gap-2 text-decoration-none">
           <span class="premium-btn-text">Premium go 🔥</span>
         </a>
         <button class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2"
@@ -606,7 +620,7 @@
           <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
             <div>
               <h2 class="welcome-text" id="welcomeText">Welcome back!</h2>
-<p class="welcome-subtext">Here's your learning dashboard</p>
+              <p class="welcome-subtext">Here's your learning dashboard</p>
 
             </div>
 
@@ -991,7 +1005,7 @@
           let otherUserName = 'Unknown User';
           if (otherUserId) {
             try {
-                            const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
+              const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
               if (otherUserSnap.exists()) {
                 const od = otherUserSnap.data();
                 otherUserName = od.name || od.email?.split('@')[0] || 'User';
@@ -1267,7 +1281,7 @@
     });
   </script>
 
+  <script src="transitions.js"></script>
 </body>
 
 </html>
-

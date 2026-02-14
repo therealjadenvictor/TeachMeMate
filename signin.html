@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
   <link rel="stylesheet" href="bootstrap-theme.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="transitions.css">
 
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;500&family=Raleway:wght@300;400;800&display=swap"
@@ -20,17 +21,7 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      opacity: 0;
-      transition: opacity 0.4s ease;
       font-family: 'Raleway', sans-serif;
-    }
-
-    body.fade-in {
-      opacity: 1;
-    }
-
-    body.fade-out {
-      opacity: 0;
     }
 
     .auth-left {
@@ -294,20 +285,6 @@
     import { doc, getDoc }
       from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    document.body.classList.add("fade-in");
-
-    function smoothRedirect(url) {
-      document.body.classList.add("fade-out");
-      setTimeout(() => window.location.href = url, 300);
-    }
-
-    document.querySelectorAll(".nav-link-custom").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        smoothRedirect(link.href);
-      });
-    });
-
     // 👁 Toggle password visibility
     togglePassword.addEventListener("click", () => {
       const type = password.type === "password" ? "text" : "password";
@@ -330,9 +307,9 @@
         const docSnap = await getDoc(doc(db, "users", user.uid));
 
         if (docSnap.exists()) {
-          smoothRedirect("dashboard.html");
+          window.navigateWithTransition("dashboard.html");
         } else {
-          smoothRedirect("Profile.html");
+          window.navigateWithTransition("Profile.html");
         }
 
       } catch (error) {
@@ -345,6 +322,7 @@
     });
   </script>
 
+  <script src="transitions.js"></script>
 </body>
 
 </html>

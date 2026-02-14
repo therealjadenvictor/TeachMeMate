@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Profile - TeachMeMate</title>
-  
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
   <!-- Custom Theme -->
   <link rel="stylesheet" href="bootstrap-theme.css">
-  
+  <link rel="stylesheet" href="transitions.css">
+
   <style>
     body {
       min-height: 100vh;
@@ -19,22 +21,24 @@
       align-items: stretch;
       justify-content: center;
     }
+
     .user-request-panel .btn-send-request {
-    width: auto !important;
-    align-self: center;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-  }
+      width: auto !important;
+      align-self: center;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+    }
 
-  /* Bottom action buttons (chat + back) */
-  .user-main .mt-auto {
-    justify-content: center;
-  }
+    /* Bottom action buttons (chat + back) */
+    .user-main .mt-auto {
+      justify-content: center;
+    }
 
-  .user-main .mt-auto .btn {
-    font-size: 0.95rem;
-    padding: 0.5rem 1.1rem;
-  }
+    .user-main .mt-auto .btn {
+      font-size: 0.95rem;
+      padding: 0.5rem 1.1rem;
+    }
+
     .user-layout {
       display: grid;
       grid-template-columns: 380px 1fr 450px;
@@ -47,8 +51,8 @@
 
     .user-sidebar {
       background: radial-gradient(circle at top, rgba(56, 189, 248, 0.25), transparent),
-                  radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), transparent),
-                  #020617;
+        radial-gradient(circle at bottom, rgba(129, 140, 248, 0.25), transparent),
+        #020617;
       padding: 2.5rem;
       display: flex;
       flex-direction: column;
@@ -123,7 +127,7 @@
 
     .user-request-panel {
       background: radial-gradient(circle at top, rgba(129, 140, 248, 0.15), transparent),
-                  #020617;
+        #020617;
       padding: 2.5rem 2rem;
       border-left: 1px solid rgba(148, 163, 184, 0.25);
       display: flex;
@@ -198,6 +202,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="card user-layout">
@@ -260,8 +265,10 @@
 
     <aside class="user-request-panel">
       <h6>Send Session Request</h6>
-      <p class="text-muted mb-2">Request a learning/teaching session. The other user will see your message with Accept or Reject options in chat.</p>
-      <textarea class="form-control rounded-3 mb-2" id="requestMessage" rows="5" placeholder="Add a message (optional)..."></textarea>
+      <p class="text-muted mb-2">Request a learning/teaching session. The other user will see your message with Accept
+        or Reject options in chat.</p>
+      <textarea class="form-control rounded-3 mb-2" id="requestMessage" rows="5"
+        placeholder="Add a message (optional)..."></textarea>
       <button class="btn btn-send-request rounded-pill w-100" id="sendRequestBtn" type="button">
         <i class="bi bi-send me-2"></i>Send Request
       </button>
@@ -437,5 +444,7 @@
     });
   </script>
 
+  <script src="transitions.js"></script>
 </body>
+
 </html>

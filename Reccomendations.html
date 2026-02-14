@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
   <meta charset="UTF-8" />
   <title>Recommendations</title>
@@ -7,6 +8,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="transitions.css">
   <style>
     body {
       min-height: 100vh;
@@ -14,6 +16,7 @@
       position: relative;
       overflow-x: hidden;
     }
+
     /* Animated gradient orbs - same theme colors */
     .bg-orb {
       position: fixed;
@@ -23,6 +26,7 @@
       pointer-events: none;
       z-index: 0;
     }
+
     .bg-orb-1 {
       width: 400px;
       height: 400px;
@@ -31,6 +35,7 @@
       right: -100px;
       animation: float 12s ease-in-out infinite;
     }
+
     .bg-orb-2 {
       width: 350px;
       height: 350px;
@@ -40,6 +45,7 @@
       animation: float 14s ease-in-out infinite reverse;
       animation-delay: -3s;
     }
+
     .bg-orb-3 {
       width: 250px;
       height: 250px;
@@ -49,16 +55,29 @@
       animation: float 10s ease-in-out infinite;
       animation-delay: -5s;
     }
+
     @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(20px, -20px) scale(1.05); }
-      66% { transform: translate(-15px, 15px) scale(0.98); }
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      33% {
+        transform: translate(20px, -20px) scale(1.05);
+      }
+
+      66% {
+        transform: translate(-15px, 15px) scale(0.98);
+      }
     }
+
     .content-wrap {
       position: relative;
       z-index: 1;
       padding: 2rem 0;
     }
+
     .rounded-box {
       background: rgba(15, 23, 42, 0.9);
       border: 1px solid rgba(148, 163, 184, 0.25);
@@ -67,8 +86,9 @@
       max-width: 1200px;
       margin: 0 auto;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35),
-                  0 0 0 1px rgba(148, 163, 184, 0.08);
+        0 0 0 1px rgba(148, 163, 184, 0.08);
     }
+
     .page-title {
       font-size: 2.75rem;
       font-weight: 800;
@@ -80,72 +100,101 @@
       background-clip: text;
       animation: gradient-shift 3s ease infinite, glow-pulse 2.5s ease-in-out infinite;
     }
+
     @keyframes gradient-shift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
+
     @keyframes glow-pulse {
-      0%, 100% { filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.7)) drop-shadow(0 0 40px rgba(56, 189, 248, 0.4)); }
-      50% { filter: drop-shadow(0 0 28px rgba(129, 140, 248, 0.8)) drop-shadow(0 0 56px rgba(167, 139, 250, 0.5)); }
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.7)) drop-shadow(0 0 40px rgba(56, 189, 248, 0.4));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 28px rgba(129, 140, 248, 0.8)) drop-shadow(0 0 56px rgba(167, 139, 250, 0.5));
+      }
     }
+
     .rec-card {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid rgba(148, 163, 184, 0.2);
       border-radius: 16px;
       overflow: hidden;
       transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  box-shadow 0.35s ease,
-                  border-color 0.3s ease;
+        box-shadow 0.35s ease,
+        border-color 0.3s ease;
     }
+
     .rec-card:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4),
-                  0 0 40px rgba(56, 189, 248, 0.15),
-                  0 0 80px rgba(129, 140, 248, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(56, 189, 248, 0.15),
+        0 0 80px rgba(129, 140, 248, 0.1);
       border-color: rgba(56, 189, 248, 0.4);
     }
+
     .rec-card .card-body {
       padding: 1.5rem;
     }
+
     .rec-card .card-title {
       font-weight: 600;
       color: #e2e8f0;
     }
+
     .rec-card .btn-outline-primary {
       border-radius: 999px;
       font-weight: 600;
       transition: all 0.3s ease;
     }
+
     .rec-card .btn-outline-primary:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
     }
+
     .rec-card.stimulate-in {
       opacity: 0;
       transform: translateY(30px) scale(0.95);
       animation: cardIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
+
     @keyframes cardIn {
       to {
         opacity: 1;
         transform: translateY(0) scale(1);
       }
     }
+
     .back-btn {
       border-radius: 999px;
       font-weight: 500;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
     .back-btn:hover {
       transform: translateX(-4px);
       box-shadow: 0 4px 20px rgba(148, 163, 184, 0.2);
     }
+
     .rec-card .small,
     .rec-card p {
       font-size: 1.05rem !important;
       line-height: 1.5;
     }
+
     #emptyState {
       color: #94a3b8;
       font-size: 1.1rem;
@@ -205,10 +254,10 @@
       }
 
       const myData = meSnap.data();
-      
+
       // Get learning interests - try learn_normalized first, fallback to parsing learn field
       let myLearn = myData.learn_normalized || [];
-      
+
       // If learn_normalized doesn't exist but learn does, parse it
       if (!Array.isArray(myLearn) || myLearn.length === 0) {
         if (myData.learn) {
@@ -220,7 +269,7 @@
       }
 
       console.log("My learning interests:", myLearn);
-      
+
       if (!myLearn.length) {
         emptyState.classList.remove("d-none");
         emptyState.textContent = "No learning interests found. Please add skills you want to learn in your profile.";
@@ -234,7 +283,7 @@
 
       let found = false;
       container.innerHTML = "";
-      
+
       console.log("Total users found:", allUsers.size);
       console.log("Looking for users who can teach:", learningInterests);
 
@@ -243,7 +292,7 @@
         if (docSnap.id === user.uid) return;
 
         const data = docSnap.data();
-        
+
         // Get skills - try skills_normalized first, fallback to parsing skills/teach field
         let skills = data.skills_normalized || [];
         if (!Array.isArray(skills) || skills.length === 0) {
@@ -256,12 +305,12 @@
               .filter(Boolean);
           }
         }
-        
-        const skillsDisplay = Array.isArray(data.skills) ? data.skills : 
-                             (data.teach ? String(data.teach).split(",").map(s => s.trim()).filter(Boolean) : []);
+
+        const skillsDisplay = Array.isArray(data.skills) ? data.skills :
+          (data.teach ? String(data.teach).split(",").map(s => s.trim()).filter(Boolean) : []);
 
         if (!Array.isArray(skills) || skills.length === 0) return;
-        
+
         console.log(`Checking user ${data.name || docSnap.id}:`, {
           skills_normalized: skills,
           learningInterests: learningInterests
@@ -320,5 +369,7 @@
     });
   </script>
 
+  <script src="transitions.js"></script>
 </body>
+
 </html>
