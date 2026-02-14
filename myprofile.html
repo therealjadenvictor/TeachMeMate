@@ -111,17 +111,40 @@
     .form-control,
     .form-select,
     textarea {
-      background: rgba(255, 255, 255, 0.08);
-      border: none;
-      color: white;
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #EAEAEA;
+      border-radius: 30px;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+    }
+
+    textarea.form-control {
+      border-radius: 20px;
+      padding: 15px 20px;
     }
 
     .form-control:focus,
-    .form-select:focus {
-      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.5);
-      background: rgba(255, 255, 255, 0.12);
+    .form-select:focus,
+    textarea:focus {
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.4), 0 4px 12px rgba(0, 212, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.5);
       color: white;
+      outline: none;
+    }
+
+    /* Placeholder text styling */
+    .form-control::placeholder,
+    textarea::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      opacity: 1;
+    }
+
+    .form-control:focus::placeholder,
+    textarea:focus::placeholder {
+      color: rgba(255, 255, 255, 0.4);
     }
 
     .btn-primary {
@@ -213,6 +236,27 @@
       background: rgba(255, 255, 255, 0.08);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 212, 255, 0.2);
     }
+
+    /* Equal height profile tiles */
+    .profile-tile {
+      height: 100%;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Larger text in profile tiles */
+    .profile-tile>div:not(.text-muted) {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .profile-tile input,
+    .profile-tile select,
+    .profile-tile textarea {
+      font-size: 1rem;
+    }
   </style>
 </head>
 
@@ -237,7 +281,7 @@
           <i class="bi bi-book"></i> Recommendations
         </a>
         <a class="nav-link" href="dashboard.html#teachingSection">
-          <i class="bi bi-person-workspace"></i> Teaching
+          <i class="bi bi-person-workspace"></i> My Classes
         </a>
 
       </nav>
@@ -258,31 +302,24 @@
 
         <!-- Stats -->
         <div class="row g-3 mb-4">
-          <div class="col-md-3 col-sm-6">
+          <div class="col-md-4 col-sm-6">
             <div class="glass-card holographic-card p-3 text-center">
               <h2 id="ratingDisplay">⭐ 0.0</h2>
               <p class="text-muted mb-0">Rating</p>
             </div>
           </div>
 
-          <div class="col-md-3 col-sm-6">
+          <div class="col-md-4 col-sm-6">
             <div class="glass-card holographic-card p-3 text-center">
               <h2 id="timesRatedDisplay">0</h2>
               <p class="text-muted mb-0">Times Rated</p>
             </div>
           </div>
 
-          <div class="col-md-3 col-sm-6">
+          <div class="col-md-4 col-sm-6">
             <div class="glass-card holographic-card p-3 text-center">
               <h2 id="sessionsTakenDisplay">0</h2>
               <p class="text-muted mb-0">Sessions Attended</p>
-            </div>
-          </div>
-
-          <div class="col-md-3 col-sm-6">
-            <div class="glass-card holographic-card p-3 text-center">
-              <h2>18 Feb</h2>
-              <p class="text-muted mb-0">Next Session</p>
             </div>
           </div>
         </div>
@@ -291,43 +328,43 @@
         <div id="viewMode">
           <div class="row g-3 mb-4">
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <span class="text-muted small">Name</span>
                 <div id="vName">Loading...</div>
               </div>
             </div>
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <span class="text-muted small">Email</span>
                 <div id="vEmail">Loading...</div>
               </div>
             </div>
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <span class="text-muted small">Age</span>
                 <div id="vAge">-</div>
               </div>
             </div>
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <span class="text-muted small">Gender</span>
                 <div id="vGender">-</div>
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <span class="text-muted small">My Skills</span>
                 <div id="vSkills">-</div>
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <span class="text-muted small">Skills I Want to Learn</span>
                 <div id="vTeachSkills">-</div>
               </div>
@@ -343,22 +380,22 @@
 
           <div class="row g-3 mb-4">
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <label class="form-label small text-muted">Name</label>
-                <input type="text" class="form-control" id="name">
+                <input type="text" class="form-control" id="name" placeholder="Enter name">
               </div>
             </div>
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <label class="form-label small text-muted">Email</label>
-                <input type="email" class="form-control" id="email">
+                <input type="email" class="form-control" id="email" placeholder="Enter email">
               </div>
             </div>
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <label class="form-label small text-muted">
                   Age: <b id="ageVal">21</b>
                 </label>
@@ -367,8 +404,8 @@
               </div>
             </div>
 
-            <div class="col-md-4">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <label class="form-label small text-muted">Gender</label>
                 <select class="form-select" id="gender">
                   <option>Male</option>
@@ -378,17 +415,18 @@
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <label class="form-label small text-muted">My Skills</label>
-                <textarea class="form-control" id="skills" rows="3"></textarea>
+                <textarea class="form-control" id="skills" rows="3" placeholder="Enter your skills"></textarea>
               </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="glass-card p-3">
+            <div class="col-md-6 col-sm-6">
+              <div class="glass-card p-3 profile-tile">
                 <label class="form-label small text-muted">Skills I Want to Learn</label>
-                <textarea class="form-control" id="teachSkills" rows="3"></textarea>
+                <textarea class="form-control" id="teachSkills" rows="3"
+                  placeholder="Enter skills you want to learn"></textarea>
               </div>
             </div>
 

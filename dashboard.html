@@ -16,8 +16,9 @@
 
   <style>
     body {
-      min-height: 100vh;
-      overflow-x: hidden;
+      height: 100vh;
+      overflow: hidden;
+      /* Prevent body scroll, layout logic handles scrolling */
     }
 
     .my-classes-text {
@@ -192,7 +193,10 @@
 
     .main-content {
       margin-left: 280px;
-      min-height: 100vh;
+      height: 100vh;
+      /* Full height */
+      overflow-y: auto;
+      /* Internal scrolling */
       padding: 2rem;
     }
 
@@ -572,6 +576,12 @@
       font-size: 1rem;
       padding: 0.6rem 1rem;
     }
+
+    /* Section Transitions */
+    .dashboard-section-content {
+      transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
   </style>
 </head>
 
@@ -615,7 +625,8 @@
     <main class="main-content flex-grow-1 p-4">
       <div class="container-fluid">
         <!-- Dashboard Section -->
-        <div id="dashboardSection">
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="dashboard-section-content">
           <!-- Header -->
           <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
             <div>
@@ -753,7 +764,8 @@
         </div>
 
         <!-- Teaching Section -->
-        <div id="teachingSection" style="display:none;">
+        <!-- Teaching Section -->
+        <div id="teachingSection" class="dashboard-section-content" style="display:none;">
           <h2 class="mb-4">Sessions I'm Teaching</h2>
           <div id="teachingSessionsContainer" class="row g-4">
             <!-- Sessions will be dynamically loaded here -->
@@ -1193,10 +1205,39 @@
       }
     }
 
+    function switchSection(hideId, showId) {
+      const hideEl = document.getElementById(hideId);
+      const showEl = document.getElementById(showId);
+
+      if (!hideEl || !showEl) return;
+
+      // animate out
+      hideEl.style.opacity = '0';
+      hideEl.style.transform = 'translateY(-10px) scale(0.99)';
+
+      setTimeout(() => {
+        hideEl.style.display = 'none';
+
+        // prepare entry
+        showEl.style.display = 'block';
+        showEl.style.opacity = '0';
+        showEl.style.transform = 'translateY(10px) scale(0.99)';
+
+        // trigger reflow
+        void showEl.offsetWidth;
+
+        // animate in
+        showEl.style.opacity = '1';
+        showEl.style.transform = 'translateY(0) scale(1)';
+      }, 500); // 500ms matches CSS transition time
+    }
+
     teachingBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      dashboardSection.style.display = "none";
-      teachingSection.style.display = "block";
+      // dashboardSection.style.display = "none";
+      // teachingSection.style.display = "block";
+      switchSection('dashboardSection', 'teachingSection');
+
       setActive(teachingBtn);
       const user = currentUser || auth.currentUser;
       if (user) loadTeachingSessions(user);
@@ -1204,8 +1245,10 @@
 
     dashboardBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      teachingSection.style.display = "none";
-      dashboardSection.style.display = "block";
+      // teachingSection.style.display = "none";
+      // dashboardSection.style.display = "block";
+      switchSection('teachingSection', 'dashboardSection');
+
       setActive(dashboardBtn);
     });
 
