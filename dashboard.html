@@ -18,10 +18,21 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
+    .my-classes-text {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-shadow:
+    0 0 8px rgba(0, 212, 255, 0.4),
+    0 0 20px rgba(0, 212, 255, 0.2);
+}
 
     :root {
       --neon-cyan: #00d4ff;
       --neon-purple: #b74bff;
+      --neon-pink: #ff006e;
+      --neon-green: #00ff88;
       --medium-gray: #9ca3af;
       --white: #ffffff;
     }
@@ -32,13 +43,10 @@
       left: 0;
       top: 0;
       width: 280px;
-      /* Slightly wider like chat sidebar */
       height: 100vh;
       overflow-y: auto;
       z-index: 1000;
-      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent),
-        #020617;
-      /* Darker, richer background */
+      background: radial-gradient(circle at top, rgba(56, 189, 248, 0.15), transparent), #020617;
       border-right: 1px solid rgba(148, 163, 184, 0.2);
       backdrop-filter: blur(10px);
     }
@@ -80,6 +88,75 @@
       background: rgba(0, 212, 255, 0.05);
       border-left-color: var(--neon-cyan);
     }
+    /* Sessions I'm Teaching heading */
+#teachingSection h2 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-shadow:
+    0 0 10px rgba(0, 212, 255, 0.4),
+    0 0 25px rgba(0, 212, 255, 0.25);
+}
+
+/* Teaching session cards bigger + modern */
+#teachingSection .session-card {
+  padding: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  transform: scale(1.02);
+}
+
+/* Glowing border effect */
+#teachingSection .session-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    120deg,
+    #0a2540,
+    #0f3d6e,
+    #1e4f8a,
+    #0f3d6e,
+    #0a2540
+  );
+  background-size: 300% 300%;
+  animation: glowShift 6s linear infinite;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+/* Ensure text stays above glow */
+#teachingSection .session-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Header bigger */
+#teachingSection .session-header {
+  font-size: 1.1rem;
+  padding: 1.4rem 1.6rem;
+}
+
+/* Body bigger */
+#teachingSection .session-body {
+  font-size: 1.05rem;
+  padding: 1.8rem;
+}
+
+/* Button bigger */
+#teachingSection .session-body .btn {
+  font-size: 1rem;
+  padding: 0.7rem 1.2rem;
+}
+
+/* Hover effect */
+#teachingSection .session-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 0 35px rgba(56,189,248,0.25);
+}
 
     .nav-link i {
       font-size: 1.1rem;
@@ -90,14 +167,13 @@
 
     .main-content {
       margin-left: 280px;
-      /* Match sidebar width */
       min-height: 100vh;
       padding: 2rem;
     }
 
     .search-bar-wrapper {
-      max-width: 400px;
-      width: 100%;
+      flex: 0 1 50%;
+      min-width: 0;
     }
 
     .search-input-group {
@@ -133,27 +209,55 @@
       color: var(--medium-gray);
     }
 
-    .stat-card {
-      /* Keep layout but use .card style from global css */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.03);
-      /* Slightly lighter than bg */
-      border: 1px solid rgba(148, 163, 184, 0.1);
+    /* NEW: Grid container for Overview section */
+    .overview-row {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: 1.5rem;
+      align-items: stretch;
+      margin-bottom: 3rem;
     }
 
-    .stat-card h3 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      /* background: linear-gradient(135deg, white, var(--light-gray)); Removed to allow specific colors */
-      /* -webkit-background-clip: text; */
-      /* -webkit-text-fill-color: transparent; */
-      /* background-clip: text; */
+    /* Left section: Overview + 4 cards fills height to match right card */
+    .overview-section {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 1rem;
+      min-height: 500px;
+    }
+
+    .overview-section h3 {
+      margin: 0;
+      padding-bottom: 1rem;
+    }
+
+    .overview-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    /* Right column card stretches to full height */
+    .cube-card-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cube-card-wrapper .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cube-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      min-height: 400px;
+      overflow: hidden;
+      padding: 20px;
     }
 
     /* Isometric Cube Animation */
@@ -161,20 +265,9 @@
       0% {
         filter: hue-rotate(0deg);
       }
-
       100% {
         filter: hue-rotate(360deg);
       }
-    }
-
-    .cube-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      min-height: 350px;
-      overflow: hidden;
-      padding: 20px;
     }
 
     .container {
@@ -257,7 +350,6 @@
       cursor: pointer;
       transition: all 0.3s ease;
       background: rgba(26, 31, 58, 0.6);
-      /* var(--tertiary-black) with opacity */
     }
 
     .session-card:hover {
@@ -281,6 +373,7 @@
       padding: 1.5rem;
     }
 
+    /* Responsive: Stack on smaller screens */
     @media (max-width: 991px) {
       .sidebar {
         position: relative;
@@ -299,7 +392,144 @@
       .sidebar-brand {
         text-align: center;
       }
+
+      .overview-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .overview-section {
+        min-height: auto;
+      }
+
+      .overview-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
+
+    @media (max-width: 576px) {
+      .overview-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* Bigger overview cards grid */
+.overview-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+}
+
+/* Modern bold glowing stat cards */
+.stat-card {
+  padding: 2.2rem 1.5rem;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #020617, #020617);
+  border: 1px solid rgba(148,163,184,0.25);
+  text-align: center;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(120deg,
+      #0a2540,
+      #0f3d6e,
+      #1e4f8a,
+      #0f3d6e,
+      #0a2540);
+  background-size: 300% 300%;
+  animation: glowShift 6s linear infinite;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.welcome-text {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-shadow:
+    0 0 8px rgba(0, 212, 255, 0.4),
+    0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+.welcome-subtext {
+  font-size: 1.2rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.stat-card > * {
+  position: relative;
+  z-index: 1;
+}
+.overview-section h3 {
+   font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--white);
+  text-shadow:
+    0 0 10px rgba(0, 212, 255, 0.4),
+    0 0 25px rgba(0, 212, 255, 0.25);
+}
+
+
+/* Hover lift effect */
+.stat-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 0 35px rgba(56,189,248,0.25);
+}
+
+/* Bigger bold numbers */
+.stat-card h3 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+/* Label styling */
+.stat-card p {
+  font-size: 0.9rem;
+  letter-spacing: 1.2px;
+  opacity: 0.85;
+}
+
+/* Glow color animation */
+@keyframes glowShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* Bigger My Classes cards */
+.session-card {
+  padding: 0;
+  transform: scale(1.03);
+}
+
+/* Header text bigger */
+.session-header {
+  font-size: 1.1rem;
+  padding: 1.2rem 1.6rem;
+}
+
+/* Content inside bigger */
+.session-body {
+  font-size: 1.05rem;
+  padding: 1.8rem;
+}
+
+/* Button bigger */
+.session-body .btn {
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+}
+
+
   </style>
 </head>
 
@@ -343,11 +573,12 @@
           <!-- Header -->
           <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-4">
             <div>
-              <h1 class="mb-2" id="welcomeText">Welcome back, </h1>
-              <p class="mb-0 fs-5" style="color: var(--medium-gray);">Here's your learning dashboard</p>
+              <h2 class="welcome-text">Welcome back, Jaden!</h2>
+<p class="welcome-subtext">Here's your learning dashboard</p>
+
             </div>
 
-            <div class="d-flex align-items-center gap-4">
+            <div class="d-flex align-items-center justify-content-end gap-4 flex-grow-1" style="min-width: 0;">
               <div class="search-bar-wrapper position-relative">
                 <div class="search-input-group">
                   <i class="bi bi-search"></i>
@@ -370,42 +601,33 @@
             </div>
           </div>
 
-          <div class="row g-4 mb-5">
+          <!-- Overview Row with Grid Layout -->
+          <div class="overview-row">
             <!-- Left Column: Stats & Goals -->
-            <div class="col-lg-7">
-              <h3 class="mb-4">Overview</h3>
-              <div class="row g-4">
-                <div class="col-md-6">
-                  <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-cyan);" id="sessionsTakenStat">0</h3>
-                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Sessions Completed
-                    </p>
-                  </div>
+            <div class="overview-section">
+              <h3>Overview</h3>
+              <div class="overview-cards-grid">
+                <div class="card stat-card">
+                  <h3 style="color: var(--neon-cyan);" id="sessionsTakenStat">0</h3>
+                  <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Sessions Completed</p>
                 </div>
-                <div class="col-md-6">
-                  <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-purple);" id="sessionsGivenStat">0</h3>
-                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Students</p>
-                  </div>
+                <div class="card stat-card">
+                  <h3 style="color: var(--neon-purple);" id="sessionsGivenStat">0</h3>
+                  <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Students</p>
                 </div>
-                <div class="col-md-6">
-                  <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-pink);" id="activeGoalsStat">0</h3>
-                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Learning Goals</p>
-                  </div>
+                <div class="card stat-card">
+                  <h3 style="color: var(--neon-pink);" id="activeGoalsStat">0</h3>
+                  <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Learning Goals</p>
                 </div>
-                <div class="col-md-6">
-                  <div class="card stat-card h-100">
-                    <h3 class="" style="color: var(--neon-green);" id="ratingStat">0 <span
-                        class="fs-6 text-muted">⭐</span></h3>
-                    <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Rating</p>
-                  </div>
+                <div class="card stat-card">
+                  <h3 style="color: var(--neon-green);" id="ratingStat">0 <span class="fs-6 text-muted">⭐</span></h3>
+                  <p class="mb-0 text-uppercase small fw-bold" style="color: var(--medium-gray);">Rating</p>
                 </div>
               </div>
             </div>
 
             <!-- Right Column: Animated Cube -->
-            <div class="col-lg-5">
+            <div class="cube-card-wrapper">
               <div class="card h-100">
                 <div class="cube-container">
                   <div class="container">
@@ -470,7 +692,7 @@
           <div class="row mb-5">
             <div class="col-12">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="mb-0">My Classes</h3>
+                <h3 class="mb-0 my-classes-text">My Classes</h3>
                 <button class="btn btn-sm btn-ghost" id="viewAllClassesBtn">View All</button>
               </div>
 
@@ -567,8 +789,6 @@
       dropdownEmpty.style.display = 'none';
 
       try {
-        // Query users who have this skill
-        // Using 'skills_normalized' as confirmed in myprofile.html
         const q = query(
           collection(db, "users"),
           where("skills_normalized", "array-contains", searchTerm),
@@ -589,7 +809,6 @@
 
         snapshot.forEach((docSnap) => {
           const userData = docSnap.data();
-          // Don't show current user
           if (auth.currentUser && auth.currentUser.uid === docSnap.id) return;
 
           resultCount++;
@@ -616,14 +835,11 @@
       item.style.color = 'var(--white)';
       item.style.textDecoration = 'none';
 
-      // Avatar (using first letter if no image)
       const initial = data.name ? data.name.charAt(0).toUpperCase() : '?';
       const avatarHtml = data.photoURL
         ? `<img src="${data.photoURL}" class="rounded-circle" width="40" height="40" style="object-fit: cover;">`
         : `<div class="rounded-circle d-flex align-items-center justify-content-center bg-primary text-white fw-bold" style="width: 40px; height: 40px; font-size: 1rem;">${initial}</div>`;
 
-      // Skills tags (first 2)
-      // Updated to check 'skills' array as per profile schema
       const skillsArray = Array.isArray(data.skills) ? data.skills : (data.teach ? String(data.teach).split(",") : []);
       const skillsHtml = skillsArray.length > 0
         ? skillsArray.slice(0, 2).map(skill => `<span class="badge bg-secondary me-1" style="font-size: 0.7rem;">${skill}</span>`).join('')
@@ -643,13 +859,13 @@
         <i class="bi bi-chevron-right text-muted small"></i>
       `;
 
-      // Hover effect
       item.addEventListener('mouseenter', () => item.style.backgroundColor = 'rgba(255,255,255,0.05)');
       item.addEventListener('mouseleave', () => item.style.backgroundColor = 'transparent');
 
       return item;
     }
 
+    const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async () => {
         try {
@@ -670,7 +886,6 @@
     const teachingSessionsContainer = document.getElementById("teachingSessionsContainer");
     const teachingSessionsEmpty = document.getElementById("teachingSessionsEmpty");
 
-    // Dashboard Classes Elements
     const dashboardClassesContainer = document.getElementById("dashboardClassesContainer");
     const dashboardClassesEmpty = document.getElementById("dashboardClassesEmpty");
     const viewAllClassesBtn = document.getElementById("viewAllClassesBtn");
@@ -684,7 +899,6 @@
       link.classList.add("active");
     }
 
-    // Format date from Firestore timestamp
     function formatDate(timestamp) {
       if (!timestamp) return "Date not available";
 
@@ -703,8 +917,6 @@
       return date.toLocaleDateString();
     }
 
-    // Load and display dashboard classes (preview)
-    // accepted_request docs: { senderId, receiverId, code, createdAt }
     async function loadDashboardClasses(user) {
       if (!user || !dashboardClassesContainer) return;
 
@@ -747,7 +959,7 @@
           let otherUserName = 'Unknown User';
           if (otherUserId) {
             try {
-              const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
+                            const otherUserSnap = await getDoc(doc(db, "users", otherUserId));
               if (otherUserSnap.exists()) {
                 const od = otherUserSnap.data();
                 otherUserName = od.name || od.email?.split('@')[0] || 'User';
@@ -788,7 +1000,6 @@
           cardCol.appendChild(card);
           dashboardClassesContainer.appendChild(cardCol);
 
-          // Add event listener to start session button
           const startBtn = body.querySelector('.start-session-btn');
           if (startBtn) {
             startBtn.addEventListener('click', (e) => {
@@ -806,17 +1017,13 @@
       }
     }
 
-    // View All Classes Click
     if (viewAllClassesBtn) {
       viewAllClassesBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Trigger click on Teaching/My Classes nav button
         teachingBtn.click();
       });
     }
 
-    // Load and display accepted teaching sessions
-    // Documents in "accepted_request" are saved from chat as: { senderId, receiverId, code, createdAt }
     async function loadTeachingSessions(user) {
       if (!teachingSessionsContainer || !teachingSessionsEmpty) return;
       teachingSessionsContainer.innerHTML = "";
@@ -864,7 +1071,6 @@
 
         teachingSessionsEmpty.style.display = "none";
 
-        // Process each doc and fetch other user's name
         const sessionPromises = docs.map(async (docSnap) => {
           const data = docSnap.data() || {};
           const code = data.code || '';
@@ -919,13 +1125,11 @@
           cardCol.appendChild(card);
           teachingSessionsContainer.appendChild(cardCol);
 
-          // Add event listener to start session button
           const startBtn = body.querySelector('.start-session-btn');
           if (startBtn) {
             startBtn.addEventListener('click', (e) => {
               e.stopPropagation();
               if (!code) return;
-              // Pass the session code to session.html via room parameter
               window.location.href = `session.html?room=${encodeURIComponent(code)}`;
             });
           }
@@ -943,18 +1147,15 @@
       }
     }
 
-    // Teaching tab click
     teachingBtn.addEventListener("click", (e) => {
       e.preventDefault();
       dashboardSection.style.display = "none";
       teachingSection.style.display = "block";
       setActive(teachingBtn);
-      // Always load (use currentUser or auth.currentUser in case of race)
       const user = currentUser || auth.currentUser;
       if (user) loadTeachingSessions(user);
     });
 
-    // Dashboard tab click
     dashboardBtn.addEventListener("click", (e) => {
       e.preventDefault();
       teachingSection.style.display = "none";
@@ -962,7 +1163,6 @@
       setActive(dashboardBtn);
     });
 
-    // Initialize auth state listener
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.href = "signin.html";
@@ -970,7 +1170,6 @@
       }
       currentUser = user;
 
-      // Fetch user profile data
       try {
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
@@ -978,14 +1177,12 @@
         if (userDocSnap.exists()) {
           const userData = userDocSnap.data();
 
-          // Update welcome text with user's name or email
           const userName = userData.name || user.email?.split('@')[0] || 'User';
           const welcomeText = document.getElementById('welcomeText');
           if (welcomeText) {
             welcomeText.textContent = `Welcome back, ${userName}! `;
           }
 
-          // Update avatar
           const userAvatar = document.getElementById('userAvatar');
           if (userAvatar) {
             if (userData.photoURL) {
@@ -997,15 +1194,12 @@
             }
           }
 
-          // Update stats from user data
           const sessionsTaken = userData.sessionsTaken || 0;
           const sessionsGiven = userData.sessionsGiven || 0;
           const rating = userData.rating || 0;
 
-          // Count active learning goals (learn_normalized array length)
           const activeGoals = userData.learn_normalized?.length || 0;
 
-          // Update stat elements
           const sessionsTakenEl = document.getElementById('sessionsTakenStat');
           if (sessionsTakenEl) {
             sessionsTakenEl.textContent = sessionsTaken;
@@ -1033,10 +1227,8 @@
         console.error("Error fetching user data:", error);
       }
 
-      // Load dashboard classes preview
       loadDashboardClasses(user);
 
-      // If teaching section is already visible, load sessions
       if (teachingSection.style.display === "block") {
         loadTeachingSessions(user);
       }
@@ -1046,3 +1238,4 @@
 </body>
 
 </html>
+
