@@ -4,6 +4,15 @@
    =========================== */
 
 /* Initial page state - hidden before JS loads */
+html,
+body {
+    overflow-x: hidden;
+    /* Prevent horizontal scroll globally */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     opacity: 0;
     transform: translateY(10px) scale(0.99);

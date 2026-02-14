@@ -16,8 +16,9 @@
 
   <style>
     body {
-      min-height: 100vh;
-      overflow-x: hidden;
+      height: 100vh;
+      overflow: hidden;
+      /* Prevent body scroll, layout logic handles scrolling */
     }
 
     .my-classes-text {
@@ -192,7 +193,10 @@
 
     .main-content {
       margin-left: 280px;
-      min-height: 100vh;
+      height: 100vh;
+      /* Full height */
+      overflow-y: auto;
+      /* Internal scrolling */
       padding: 2rem;
     }
 
